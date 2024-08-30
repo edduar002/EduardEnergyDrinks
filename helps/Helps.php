@@ -24,7 +24,6 @@
         }
 
         /*Funcion para comprobar el tipo de un archivo*/
-
         public static function comprobeImage($archivo){
             /*Comprobar si el archivo cumple las condiciones de formato de imagen*/
             if($archivo == "image/jpg" || $archivo == "image/jpeg" || $archivo == "image/png" || $archivo == "image/gif"){
@@ -42,7 +41,6 @@
         }
 
         /*Funcion para guardar la imagen del administrador en los archivos*/
-
         public static function saveImage($archivo, $carpetaGuardada){
             /*Comprobar si existe el archivo o este llega*/
             if(isset($archivo)){
@@ -65,22 +63,26 @@
             return $nombreArchivo;
         }
 
+        /*Funcion para validar la clave y que sea segura*/
         public static function validatePassword($contrasena) {
-            // Verificar la longitud mínima
+            /*Verificar todos los patrones*/
             if (strlen($contrasena) >= 5 && preg_match('/[A-Z]/', $contrasena) && preg_match('/[a-z]/', $contrasena) && preg_match('/\d/', $contrasena) && preg_match('/[\W_]/', $contrasena)) {
+                /*Retornar el resultado*/
                 return true;
             }
         }
 
+        /*Funcion para generar un codigo aleatorio*/
         public static function generateRandomCode() {
             $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+[]{}|;:,.<>?';
             $codigo = '';
             $maxIndex = strlen($caracteres) - 1;
-        
+            /*Recorrer la palabra*/
             for ($i = 0; $i < 10; $i++) {
                 $indiceAleatorio = random_int(0, $maxIndex);
                 $codigo .= $caracteres[$indiceAleatorio];
             }
+            /*Retornar el resultado*/
             return $codigo;
         }
 

@@ -1,7 +1,10 @@
 <?php
 
-    /*Clase para establecer la autocarga de clases*/
+    /*
+    Clase para establecer la autocarga de clases
+    */
 
+    /*Auto carga*/
     function autocarga($clase){
         /*Ruta del directorio donde se encuentran los controladores*/
         $ruta = 'controllers/';

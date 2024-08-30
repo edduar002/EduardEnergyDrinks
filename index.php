@@ -15,7 +15,6 @@
     require_once 'views/layout/Header.html';
 
     /*Funcion para mostrar un error*/
-
     function showError(){
         /*Instanciar la case*/
         $error = new ErrorController();
