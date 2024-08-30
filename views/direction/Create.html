@@ -1,0 +1,48 @@
+<?php if(isset($_SESSION['registroerror'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error: </strong>
+            <?=$_SESSION['registroerror']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('registroerror'); ?>
+
+<div class="col-12 p-5 m-1 row">
+    <div class="col-7 me-4">
+        <h2 class="text-center">Formulario de registro</h2>
+        <br>
+        <br>
+        <form action="<?=init?><?=direction?><?=registerDirection?>" method="post">
+            <div class="form-group">
+                <label for="carrer">Carrera</label>
+                <input type="text" name="carrer" class="form-control">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="street">Calle</label>
+                <input type="text" name="street" class="form-control">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="postalCode">Codigo postal</label>
+                <input type="number" name="postalCode" class="form-control">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="direction">Direccion</label>
+                <textarea name="direction" class="form-control"></textarea>
+            </div>
+            <br>
+            <div class="d-flex justify-content-center">
+                <input type="submit" class="btn btn-success" value="Crear">
+            </div>
+        </form>
+    </div>
+    <div class="col-3">
+        <img id="imgRegister" class="d-block" src="assets/images/logos/mapa.png" alt="">
+    </div>
+</div>

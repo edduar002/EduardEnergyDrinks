@@ -1,0 +1,30 @@
+<div class="col-12 row mt-5 mb-5">
+    <div class="col-6">
+        <img class="d-block" src="resources/imagesProducts/<?=$resultado['IMAGE']?>" alt="" width="500px" height="400px">
+    </div>
+    <div class="col-4">
+        <h2>
+            <?=$resultado['NAME']?>
+        </h2>
+        <br>
+        <h3>Unidades disponibles:
+            <?=$resultado['UNITS']?>
+        </h3>
+        <br>
+        <h3>Precio:
+            <?=$resultado['PRICE']?>
+            </h4>
+            <br>
+            <h4>Contenido:
+                <?=$resultado['CONTENT']?>
+            </h4>
+            <br>
+            <p>Descripcion:
+                <?=$resultado['DESCRIPTION']?>
+            </p>
+            <br>
+            <div class="w-50">
+                <a href="" class="btn btn-success">Comprar ahora</a>
+            </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<?php if(isset($_SESSION['registroerror'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error: </strong>
+            <?=$_SESSION['registroerror']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('registroerror'); ?>
+
+<div class="col-12 p-5 m-1 row">
+    <div class="col-7 me-4">
+        <h2 class="text-center">Actualiza los datos</h2>
+        <br>
+        <br>
+        <form action="<?=init?><?=product?><?=registerProduct?>" method="post">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" name="name" class="form-control" value="<?=$product['NAME']?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="price">Precio</label>
+                <input type="number" name="price" class="form-control" value="<?=$product['PRICE']?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="unity">Unidades</label>
+                <input type="number" name="unity" class="form-control" value="<?=$product['UNITS']?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="content">Contenido</label>
+                <input type="text" name="content" class="form-control" value="<?=$product['CONTENT']?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="stock">Stock</label>
+                <input type="number" name="stock" class="form-control" value="<?=$product['STOCK']?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="description">Descripcion</label>
+                <textarea name="description" class="form-control"><?=$product['DESCRIPTION']?></textarea>
+            </div>
+            <br>
+            <div class="d-flex justify-content-center">
+                <input type="submit" class="btn btn-success" value="Actualizar">
+            </div>
+        </form>
+    </div>
+    <div class="col-3">
+        <img id="imgRegister" class="d-block" src="resources/imagesProducts/<?=$product['IMAGE']?>" alt="">
+        <br>
+        <label for="formFile" class="form-label">Subir foto de perfil</label>
+        <input class="form-control" id="formFile" type="file" name="image" accept="image/*" required>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fs-5" id="exampleModalLabel3">Eliminar Cuenta</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estas seguro que deseas eliminar tu cuenta?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    No
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteProduct">
+                    Sí, eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer id="footer" class="col-lg-12 h-25 text-white">
+    <p>Eduardo Cortes Pineda, Ingeniería De Sistemas Y Computación 2024 - 2 &copy;</p>
+</footer>
+</div>
+</div>
+<!--Cargar JS de BOOTSTRAP-->
+<script type="text/javascript" src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".carousel").carousel({
+            interval: 3500
+        })
+    })
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('confirmLogout').addEventListener('click', function () {
+            // Llama a una función para cerrar la sesión o realiza la acción deseada
+            // Redirige a la URL que ejecutará la función de logout en el servidor
+            window.location.href = "<?=init?><?=user?><?=logoutUser?>";
+        });
+    });
+</script>
+</body>
+
+</html>
