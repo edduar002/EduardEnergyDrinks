@@ -79,8 +79,6 @@
 
         /*Funcion para eliminar*/
         public function delete(){
-            var_dump(6);
-            die();
             /*Comprobar si llega el id enviado por get*/  
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/

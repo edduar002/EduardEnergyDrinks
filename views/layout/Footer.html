@@ -35,44 +35,36 @@
     })
 
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('confirmLogout').addEventListener('click', function () {
-            // Llama a una función para cerrar la sesión o realiza la acción deseada
-            // Redirige a la URL que ejecutará la función de logout en el servidor
-            window.location.href = "<?=init?><?=user?><?=logoutUser?>";
+        // Asigna el evento al botón dentro del modal para cerrar sesión
+        const confirmLogoutButton = document.getElementById('confirmLogout');
+        if (confirmLogoutButton) {
+            confirmLogoutButton.addEventListener('click', function () {
+                const url = "<?=init?><?=user?><?=logoutUser?>";
+                // Redirige al usuario a la URL de logout
+                window.location.href = url;  
+            });
+        }
+        // Asigna el evento
+        const confirmDeleteDirectionButton = document.getElementById('confirmDeleteDirection');
+        let directionId;  // Variable para almacenar el ID de la dirección
+
+        // Escuchar el evento de apertura del modal
+        const exampleModal5 = document.getElementById('exampleModal5');
+        exampleModal5.addEventListener('show.bs.modal', function (event) {
+            // El botón que activó el modal
+            const button = event.relatedTarget;
+            // Extrae el ID de la dirección del atributo data-id
+            directionId = button.getAttribute('data-id');
         });
+        // Asigna el evento al botón dentro del modal para confirmar la eliminación
+        if (confirmDeleteDirectionButton) {
+            confirmDeleteDirectionButton.addEventListener('click', function () {
+                const url = `<?=init?><?=direction?><?=deleteDirection?>&id=${directionId}`;
+                window.location.href = url;  // Redirige al usuario a la URL de eliminación
+            });
+        }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('confirmDeleteProduct').addEventListener('click', function () {
-            // Llama a una función para cerrar la sesión o realiza la acción deseada
-            // Redirige a la URL que ejecutará la función de logout en el servidor
-            window.location.href = "<?=init?><?=product?><?=deleteProduct?>&id=<?=$list['ID']?>";
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('confirmDeleteDirection').addEventListener('click', function () {
-            // Llama a una función para cerrar la sesión o realiza la acción deseada
-            // Redirige a la URL que ejecutará la función de logout en el servidor
-            window.location.href = "<?=init?><?=direction?><?=deleteDirection?>&id=<?=$list['ID']?>";
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('confirmDeletePay').addEventListener('click', function () {
-            // Llama a una función para cerrar la sesión o realiza la acción deseada
-            // Redirige a la URL que ejecutará la función de logout en el servidor
-            window.location.href = "<?=init?><?=pay?><?=deletePay?>&id=<?=$list['ID']?>";
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('confirmDeleteUser').addEventListener('click', function () {
-            // Llama a una función para cerrar la sesión o realiza la acción deseada
-            // Redirige a la URL que ejecutará la función de logout en el servidor
-            window.location.href = "---";
-        });
-    });
 </script>
 </body>
 
