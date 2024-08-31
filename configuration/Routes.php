@@ -23,6 +23,7 @@
     define("managementProducts", "&action=managementProducts");
     define("managementDirections", "&action=managementDirections");
     define("managementPays", "&action=managementPays");
+    define("deleteUser", "&action=delete");
 
     /*Ruta para producto*/
 

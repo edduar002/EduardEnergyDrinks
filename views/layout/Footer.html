@@ -13,7 +13,7 @@
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     No
                 </button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteProduct">
+                <button type="button" class="btn btn-danger" id="confirmDeleteUser">
                     Sí, eliminar
                 </button>
             </div>
@@ -39,6 +39,38 @@
             // Llama a una función para cerrar la sesión o realiza la acción deseada
             // Redirige a la URL que ejecutará la función de logout en el servidor
             window.location.href = "<?=init?><?=user?><?=logoutUser?>";
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('confirmDeleteProduct').addEventListener('click', function () {
+            // Llama a una función para cerrar la sesión o realiza la acción deseada
+            // Redirige a la URL que ejecutará la función de logout en el servidor
+            window.location.href = "<?=init?><?=product?><?=deleteProduct?>&id=<?=$list['ID']?>";
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('confirmDeleteDirection').addEventListener('click', function () {
+            // Llama a una función para cerrar la sesión o realiza la acción deseada
+            // Redirige a la URL que ejecutará la función de logout en el servidor
+            window.location.href = "<?=init?><?=direction?><?=deleteDirection?>&id=<?=$list['ID']?>";
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('confirmDeletePay').addEventListener('click', function () {
+            // Llama a una función para cerrar la sesión o realiza la acción deseada
+            // Redirige a la URL que ejecutará la función de logout en el servidor
+            window.location.href = "<?=init?><?=pay?><?=deletePay?>&id=<?=$list['ID']?>";
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('confirmDeleteUser').addEventListener('click', function () {
+            // Llama a una función para cerrar la sesión o realiza la acción deseada
+            // Redirige a la URL que ejecutará la función de logout en el servidor
+            window.location.href = "---";
         });
     });
 </script>

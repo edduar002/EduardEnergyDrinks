@@ -79,16 +79,18 @@
 
         /*Funcion para eliminar*/
         public function delete(){
+            var_dump(6);
+            die();
             /*Comprobar si llega el id enviado por get*/  
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
-                $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $direction_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Si el dato existe*/
-                if($pay_id){
+                if($direction_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina la direccion*/  
-                    $resultado = $model->deletePay($pay_id);
+                    $resultado = $model->deleteDirection($direction_id);
                     /*Comprobar si la direccion ha sido eliminada con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
