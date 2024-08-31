@@ -190,8 +190,10 @@
 
         /*Funcion para eliminar*/
         public function delete(){
+            /*Obtener usuario logueado*/
+            $user = $_SESSION['loginsucces'];
             /*Comprobar si el dato existe*/
-            $user_id = isset($_SESSION['loginsucces']) ? $_SESSION['loginsucces'] : false;
+            $user_id = isset($user['ID']) ? $user['ID'] : false;
             /*Si el dato existe*/
             if($user_id){
                 /*Instanciar modelo*/      
@@ -213,7 +215,34 @@
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
             }
-            
+        }
+
+        /*Funcion para actualizar*/
+        public function update(){
+            /*Obtener usuario logueado*/
+            $user = $_SESSION['loginsucces'];
+            /*Comprobar si el dato existe*/
+            $user_id = isset($user['ID']) ? $user['ID'] : false;
+            /*Si el dato existe*/
+            if($user_id){
+                /*Instanciar modelo*/      
+                $model = new Model();
+                /*Llamar la funcion del modelo que actualiza el usuario*/  
+                $resultado = $model -> updateUser($user_id);
+                /*Comprobar si el estado ha sido editado*/
+                if($resultado){
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del usuario se ha realizado con exito", "?controller=userController&action=myProfile");
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");
+            }
         }
 
     }

@@ -167,6 +167,52 @@
             }
         }
 
+        /*Funcion para actualizar*/
+        public function update(){
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET)){
+                /*Comprobar si el dato existe*/
+                $product_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Establecer archivo de foto*/
+                $file = $_FILES['image'];
+                /*Establecer nombre del archivo de la foto*/
+                $image = $file['name'];
+                /*Si el dato existe*/
+                if($product_id){
+                    /*Comprobar si la foto es valida*/
+                    $fotoGuardada = Helps::saveImage($file, "imagesProducts");
+                    /*Comprobar si la foto ha sido guardada*/
+                    if ($fotoGuardada) {
+                        /*Instanciar modelo*/      
+                        $model = new Model();
+                        /*Llamar la funcion del modelo que actualiza el usuario*/  
+                        $resultado = $model -> updateProduct($product_id);
+                        /*Comprobar si el estado ha sido editado*/
+                        if($resultado){
+                            /*Crear la sesion y redirigir a la ruta pertinente*/
+                            Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del producto se ha realizado con exito", "?controller=userController&action=managementProducts");
+                        /*De lo contrario*/    
+                        }else{
+                            /*Crear la sesion y redirigir a la ruta pertinente*/
+                            Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del producto", "?controller=productController&action=windowUpdate&id=$product_id");
+                        }
+                    /*De lo contrario*/    
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowUpdate&id=$product_id");
+                    }
+                /*De lo contrario*/     
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=productController&action=windowUpdate&id=$product_id");
+                } 
+            /*De lo contrario*/        
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=managementProducts");
+            }
+        }
+
     }
 
 ?>

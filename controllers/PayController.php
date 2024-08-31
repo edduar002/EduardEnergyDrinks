@@ -108,6 +108,39 @@
             }
         }
 
+        /*Funcion para actualizar*/
+        public function update(){
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET)){
+                /*Comprobar si el dato existe*/
+                $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($pay_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que actualiza el pago*/  
+                    $resultado = $model -> updatePay($pay_id);
+                    /*Comprobar si el estado ha sido editado*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del pago se ha realizado con exito", "?controller=userController&action=managementPays");
+                    /*De lo contrario*/    
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del pago", "?controller=payController&action=managementPays&id=$pay_id");
+                    }
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=payController&action=windowUpdate&id=$pay_id");
+                }
+            /*De lo contrario*/        
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=payController&action=managementPays");
+            }
+        }
+
     }
 
 ?>

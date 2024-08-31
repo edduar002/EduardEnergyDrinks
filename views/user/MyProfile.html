@@ -10,6 +10,30 @@
 <?php endif; ?>
 <?php helps::deleteSession('registroerror'); ?>
 
+<?php if(isset($_SESSION['actualizarerror'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error: </strong> <?=$_SESSION['actualizarerror']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('actualizarerror'); ?>
+
+<?php if(isset($_SESSION['actualizarsuccess'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error: </strong> <?=$_SESSION['actualizarsuccess']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('actualizarsuccess'); ?>
+
 <div class="col-12 p-5 m-1 row">
     <div class="col-7 me-4">
         <h2 class="text-center">Mi Perfil</h2>

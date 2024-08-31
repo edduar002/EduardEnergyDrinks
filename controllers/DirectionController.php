@@ -110,6 +110,39 @@
             }
         }
 
+        /*Funcion para actualizar*/
+        public function update(){
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET)){
+                /*Comprobar si el dato existe*/
+                $direction_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($direction_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que actualiza la direccion*/  
+                    $resultado = $model -> updateDirection($direction_id);
+                    /*Comprobar si el estado ha sido editado*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion de la direccion se ha realizado con exito", "?controller=userController&action=managementDirections");
+                    /*De lo contrario*/    
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion de la direccion", "?controller=directionController&action=managementDirections&id=$direction_id");
+                    }
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowUpdate&id=$direction_id");
+                }
+            /*De lo contrario*/        
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=directionController&action=managementDirections");
+            }
+        }
+
     }
 
 ?>
