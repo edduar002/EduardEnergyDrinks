@@ -90,7 +90,7 @@
                     /*Comprobar si el pago ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=controller=userController&action=managementPays');
+                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=userController&action=managementPays');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/

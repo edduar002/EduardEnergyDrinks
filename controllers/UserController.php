@@ -197,11 +197,12 @@
                 /*Instanciar modelo*/      
                 $model = new Model();
                 /*Llamar la funcion del modelo que elimina el usuario*/  
-                $resultado = $model->deleteUser($user_id);
+                $resultado = $model->deleteUser($user_id['ID']);
                 /*Comprobar si el usuario ha sido eliminado con exito*/
                 if($resultado){
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=productController&action=windowProducts');
+                    Helps::deleteSession('loginsucces');
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/

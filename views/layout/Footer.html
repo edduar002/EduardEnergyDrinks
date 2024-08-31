@@ -35,32 +35,67 @@
     })
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Asigna el evento al botón dentro del modal para cerrar sesión
         const confirmLogoutButton = document.getElementById('confirmLogout');
         if (confirmLogoutButton) {
             confirmLogoutButton.addEventListener('click', function () {
                 const url = "<?=init?><?=user?><?=logoutUser?>";
-                // Redirige al usuario a la URL de logout
-                window.location.href = url;  
+                window.location.href = url;
             });
         }
-        // Asigna el evento
-        const confirmDeleteDirectionButton = document.getElementById('confirmDeleteDirection');
-        let directionId;  // Variable para almacenar el ID de la dirección
 
-        // Escuchar el evento de apertura del modal
+        const confirmDeleteDirectionButton = document.getElementById('confirmDeleteDirection');
         const exampleModal5 = document.getElementById('exampleModal5');
-        exampleModal5.addEventListener('show.bs.modal', function (event) {
-            // El botón que activó el modal
-            const button = event.relatedTarget;
-            // Extrae el ID de la dirección del atributo data-id
-            directionId = button.getAttribute('data-id');
-        });
-        // Asigna el evento al botón dentro del modal para confirmar la eliminación
+        let directionId;
+        if (exampleModal5) {
+            exampleModal5.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                directionId = button.getAttribute('data-id');
+            });
+        }
         if (confirmDeleteDirectionButton) {
             confirmDeleteDirectionButton.addEventListener('click', function () {
                 const url = `<?=init?><?=direction?><?=deleteDirection?>&id=${directionId}`;
-                window.location.href = url;  // Redirige al usuario a la URL de eliminación
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeletePayButton = document.getElementById('confirmDeletePay');
+        const exampleModal4 = document.getElementById('exampleModal4');
+        let payId;
+        if (exampleModal4) {
+            exampleModal4.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                payId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeletePayButton) {
+            confirmDeletePayButton.addEventListener('click', function () {
+                const url = `<?=init?><?=pay?><?=deletePay?>&id=${payId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteProductButton = document.getElementById('confirmDeleteProduct');
+        const exampleModal2 = document.getElementById('exampleModal2');
+        let productId;
+        if (exampleModal2) {
+            exampleModal2.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                productId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteProductButton) {
+            confirmDeleteProductButton.addEventListener('click', function () {
+                const url = `<?=init?><?=pay?><?=deleteProduct?>&id=${productId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteUserButton = document.getElementById('confirmDeleteUser');
+        if (confirmDeleteUserButton) {
+            confirmDeleteUserButton.addEventListener('click', function () {
+                const url = "<?=init?><?=user?><?=deleteUser?>";
+                window.location.href = url;
             });
         }
     });

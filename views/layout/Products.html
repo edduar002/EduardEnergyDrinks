@@ -29,6 +29,19 @@
 <?php endif; ?>
 <?php helps::deleteSession('loginsuccesm'); ?>
 
+<?php if(isset($_SESSION['eliminarsucces'])) : ?>
+<div id="alerta" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Error: </strong>
+            <?=$_SESSION['eliminarsucces']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('eliminarsucces'); ?>
+
 <!--PRODUCTOS-->
 <section id="content" class="row col-12 ms-5 mb-5">
     <?php if(sizeof($listProducts) == 0) : ?>

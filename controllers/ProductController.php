@@ -149,7 +149,7 @@
                     /*Comprobar si el producto ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el producto", '?controller=controller=userController&action=managementProducts');
+                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el producto", '?controller=userController&action=managementProducts');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
