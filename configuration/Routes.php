@@ -32,6 +32,7 @@
     define("registerProduct", "&action=register");
     define("windowUpdateProduct", "&action=windowUpdate");
     define("detailProduct", "&action=detail");
+    define("deleteProduct", "&action=delete");
 
     /*Rutas para pago*/
 
@@ -39,6 +40,7 @@
     define("windowRegisterPay", "&action=windowRegister");
     define("registerPay", "&action=register");
     define("windowUpdatePay", "&action=windowUpdate");
+    define("deletePay", "&action=delete");
 
     /*Rutas para envio*/
 
@@ -46,5 +48,6 @@
     define("windowRegisterDirection", "&action=windowRegister");
     define("registerDirection", "&action=register");
     define("windowUpdateDirection", "&action=windowUpdate");
+    define("deleteDirection", "&action=delete");
 
 ?>

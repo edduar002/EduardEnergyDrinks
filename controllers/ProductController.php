@@ -134,6 +134,39 @@
             }
         }
 
+        /*Funcion para eliminar*/
+        public function delete(){
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET)){
+                /*Comprobar si el dato existe*/
+                $product_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($product_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que elimina el producto*/  
+                    $resultado = $model->deleteProduct($product_id);
+                    /*Comprobar si el producto ha sido eliminado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el producto", '?controller=controller=userController&action=managementProducts');
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del producto", '?controller=controller=userController&action=managementProducts');
+                    }
+                /*De lo contrario*/ 
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del producto", '?controller=controller=userController&action=managementProducts');
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=controller=userController&action=managementProducts");
+            }
+        }
+
     }
 
 ?>
