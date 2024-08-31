@@ -401,7 +401,7 @@
         }
 
         /*Funcion para eliminar un producto*/
-        function deleteProduct($product_id) {
+        public function deleteProduct($product_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_PRODUCT(:product_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
@@ -428,7 +428,7 @@
         }
 
         /*Funcion para eliminar un pago*/
-        function deletePay($pay_id) {
+        public function deletePay($pay_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_PAY(:pay_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
@@ -455,7 +455,7 @@
         }
 
         /*Funcion para eliminar una direccion*/
-        function deleteDirection($direction_id) {
+        public function deleteDirection($direction_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_DIRECTION(:direction_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
@@ -482,7 +482,7 @@
         }
 
         /*Funcion para eliminar un usuario*/
-        function deleteUser($user_id) {
+        public function deleteUser($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_USER(:user_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
