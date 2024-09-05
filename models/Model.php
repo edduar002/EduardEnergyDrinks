@@ -530,6 +530,156 @@
             // Retornar el resultado (1 o 0)
             return $resultado;
         }
+
+        function updateUser($id, $name, $surname, $phone, $email, $image) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_USER(:id, :name, :surname, :phone, :email, :image); END;';
+            
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':name', $name);
+            oci_bind_by_name($stmt, ':surname', $surname);
+            oci_bind_by_name($stmt, ':phone', $phone);
+            oci_bind_by_name($stmt, ':email', $email);
+            oci_bind_by_name($stmt, ':image', $image);
+            
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            
+            // Retornar el resultado
+            return $resultado;
+        }
+        
+        function updatePay($id, $election, $number_election) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_PAY(:id, :election, :number_election); END;';
+            
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':election', $election);
+            oci_bind_by_name($stmt, ':number_election', $number_election);
+            
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            
+            // Retornar el resultado
+            return $resultado;
+        }
+
+        function updateDirection($id, $carrer, $street, $postal_code, $direction) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_DIRECTION(:id, :carrer, :street, :postal_code, :direction); END;';
+            
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':carrer', $carrer);
+            oci_bind_by_name($stmt, ':street', $street);
+            oci_bind_by_name($stmt, ':postal_code', $postal_code);
+            oci_bind_by_name($stmt, ':direction', $direction);
+            
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            
+            // Retornar el resultado
+            return $resultado;
+        }
+
+        function updateProduct($id, $name, $price, $units, $content, $stock, $description, $image) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_PRODUCT(:id, :name, :price, :units, :content, :stock, :descriptcion, :image); END;';
+            
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':name', $name);
+            oci_bind_by_name($stmt, ':price', $price);
+            oci_bind_by_name($stmt, ':units', $units);
+            oci_bind_by_name($stmt, ':content', $content);
+            oci_bind_by_name($stmt, ':stock', $stock);
+            oci_bind_by_name($stmt, ':description', $description);
+            oci_bind_by_name($stmt, ':image', $image);
+
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            
+            // Retornar el resultado
+            return $resultado;
+        }
         
     }
 

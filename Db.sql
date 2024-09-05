@@ -665,3 +665,20 @@ EXCEPTION
         -- En caso de error, devolver un mensaje
         RETURN 'Error al actualizar el producto';
 END;
+
+create or replace FUNCTION VALIDATE_UNIQUE_EMAIL(u_email VARCHAR2)
+RETURN NUMBER
+IS
+    email_existe NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO email_existe
+    FROM users
+    WHERE email = u_email;
+
+    IF email_existe > 0 THEN
+        RETURN 1;
+    ELSE
+        RETURN 0;
+    END IF;
+END VALIDATE_UNIQUE_EMAIL;
