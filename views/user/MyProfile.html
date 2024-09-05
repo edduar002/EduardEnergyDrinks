@@ -41,15 +41,22 @@
         <br>
         <form action="<?=init?><?=user?><?=registerUser?>" method="post">
             <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text rounded-0">
-                            Código
-                        </span>
+                <div class="row">
+                    <div class="col-10">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text rounded-0">Código</span>
+                            </div>
+                            <input type="text" name="name" value="<?=$_SESSION['loginsucces']['CODE']?>" class="form-control" disabled>
+                        </div>
                     </div>
-                    <input type="text" name="name" value="<?=$_SESSION['loginsucces']['CODE']?>" class="form-control" disabled>
+                    <div class="col-2 d-flex align-items-center justify-content-center">
+                        <button type="button" class="btn btn-tool" data-bs-toggle="tooltip" data-placement="left" title="Este es el codigo con el cual podras formar parte del negocio">
+                            &#8505;
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </div>                      
             <br>
             <br>
             <div class="form-group">

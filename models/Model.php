@@ -507,6 +507,29 @@
             /*Retornar el resultado si es una función*/ 
             return $resultado;
         }
+
+        /*Función para comprobar si el email ya existe*/
+        function validateUniqueEmail($email) {
+            // Preparar la consulta que llama a la función de Oracle
+            $query = 'BEGIN :resultado := VALIDATE_UNIQUE_EMAIL(:email); END;';
+            $stid = oci_parse($this->conn, $query);
+
+            // Crear una variable para almacenar el resultado
+            $resultado = 0;
+
+            // Asignar el valor de entrada y salida
+            oci_bind_by_name($stid, ':email', $email);
+            oci_bind_by_name($stid, ':resultado', $resultado);
+
+            // Ejecutar la consulta
+            oci_execute($stid);
+
+            // Liberar recursos
+            oci_free_statement($stid);
+
+            // Retornar el resultado (1 o 0)
+            return $resultado;
+        }
         
     }
 

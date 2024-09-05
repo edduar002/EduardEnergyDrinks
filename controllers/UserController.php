@@ -144,32 +144,38 @@
                 $image = $file['name'];
                 /*Comprobar si los datos llegan*/
                 if ($code && $name && $surname && $birthdate && $genre && $email && $password && $file) {
+                    /*Instanciar modelo*/
+                    $model = new Model();
                     /*Validar si la clave cumple con la seguridad necesaria*/
                     if(helps::validatePassword($password)){
-                        /*Comprobar si la foto es valida*/
-                        $fotoGuardada = Helps::saveImage($file, "imagesUsers");
-                        /*Comprobar si la foto ha sido guardada*/
-                        if ($fotoGuardada) {
-                            /*Instanciar modelo*/
-                            $model = new Model();
-                            /*Llamar la funcion del modelo que registra el usuario*/  
-                            $resultado = $model->registerUser(1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $created_at2);
-                            /*Comprobar si el registro se ha hecho de manera exitosa*/
-                            if ($resultado != false) {
-                                /*Crear sesion de inicio de sesion exitoso*/
-                                $_SESSION['loginsucces'] = $resultado;
-                                $_SESSION['loginsuccesm'] = "Bienvenido a EDUARD ENERGY DRINKS";
-                                /*Redirigir al lugar requerido*/
-                                header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
-                            /*De lo contrario*/
+                        if($model -> validateUniqueEmail($email) != 1){
+                            /*Comprobar si la foto es valida*/
+                            $fotoGuardada = Helps::saveImage($file, "imagesUsers");
+                            /*Comprobar si la foto ha sido guardada*/
+                            if ($fotoGuardada) {
+                                /*Llamar la funcion del modelo que registra el usuario*/  
+                                $resultado = $model->registerUser(1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $created_at2);
+                                /*Comprobar si el registro se ha hecho de manera exitosa*/
+                                if ($resultado != false) {
+                                    /*Crear sesion de inicio de sesion exitoso*/
+                                    $_SESSION['loginsucces'] = $resultado;
+                                    $_SESSION['loginsuccesm'] = "Bienvenido a EDUARD ENERGY DRINKS";
+                                    /*Redirigir al lugar requerido*/
+                                    header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
+                                /*De lo contrario*/
+                                } else {
+                                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro", "?controller=userController&action=windowRegister");
+                                }
+                            /*De lo contrario*/    
                             } else {
                                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro", "?controller=userController&action=windowRegister");
+                                Helps::createSessionAndRedirect("registroerror", "El archivo no corresponde a una imagen", "?controller=userController&action=windowRegister");
                             }
                         /*De lo contrario*/    
                         } else {
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("registroerror", "El archivo no corresponde a una imagen", "?controller=userController&action=windowRegister");
+                            Helps::createSessionAndRedirect("registroerror", "Esta direccion de correo ya se encuentra asociada a un usuario", "?controller=userController&action=windowRegister");
                         }
                     /*De lo contrario*/    
                     }else {
