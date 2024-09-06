@@ -24,7 +24,7 @@
     define("managementDirections", "&action=managementDirections");
     define("managementPays", "&action=managementPays");
     define("deleteUser", "&action=delete");
-    define("update", "&action=update");
+    define("updateUser", "&action=update");
 
     /*Ruta para producto*/
 
@@ -35,6 +35,7 @@
     define("windowUpdateProduct", "&action=windowUpdate");
     define("detailProduct", "&action=detail");
     define("deleteProduct", "&action=delete");
+    define("updateProduct", "&action=update");
 
     /*Rutas para pago*/
 

@@ -640,9 +640,9 @@
             return $resultado;
         }
 
-        function updateProduct($id, $name, $price, $units, $content, $stock, $description, $image) {
+        function updateProduct($id, $name, $price, $units, $content, $stock, $description, $image = null) {
             // Preparar la consulta que llama a la función de Oracle
-            $sql = 'BEGIN :resultado := UPDATE_PRODUCT(:id, :name, :price, :units, :content, :stock, :descriptcion, :image); END;';
+            $sql = 'BEGIN :resultado := UPDATE_PRODUCT(:id, :name, :price, :units, :content, :stock, :description, :image); END;';
             
             // Parsear la consulta
             $stmt = oci_parse($this->conn, $sql);

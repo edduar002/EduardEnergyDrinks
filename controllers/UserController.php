@@ -239,10 +239,13 @@
             $image = $file['name'];
             /*Si el dato existe*/
             if($user_id){
-                /*Comprobar si la foto es valida*/
-                $fotoGuardada = Helps::saveImage($file, "imagesUsers");
-                /*Comprobar si la foto ha sido guardada*/
-                if ($fotoGuardada) {
+                /*Comprobar si la foto no tiene formato de imagen o no ha llegado*/
+                if(Helps::comprobeImage($file['type']) != 3){
+                    /*Comprobar si la foto tiene formato de imagen*/
+                    if(Helps::comprobeImage($file['type']) == 1){
+                        /*Comprobar si la foto ha sido validada y guardada*/
+                        Helps::saveImage($file, "imagesUsers");
+                    }
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza el usuario*/  
@@ -256,12 +259,11 @@
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
                     }
-                /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=userController&action=myProfile");
-                }
-            /*De lo contrario*/   
+                } 
+            /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");

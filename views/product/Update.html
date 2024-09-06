@@ -1,61 +1,133 @@
-<?php if(isset($_SESSION['registroerror'])) : ?>
+<?php if(isset($_SESSION['actualizarerror'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Error: </strong>
-            <?=$_SESSION['registroerror']?>
+            <?=$_SESSION['actualizarerror']?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
 </div>
 <?php endif; ?>
-<?php helps::deleteSession('registroerror'); ?>
+<?php helps::deleteSession('actualizarerror'); ?>
+
+<?php if(isset($_SESSION['actualizarsuccess'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error: </strong>
+            <?=$_SESSION['actualizarsuccess']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('actualizarsuccess'); ?>
 
 <div class="col-12 p-5 m-1 row">
-    <div class="col-7 me-4">
-        <h2 class="text-center">Actualiza los datos</h2>
-        <br>
-        <br>
-        <form action="<?=init?><?=product?><?=registerProduct?>" method="post">
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" name="name" class="form-control" value="<?=$product['NAME']?>">
+    <h2 class="text-center">Actualizar</h2>
+    <br>
+    <br>
+    <br>
+    <form action="<?=init?><?=product?><?=updateProduct?>&id=<?=$product['ID']?>" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-7">
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Nombre
+                            </span>
+                        </div>
+                        <input type="text" name="name" value="<?=$product['NAME']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Precio
+                            </span>
+                        </div>
+                        <input type="number" name="price" value="<?=$product['PRICE']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Unidades
+                            </span>
+                        </div>
+                        <input type="number" name="units" value="<?=$product['UNITS']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Contenido
+                            </span>
+                        </div>
+                        <input type="text" name="content" value="<?=$product['CONTENT']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Stock
+                            </span>
+                        </div>
+                        <input type="number" name="stock" value="<?=$product['STOCK']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Descripcion
+                            </span>
+                        </div>
+                        <input type="text" name="description" value="<?=$product['DESCRIPTION']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="col-12 row">
+                    <div class="col-6">
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" class="btn btn-success" value="Actualizar Datos">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex justify-content-center">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3" type="submit"
+                                class="btn btn-danger">Eliminar Cuenta</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-                <label for="price">Precio</label>
-                <input type="number" name="price" class="form-control" value="<?=$product['PRICE']?>">
+            <div class="col-3">
+                <div class="col-3"></div>
+                <img id="imgRegister" class="img-fluid rounded-circle"
+                    src="resources/imagesProducts/<?=$product['IMAGE']?>" alt="">
+                <br>
+                <label for="formFile" class="form-label">Actualizar foto de perfil</label>
+                <input class="form-control" id="formFile" type="file" name="image" accept="image/*">
             </div>
-            <br>
-            <div class="form-group">
-                <label for="unity">Unidades</label>
-                <input type="number" name="unity" class="form-control" value="<?=$product['UNITS']?>">
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="content">Contenido</label>
-                <input type="text" name="content" class="form-control" value="<?=$product['CONTENT']?>">
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="stock">Stock</label>
-                <input type="number" name="stock" class="form-control" value="<?=$product['STOCK']?>">
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="description">Descripcion</label>
-                <textarea name="description" class="form-control"><?=$product['DESCRIPTION']?></textarea>
-            </div>
-            <br>
-            <div class="d-flex justify-content-center">
-                <input type="submit" class="btn btn-success" value="Actualizar">
-            </div>
-        </form>
-    </div>
-    <div class="col-3">
-        <img id="imgRegister" class="d-block" src="resources/imagesProducts/<?=$product['IMAGE']?>" alt="">
-        <br>
-        <label for="formFile" class="form-label">Subir foto de perfil</label>
-        <input class="form-control" id="formFile" type="file" name="image" accept="image/*" required>
-    </div>
+        </div>
+    </form>
 </div>

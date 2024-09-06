@@ -43,7 +43,9 @@
     <h2 class="text-center">Mi Perfil</h2>
     <br>
     <br>
-    <form action="<?=init?><?=user?><?=update?>" method="post" enctype="multipart/form-data">
+    <br>
+    <br>
+    <form action="<?=init?><?=user?><?=updateUser?>" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-7">
                 <div class="form-group">
@@ -141,9 +143,8 @@
                     src="resources/imagesUsers/<?=$information['IMAGE']?>" alt="">
                 <br>
                 <label for="formFile" class="form-label">Actualizar foto de perfil</label>
-                <input class="form-control" id="formFile" type="file" name="image" accept="image/*" required>
+                <input class="form-control" id="formFile" type="file" name="image" accept="image/*">
             </div>
         </div>
     </form>
-</div>
 </div>
