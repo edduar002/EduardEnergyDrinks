@@ -86,6 +86,24 @@
             return $codigo;
         }
 
+        /*
+        Funcion para listar los datos del usuario
+        */
+
+        public static function showUserInformation(){
+            /*Comprobar si hay un inicio de sesion de usuario*/
+            if(isset($_SESSION['loginsucces'])){
+                /*Incluir el modelo*/
+                require_once 'models/Model.php';
+                /*Instanciar el objeto*/
+                $model = new Model();
+                /*Listar todos los usuarios desde la base de datos*/
+                $datos = $model -> getUser($_SESSION['loginsucces']['ID']);
+                /*Retornar el resultado*/
+                return $datos;
+            }
+        }
+
     }
 
 ?>    

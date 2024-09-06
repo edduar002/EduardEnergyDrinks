@@ -205,7 +205,7 @@
                 /*Instanciar modelo*/      
                 $model = new Model();
                 /*Llamar la funcion del modelo que elimina el usuario*/  
-                $resultado = $model->deleteUser($user_id['ID']);
+                $resultado = $model->deleteUser($user_id);
                 /*Comprobar si el usuario ha sido eliminado con exito*/
                 if($resultado){
                     /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -229,22 +229,39 @@
             $user = $_SESSION['loginsucces'];
             /*Comprobar si el dato existe*/
             $user_id = isset($user['ID']) ? $user['ID'] : false;
+            $name = isset($_POST['name']) ? $_POST['name'] : false;
+            $surname = isset($_POST['surname']) ? $_POST['surname'] : false;
+            $phone = isset($_POST['phone']) ? $_POST['phone'] : false;
+            $email = isset($_POST['email']) ? $_POST['email'] : false;
+            /*Establecer archivo de foto*/
+            $file = $_FILES['image'];
+            /*Establecer nombre del archivo de la foto*/
+            $image = $file['name'];
             /*Si el dato existe*/
             if($user_id){
-                /*Instanciar modelo*/      
-                $model = new Model();
-                /*Llamar la funcion del modelo que actualiza el usuario*/  
-                $resultado = $model -> updateUser($user_id);
-                /*Comprobar si el estado ha sido editado*/
-                if($resultado){
-                    /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del usuario se ha realizado con exito", "?controller=userController&action=myProfile");
+                /*Comprobar si la foto es valida*/
+                $fotoGuardada = Helps::saveImage($file, "imagesUsers");
+                /*Comprobar si la foto ha sido guardada*/
+                if ($fotoGuardada) {
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que actualiza el usuario*/  
+                    $resultado = $model -> updateUser($user_id, $name, $surname, $phone, $email, $image);
+                    /*Comprobar si el estado ha sido editado*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del usuario se ha realizado con exito", "?controller=userController&action=myProfile");
+                    /*De lo contrario*/    
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
+                    }
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
+                    Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=userController&action=myProfile");
                 }
-            /*De lo contrario*/    
+            /*De lo contrario*/   
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");

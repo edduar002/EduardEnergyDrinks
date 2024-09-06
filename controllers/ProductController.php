@@ -173,6 +173,12 @@
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
                 $product_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $name = isset($_POST['name']) ? $_POST['name'] : false;
+                $price = isset($_POST['price']) ? $_POST['price'] : false;
+                $units = isset($_POST['units']) ? $_POST['units'] : false;
+                $content = isset($_POST['content']) ? $_POST['content'] : false;
+                $stock = isset($_POST['stock']) ? $_POST['stock'] : false;
+                $description = isset($_POST['description']) ? $_POST['description'] : false;
                 /*Establecer archivo de foto*/
                 $file = $_FILES['image'];
                 /*Establecer nombre del archivo de la foto*/
