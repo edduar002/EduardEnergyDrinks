@@ -598,7 +598,6 @@
             // Liberar recursos
             oci_free_statement($stmt);
             oci_close($this->conn);
-            
             // Retornar el resultado
             return $resultado;
         }
@@ -675,11 +674,12 @@
             // Liberar recursos
             oci_free_statement($stmt);
             oci_close($this->conn);
-            
+
             // Retornar el resultado
             return $resultado;
         }
 
+        
         function getUser($id){
             /* Preparar la consulta que llama a la función de Oracle */
             $query = 'BEGIN :resultado := GET_USER(:id); END;';

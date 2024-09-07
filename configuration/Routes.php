@@ -44,6 +44,7 @@
     define("registerPay", "&action=register");
     define("windowUpdatePay", "&action=windowUpdate");
     define("deletePay", "&action=delete");
+    define("updatePay", "&action=update");
 
     /*Rutas para envio*/
 
@@ -52,5 +53,6 @@
     define("registerDirection", "&action=register");
     define("windowUpdateDirection", "&action=windowUpdate");
     define("deleteDirection", "&action=delete");
+    define("updateDirection", "&action=update");
 
 ?>

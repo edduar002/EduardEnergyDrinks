@@ -116,12 +116,16 @@
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
                 $direction_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $carrer = isset($_POST['carrer']) ? $_POST['carrer'] : false;
+                $street = isset($_POST['street']) ? $_POST['street'] : false;
+                $postal_code = isset($_POST['postal_code']) ? $_POST['postal_code'] : false;
+                $direction = isset($_POST['direction']) ? $_POST['direction'] : false;
                 /*Si el dato existe*/
                 if($direction_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza la direccion*/  
-                    $resultado = $model -> updateDirection($direction_id);
+                    $resultado = $model -> updateDirection($direction_id, $carrer, $street, $postal_code, $direction);
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

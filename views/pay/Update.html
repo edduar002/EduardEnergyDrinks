@@ -1,38 +1,85 @@
-<?php if(isset($_SESSION['registroerror'])) : ?>
+<?php if(isset($_SESSION['actualizarerror'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Error: </strong>
-            <?=$_SESSION['registroerror']?>
+            <?=$_SESSION['actualizarerror']?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
 </div>
 <?php endif; ?>
-<?php helps::deleteSession('registroerror'); ?>
+<?php helps::deleteSession('actualizarerror'); ?>
+
+<?php if(isset($_SESSION['actualizarsuccess'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error: </strong>
+            <?=$_SESSION['actualizarsuccess']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php helps::deleteSession('actualizarsuccess'); ?>
 
 <div class="col-12 p-5 m-1 row">
-    <div class="col-7 me-4">
-        <h2 class="text-center">Formulario de registro</h2>
-        <br>
-        <br>
-        <form action="<?=init?><?=pay?><?=registerPay?>" method="post">
-            <div class="form-group">
-                <label for="election">Eleccion</label>
-                <input type="text" name="election" class="form-control" value="<?=$pay['ELECTION']?>">
+    <h2 class="text-center">Actualizar</h2>
+    <br>
+    <br>
+    <br>
+    <form action="<?=init?><?=direction?><?=updatePay?>&id=<?=$pay['ID']?>" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-7">
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Numero
+                            </span>
+                        </div>
+                        <input type="text" name="election" value="<?=$pay['ELECTION']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Eleccion Number
+                            </span>
+                        </div>
+                        <input type="number" name="number_election" value="<?=$pay['NUMBER_ELECTION']?>" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="col-12 row">
+                    <div class="col-6">
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" class="btn btn-success" value="Actualizar Datos">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex justify-content-center">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3" type="submit"
+                                class="btn btn-danger">Eliminar Cuenta</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-                <label for="electionNumber">Numero De La Eleccion</label>
-                <input type="number" name="electionNumber" class="form-control" value="<?=$pay['NUMBER_ELECTION']?>">
+            <div class="col-3">
+                <div class="col-3"></div>
+                <img id="imgRegister" class="img-fluid rounded-circle"
+                    src="assets/images/logos/pago.png" alt="">
+                <br>
+                <label for="formFile" class="form-label">Actualizar foto de perfil</label>
+                <input class="form-control" id="formFile" type="file" name="image" accept="image/*">
             </div>
-            <br>
-            <div class="d-flex justify-content-center">
-                <input type="submit" class="btn btn-success" value="Crear">
-            </div>
-        </form>
-    </div>
-    <div class="col-3">
-        <img id="imgRegister" class="d-block" src="assets/images/logos/pago.png" alt="">
-    </div>
+        </div>
+    </form>
 </div>

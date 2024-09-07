@@ -86,7 +86,7 @@
         }
         if (confirmDeleteProductButton) {
             confirmDeleteProductButton.addEventListener('click', function () {
-                const url = `<?=init?><?=pay?><?=deleteProduct?>&id=${productId}`;
+                const url = `<?=init?><?=product?><?=deleteProduct?>&id=${productId}`;
                 window.location.href = url;
             });
         }
