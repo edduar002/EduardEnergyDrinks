@@ -55,4 +55,9 @@
     define("deleteDirection", "&action=delete");
     define("updateDirection", "&action=update");
 
+    /*Rutas para transaccion*/
+
+    define("transaction", "/?controller=transactionController");
+    define("windowPurchase", "&action=windowPurchase");
+
 ?>
