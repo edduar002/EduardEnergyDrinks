@@ -32,7 +32,7 @@
             /*Instanciar el modelo*/
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los productos*/  
-            $listProducts = $model->productsListManagement();
+            $listProducts = $model->productsListManagement($_SESSION['loginsucces']['ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementProducts.html";
         }
@@ -42,7 +42,7 @@
             /*Instanciar el modelo*/
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene las direcciones*/            
-            $listDirections = $model->directionListManagement();
+            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementDirections.html";
         }
@@ -52,7 +52,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los pagos*/  
-            $listPays = $model->payListManagement();
+            $listPays = $model->payListManagement($_SESSION['loginsucces']['ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementPays.html";
         }

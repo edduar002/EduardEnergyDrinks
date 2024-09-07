@@ -19,8 +19,12 @@
         public function windowProducts(){
             /*Instanciar modelo*/
             $model = new Model();
-            /*Llamar la funcion del modelo*/         
-            $listProducts = $model->productsList();
+            /*Llamar la funcion del modelo*/ 
+            $user_id = NULL;
+            if(isset($_SESSION['loginsucces'])){
+                $user_id = $_SESSION['loginsucces']['ID'];
+            }        
+            $listProducts = $model->productsList($user_id);
             /*Incluir la vista*/
             require_once "views/layout/Products.html";
         }

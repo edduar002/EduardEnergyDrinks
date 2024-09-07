@@ -11,6 +11,10 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowPurchase(){
+            /*Instanciar modelo*/
+            $model = new Model();
+            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
+            $listPays = $model->payListManagement($_SESSION['loginsucces']['ID']);
             /*Incluir la vista*/
             require_once "views/transaction/Purchase.html";
         }

@@ -148,9 +148,9 @@
         }
         
         /*Funcion para obtener la lista de todos los productos*/
-        public function productsList() {
+        public function myProductsList($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $query = 'BEGIN :resultado := PRODUCTS_LIST(); END;';
+            $query = 'BEGIN :resultado := MY_PRODUCTS_LIST(:user_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
@@ -171,17 +171,56 @@
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
             return $products;
+        }   
+        
+        /*Funcion para obtener la lista de todos los productos*/
+        public function productsList($user_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := PRODUCTS_LIST(:user_id); END;';
+            $stid = oci_parse($this->conn, $query);
+        
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+        
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+        
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
+        
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+        
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+        
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+        
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+        
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+        
+            /*Retornar el resultado*/ 
+            return $products;
         }        
 
         /*Funcion para obtener la lista de todos los productos en el apartado de gestion*/
-        public function productsListManagement() {
+        public function productsListManagement($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := PRODUCTS_LIST_MANAGEMENT(); END;';
+            $query = 'BEGIN :resultado := PRODUCTS_LIST_MANAGEMENT(:user_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
             /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
@@ -262,14 +301,16 @@
         }   
 
         /*Funcion para obtener la lista de todos los productos en el apartado de gestion*/
-        public function directionListManagement() {
+        public function directionListManagement($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $query = 'BEGIN :resultado := DIRECTION_LIST_MANAGEMENT(); END;';
+            $query = 'BEGIN :resultado := DIRECTION_LIST_MANAGEMENT(:user_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
             /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
@@ -288,14 +329,16 @@
         }   
 
         /*Funcion para obtener la lista de todos los pagos en el apartado de gestion*/
-        public function payListManagement() {
+        public function payListManagement($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := PAY_LIST_MANAGEMENT(); END;';
+            $query = 'BEGIN :resultado := PAY_LIST_MANAGEMENT(:user_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
             /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
