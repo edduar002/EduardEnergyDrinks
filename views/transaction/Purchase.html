@@ -10,7 +10,7 @@
             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Metodo De Pago</a>
         </li>
     </ul>
-    <form action="<?=init?><?=transaction?><?=purchase?>" method="post">
+    <form action="<?=init?><?=transaction?><?=purchase?>&idProduct=<?=$idProduct?>&cantidad=<?=$cantidad?>" method="post">
         <div class="tab-content mt-3" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <img src="assets/images/logos/bag.png" alt="">
@@ -21,11 +21,11 @@
                         <br>
                     <?php foreach($listDirections as $list) : ?>
                         <div>
-                            <input type="radio" id="pay_id" name="pay_id" value="<?=$list['ID']?>" checked>
-                            <label class="d-block" for="pay_id"><?=$list['CARRER']?></label>
-                            <label class="d-block" for="pay_id"><?=$list['STREET']?></label>
-                            <label class="d-block" for="pay_id"><?=$list['POSTAL_CODE']?></label>
-                            <label class="d-block" for="pay_id"><?=$list['DIRECTION']?></label>
+                            <input type="radio" id="pay_id" name="id_direction" value="<?=$list['ID']?>" checked>
+                            <label class="d-block" for="id_direction"><?=$list['CARRER']?></label>
+                            <label class="d-block" for="id_direction"><?=$list['STREET']?></label>
+                            <label class="d-block" for="id_direction"><?=$list['POSTAL_CODE']?></label>
+                            <label class="d-block" for="id_direction"><?=$list['DIRECTION']?></label>
                         </div>
                     <?php endforeach; ?>
                 <?php else : ?>
@@ -41,9 +41,9 @@
                     <br>
                     <?php foreach($listPays as $list) : ?>
                         <div>
-                            <input type="radio" id="pay_direction" name="pay_direction" value="<?=$list['ID']?>" checked>
-                            <label class="d-block" for="pay_direction"><?=$list['ELECTION']?></label>
-                            <label class="d-block" for="pay_direction"><?=$list['NUMBER_ELECTION']?></label>
+                            <input type="radio" id="pay_direction" name="id_pay" value="<?=$list['ID']?>" checked>
+                            <label class="d-block" for="id_pay"><?=$list['ELECTION']?></label>
+                            <label class="d-block" for="id_pay"><?=$list['NUMBER_ELECTION']?></label>
                         </div>
                     <?php endforeach; ?>
                 <?php else : ?>

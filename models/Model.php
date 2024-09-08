@@ -813,6 +813,30 @@
             /*Retornar el resultado*/
             return $resultado;
         } 
+
+        public function getProductDataPu($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_DATA_PRODUCT_P(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/
+            $cursor = oci_new_cursor($this->conn);
+            /*Asignar los valores de entrada y el cursor de salida*/
+            oci_bind_by_name($stid, ':id', $id);
+            oci_bind_by_name($stid, ':resultado', $cursor, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($cursor);
+            /* Obtener el resultado como un arreglo asociativo */
+            $userData = oci_fetch_assoc($cursor);
+            
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($cursor);
+
+            /* Retornar el resultado */
+            return $userData;
+        }    
         
     }
 

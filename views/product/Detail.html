@@ -24,9 +24,15 @@
             </p>
             <br>
             <?php if(isset($_SESSION['loginsucces'])) : ?>
-                <div class="w-50">
-                    <a href="<?=init?><?=transaction?><?=windowPurchase?>" class="btn btn-success">Comprar ahora</a>
-                </div>
+                <form action="<?=init?><?=transaction?><?=windowPurchase?>&idProduct=<?=$resultado['ID']?>" method="post">
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" name="cantidad" class="form-control" placeholder="Ingresa tu email">
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" class="btn btn-primary" value="Ingresar">
+                    </div>
+                </form>
             <?php else : ?>
                 <div class="w-50">
                     <a href="<?=init?><?=user?><?=windowLogin?>" class="btn btn-success">Inicar sesion</a>

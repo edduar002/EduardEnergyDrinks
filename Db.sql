@@ -238,6 +238,10 @@ CREATE OR REPLACE VIEW PAYS_LIST_MANAGEMENT AS
 SELECT ID, ACTIVE, ELECTION, NUMBER_ELECTION
 FROM pays;
 
+CREATE OR REPLACE VIEW PRODUCT_DATA_PU AS
+SELECT ID, USER_ID, PRICE
+FROM products;
+
 /*Crear o reemplazar funciones*/
 
 create or replace FUNCTION DELETE_DIRECTION(d_direction_id IN NUMBER) 
@@ -840,3 +844,24 @@ BEGIN
 
     RETURN v_resultado;
 END;
+
+create or replace FUNCTION GET_DATA_PRODUCT_P(p_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor con el registro del usuario que coincide por email y está activo
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PRODUCT_DATA_PU
+    WHERE id = p_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Manejo de excepción si no se encuentra el usuario
+        RETURN NULL;
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_DATA_PRODUCT_P;
