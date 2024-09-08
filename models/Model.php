@@ -751,6 +751,68 @@
             /* Retornar el resultado */
             return $userData;
         }
+
+        /*Funcion para registrar el producto en la base de datos*/
+        function registerTransaction($number_bill, $id_buyer, $id_direction, $id_pay, $total, $date_time, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_TRANSACTION(:number_bill, :id_buyer, :id_direction, :id_pay, :total, TO_DATE(:date_time, \'DD/MM/YY\'), TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':number_bill', $number_bill);
+            oci_bind_by_name($stmt, ':id_buyer', $id_buyer);
+            oci_bind_by_name($stmt, ':id_direction', $id_direction);
+            oci_bind_by_name($stmt, ':id_pay', $id_pay);
+            oci_bind_by_name($stmt, ':total', $total);
+            oci_bind_by_name($stmt, ':date_time', $date_time);          
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /* Manejar errores si la ejecución falla */
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        } 
+
+        /*Funcion para registrar el producto en la base de datos*/
+        function registerTransactionProduct($id_transaction, $id_product, $id_seller, $units, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_TP(:id_transaction, :id_product, :id_seller, :units, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':id_transaction', $id_transaction);
+            oci_bind_by_name($stmt, ':id_product', $id_product);
+            oci_bind_by_name($stmt, ':id_seller', $id_seller);
+            oci_bind_by_name($stmt, ':units', $units);          
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /* Manejar errores si la ejecución falla */
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        } 
         
     }
 

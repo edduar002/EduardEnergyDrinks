@@ -788,3 +788,55 @@ BEGIN
         RETURN 0;
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
+
+create or replace FUNCTION REGISTER_TP(
+    tp_id_transaction IN NUMBER,
+    tp_id_product IN NUMBER,
+    tp_id_seller IN NUMBER,
+    tp_units IN NUMBER,
+    tp_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO TRANSACTIONPRODUCT (id_transaction, id_product, id_seller, units, created_at)
+        VALUES (tp_id_transaction, tp_id_product, tp_id_seller, tp_units, tp_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_TRANSACTION(
+    t_number_bill IN NUMBER,
+    t_id_buyer IN NUMBER,
+    t_id_direction IN NUMBER,
+    t_id_pay IN NUMBER,
+    t_total IN NUMBER,
+    t_date_time IN DATE,
+    t_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO TRANSACTIONS (number_bill, id_buyer, id_direction, id_pay, total, date_time, created_at)
+        VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, t_total, t_date_time, t_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;

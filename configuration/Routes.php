@@ -59,5 +59,6 @@
 
     define("transaction", "/?controller=transactionController");
     define("windowPurchase", "&action=windowPurchase");
+    define("purchase", "&action=purchase");
 
 ?>

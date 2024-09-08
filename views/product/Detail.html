@@ -23,8 +23,14 @@
                 <?=$resultado['DESCRIPTION']?>
             </p>
             <br>
-            <div class="w-50">
-                <a href="<?=init?><?=transaction?><?=windowPurchase?>" class="btn btn-success">Comprar ahora</a>
-            </div>
+            <?php if(isset($_SESSION['loginsucces'])) : ?>
+                <div class="w-50">
+                    <a href="<?=init?><?=transaction?><?=windowPurchase?>" class="btn btn-success">Comprar ahora</a>
+                </div>
+            <?php else : ?>
+                <div class="w-50">
+                    <a href="<?=init?><?=user?><?=windowLogin?>" class="btn btn-success">Inicar sesion</a>
+                </div>
+            <?php endif; ?>
     </div>
 </div>
