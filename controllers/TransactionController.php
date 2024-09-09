@@ -21,6 +21,22 @@
             require_once "views/transaction/Purchase.html";
         }
 
+        public function detailShop(){
+            /*Instanciar modelo*/      
+            $model = new Model();
+            $detail = $model -> detailShop($_GET['id']);
+            /*Incluir la vista*/
+            require_once "views/transaction/DetailShop.html";
+        }
+
+        public function detailSale(){
+            /*Instanciar modelo*/      
+            $model = new Model();
+            $detail = $model -> detailSale($_GET['id']);
+            /*Incluir la vista*/
+            require_once "views/transaction/DetailSale.html";
+        }
+
         /*Funcion para abrir ventana de editar*/
         public function windowConfirm(){
             /*Incluir la vista*/
@@ -39,7 +55,7 @@
                 /*Instanciar modelo*/      
                 $model = new Model();
                 /*Asignar los datos si llegan*/
-                $number_bill = 1000;
+                $number_bill = $model -> getLastTransaction() + 999;
                 $idBuyer = $_SESSION['loginsucces']['ID'];
                 $idDirection = $_POST['id_direction'];
                 $idPay = $_POST['id_pay'];
@@ -54,7 +70,7 @@
                     $resultado = $model->registerTransaction($number_bill, $idBuyer, $idDirection, $idPay, $total, $date_time2, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if ($resultado != false) {
-                        $id_transaction = 5;
+                        $id_transaction = $model -> getLastTransaction();
                         $id_product = $_GET['idProduct'];
                         $id_seller = $model -> getProductDataPu($_GET['idProduct'])['USER_ID'];
                         $units = $_GET['cantidad'];

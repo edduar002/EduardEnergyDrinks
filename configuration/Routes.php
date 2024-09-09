@@ -60,5 +60,7 @@
     define("transaction", "/?controller=transactionController");
     define("windowPurchase", "&action=windowPurchase");
     define("purchase", "&action=purchase");
+    define("detailShop", "&action=detailShop");
+    define("detailSale", "&action=detailSale");
 
 ?>

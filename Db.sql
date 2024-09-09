@@ -226,6 +226,10 @@ CREATE OR REPLACE VIEW PRODUCT_LIST AS
 SELECT ID, ACTIVE, NAME, PRICE, IMAGE
 FROM products;
 
+CREATE OR REPLACE VIEW TRANSACTIONS_LIST AS
+SELECT ID, ID_BUYER, NUMBER_BILL, DATE_TIME
+FROM transactions;
+
 CREATE OR REPLACE VIEW PRODUCT_LIST_MANAGEMENT AS
 SELECT ID, ACTIVE, NAME, PRICE, UNITS, CONTENT, STOCK
 FROM products;
@@ -865,3 +869,115 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END GET_DATA_PRODUCT_P;
+
+create or replace FUNCTION LAST_TRANSACTION
+RETURN SYS_REFCURSOR
+IS
+    cur SYS_REFCURSOR;
+BEGIN
+    OPEN cur FOR
+    SELECT ID 
+    FROM transactions
+    WHERE ROWNUM = 1
+    ORDER BY CREATED_AT DESC;
+    
+    RETURN cur;
+END;
+
+create or replace FUNCTION PAY_LIST_MANAGEMENT(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PAYS
+    WHERE ACTIVE = 1
+    AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PAY_LIST_MANAGEMENT;
+
+create or replace FUNCTION SALES_LIST(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM TRANSACTIONS_LIST tl
+    INNER JOIN TRANSACTIONPRODUCT tp ON tp.ID_TRANSACTION = tl.ID
+    WHERE tp.ID_SELLER = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END SALES_LIST;
+
+create or replace FUNCTION DETAIL_SALE(t_transaction_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT * 
+        FROM TRANSACTIONS
+        WHERE id = t_transaction_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END DETAIL_SALE;
+
+create or replace FUNCTION DETAIL_SHOP(t_transaction_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT * 
+        FROM TRANSACTIONS
+        WHERE id = t_transaction_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END DETAIL_SHOP;
+
+create or replace FUNCTION SHOPPING_LIST(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM TRANSACTIONS_LIST
+    WHERE ID_BUYER = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END SHOPPING_LIST;

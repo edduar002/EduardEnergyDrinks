@@ -19,57 +19,25 @@
                     </th>
                 </tr>
             </thead>
-            <tr>
-                <td>
-                    <div class="text-center">
-                        1000
-                    </div>
-                </td>
-                <td>
-                    <div class="text-center">
-                        13/12/2020
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-primary">Ver detalle</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="text-center">
-                        1001
-                    </div>
-                </td>
-                <td>
-                    <div class="text-center">
-                        13/12/2020
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-primary">Ver detalle</a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="text-center">
-                        1002
-                    </div>
-                </td>
-                <td>
-                    <div class="text-center">
-                        13/12/2020
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-primary">Ver detalle</a>
-                    </div>
-                </td>
-            </tr>
+            <?php foreach($list as $listTransactions) : ?>
+                <tr>
+                    <td>
+                        <div class="text-center">
+                            <?=$listTransactions['NUMBER_BILL']?>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-center">
+                            <?=$listTransactions['DATE_TIME']?>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a href="<?=init?><?=transaction?><?=detailSale?>&id=<?=$listTransactions['ID']?>" class="btn btn-primary">Ver detalle</a>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach?>
         </table>
     </div>
 </div>

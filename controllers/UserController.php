@@ -65,12 +65,20 @@
 
         /*Funcion para abrir ventana de mis compras*/
         public function myShops(){
+            /*Instanciar el modelo*/            
+            $model = new Model();
+            /*Llamar la funcion del modelo que obtiene los pagos*/  
+            $list = $model->shoppingList($_SESSION['loginsucces']['ID']);
             /*Incluir la vista*/
             require_once "views/user/MyShops.html";
         }
 
         /*Funcion para abrir ventana de mis ventas*/
         public function mySales(){
+            /*Instanciar el modelo*/            
+            $model = new Model();
+            /*Llamar la funcion del modelo que obtiene los pagos*/  
+            $list = $model->salesList($_SESSION['loginsucces']['ID']);
             /*Incluir la vista*/
             require_once "views/user/MySales.html";
         }

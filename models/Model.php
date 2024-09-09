@@ -837,6 +837,134 @@
             /* Retornar el resultado */
             return $userData;
         }    
+
+        public function getLastTransaction() {
+            // Preparar la consulta para ejecutar la función de Oracle
+            $query = "BEGIN :cursor := GET_LAST_TRANSACTION; END;";
+            $stmt = oci_parse($this->conn, $query);
+    
+            // Declarar un cursor como parámetro de salida
+            $cursor = oci_new_cursor($this->conn);
+    
+            // Asociar el cursor con el parámetro de salida
+            oci_bind_by_name($stmt, ":cursor", $cursor, -1, OCI_B_CURSOR);
+    
+            // Ejecutar la función
+            oci_execute($stmt);
+    
+            // Ejecutar el cursor
+            oci_execute($cursor);
+    
+            // Obtener los datos del cursor
+            $row = oci_fetch_assoc($cursor);
+    
+            // Cerrar cursor y statement
+            oci_free_statement($stmt);
+            oci_free_statement($cursor);
+    
+            // Retornar el ID de la última transacción
+            return $row['ID'];
+        }
+
+        /*Funcion para obtener la lista de todos los pagos en el apartado de gestion*/
+        public function shoppingList($user_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := SHOPPING_LIST(:user_id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }  
+
+        /*Funcion para obtener la lista de todos los pagos en el apartado de gestion*/
+        public function salesList($user_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := SALES_LIST(:user_id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        } 
+
+        public function detailSale($t_transaction_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := DETAIL_SALE(:t_transaction_id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
+        public function detailShop($t_transaction_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := DETAIL_SHOP(:t_transaction_id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
         
     }
 
