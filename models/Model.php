@@ -944,6 +944,41 @@
             return $productData;
         }
 
+        public function summaryTransaction($pr_product_id, $u_user_id, $pa_pay_id, $d_direction_id){
+            // Preparar la consulta que llama a la función de Oracle
+            $query = 'BEGIN :resultado := SUMMARY_TRANSACTION(:pr_product_id, :u_user_id, :pa_pay_id, :d_direction_id); END;';
+            $stid = oci_parse($this->conn, $query);
+
+            // Crear un cursor para obtener el resultado
+            $resultado = oci_new_cursor($this->conn);
+
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stid, ':pr_product_id', $pr_product_id, -1, SQLT_INT);
+            oci_bind_by_name($stid, ':u_user_id', $u_user_id, -1, SQLT_INT);
+            oci_bind_by_name($stid, ':pa_pay_id', $pa_pay_id, -1, SQLT_INT);
+            oci_bind_by_name($stid, ':d_direction_id', $d_direction_id, -1, SQLT_INT);
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+
+            // Ejecutar la consulta
+            oci_execute($stid);
+
+            // Ejecutar el cursor para obtener los datos
+            oci_execute($resultado);
+
+            // Obtener los resultados como un arreglo asociativo
+            $data = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $data[] = $row;
+            }
+
+            // Liberar recursos
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+
+            // Retornar los datos obtenidos
+            return $data;
+        }
+
         public function detailShop($t_transaction_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := DETAIL_SHOP(:t_transaction_id); END;';

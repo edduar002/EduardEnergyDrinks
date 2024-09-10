@@ -11,8 +11,9 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowPurchase(){
-            $idProduct = $_GET['idProduct'];
+            $idProduct = $_POST['idProduct'];
             $cantidad = $_POST['cantidad'];
+            $vendedor = $_POST['vendedor'];
             /*Instanciar modelo*/
             $model = new Model();
             $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
@@ -39,6 +40,16 @@
 
         /*Funcion para abrir ventana de editar*/
         public function windowConfirm(){
+            $model = new Model();
+            $var = $model -> getUser($_POST['vendedor']);
+            $var2 = $model -> getPay($_POST['id_pay']);
+            $var3 = $model -> getDirection($_POST['id_direction']);
+            $var4 = $model -> getProduct($_POST['idProduct']);
+            var_dump($var);
+            var_dump($var2);
+            var_dump($var3);
+            var_dump($var4);
+            die();
             /*Incluir la vista*/
             require_once "views/transaction/Confirm.html";
         }
