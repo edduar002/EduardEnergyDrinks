@@ -5,50 +5,56 @@
     <h3 class="text-center">Datos del vendedor</h3>
     <br>
     <br>
-    <h4>Nombre: </h4>
+    <h4>Nombre: <?=$var['NAME']?></h4>
     <br>
-    <h4>Apellidos: </h4>
+    <h4>Apellidos: <?=$var['SURNAME']?></h4>
     <br>
-    <h4>Email: </h4>
+    <h4>Email: <?=$var['EMAIL']?></h4>
     <br>
-    <h4>Telefono: </h4>
+    <h4>Telefono: <?=$var['PHONE']?></h4>
     <br>
     <h3 class="text-center">Datos del envio</h3>
     <br>
     <br>
-    <h4>Carrera: </h4>
+    <h4>Carrera: <?=$var3['CARRER']?></h4>
     <br>
-    <h4>Calle: </h4>
+    <h4>Calle: <?=$var3['STREET']?></h4>
     <br>
-    <h4>Codigo Postal: </h4>
+    <h4>Codigo Postal: <?=$var3['POSTAL_CODE']?></h4>
     <br>
-    <h4>Direccion: </h4>
+    <h4>Direccion: <?=$var3['DIRECTION']?></h4>
     <br>
     <br>
     <h3 class="text-center">Datos del pago</h3>
     <br>
     <br>
-    <h4>Eleccion: </h4>
+    <h4>Eleccion: <?=$var2['ELECTION']?></h4>
     <br>
-    <h4>Numero: </h4>
+    <h4>Numero: <?=$var2['NUMBER_ELECTION']?></h4>
     <br>
     <br>
     <h3 class="text-center">Datos del producto</h3>
     <br>
     <br>
-    <h4>Nombre: </h4>
+    <h4>Nombre: <?=$var4['NAME']?></h4>
     <br>
-    <h4>Precio: </h4>
+    <h4>Precio: <?=$var4['PRICE']?></h4>
     <br>
-    <h4>Contenido: </h4>
+    <h4>Contenido: <?=$var4['CONTENT']?></h4>
     <br>
-    <h4>Unidades: </h4>
+    <h4>Unidades: <?=$cantidad?></h4>
     <br>
     <br>
-    <h3>Total: </h3>
+    <h3>Total: <?=$cantidad * $var4['PRICE']?></h3>
     <br>
     <br>
     <div class="text-center">
-        <a href="<?=init?><?=user?><?=myProfile?>" class="btn btn-success">Confirmar compra</a>
+        <form action="<?=init?><?=transaction?><?=purchase?>" method="post">
+            <input type="hidden" name="id_direction" value="<?=$var3['ID']?>">
+            <input type="hidden" name="id_pay" value="<?=$var2['ID']?>">
+            <input type="hidden" name="idProduct" value="<?=$var4['ID']?>">
+            <input type="hidden" name="cantidad" value="<?=$cantidad?>">
+            <input type="submit" value="ee">
+        </form>
     </div>
 </div>

@@ -45,11 +45,7 @@
             $var2 = $model -> getPay($_POST['id_pay']);
             $var3 = $model -> getDirection($_POST['id_direction']);
             $var4 = $model -> getProduct($_POST['idProduct']);
-            var_dump($var);
-            var_dump($var2);
-            var_dump($var3);
-            var_dump($var4);
-            die();
+            $cantidad = $_POST['cantidad'];
             /*Incluir la vista*/
             require_once "views/transaction/Confirm.html";
         }
@@ -66,11 +62,11 @@
                 /*Instanciar modelo*/      
                 $model = new Model();
                 /*Asignar los datos si llegan*/
-                $number_bill = $model -> getLastTransaction() + 999;
+                $number_bill = $model -> getLastTransaction() + 1000;
                 $idBuyer = $_SESSION['loginsucces']['ID'];
                 $idDirection = $_POST['id_direction'];
                 $idPay = $_POST['id_pay'];
-                $total = $_GET['cantidad'] * ($model -> getProductDataPu($_GET['idProduct'])['PRICE']);
+                $total = $_POST['cantidad'] * ($model -> getProductDataPu($_POST['idProduct'])['PRICE']);
                 $date_time = date('Y-m-d');
                 $date_time2 = (new DateTime($date_time))->format('d/m/y');
                 $created_at = date('Y-m-d');
@@ -82,9 +78,9 @@
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if ($resultado != false) {
                         $id_transaction = $model -> getLastTransaction();
-                        $id_product = $_GET['idProduct'];
-                        $id_seller = $model -> getProductDataPu($_GET['idProduct'])['USER_ID'];
-                        $units = $_GET['cantidad'];
+                        $id_product = $_POST['idProduct'];
+                        $id_seller = $model -> getProductDataPu($_POST['idProduct'])['USER_ID'];
+                        $units = $_POST['cantidad'];
                         $created_at = date('Y-m-d');
                         $created_at2 = (new DateTime($created_at))->format('d/m/y');
                         if($id_transaction && $id_product && $id_seller && $units && $created_at2){
