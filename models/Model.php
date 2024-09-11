@@ -1000,6 +1000,33 @@
             /*Retornar el resultado*/ 
             return $productData;
         }
+
+        public function decreaseInventory($product_id, $cantidad) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DECREASE_INVENTORY(:p_product_id, :t_cantidad); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':p_product_id', $product_id);
+            oci_bind_by_name($stmt, ':t_cantidad', $cantidad);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
         
     }
 

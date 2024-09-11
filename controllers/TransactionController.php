@@ -86,6 +86,7 @@
                         if($id_transaction && $id_product && $id_seller && $units && $created_at2){
                             $resultado2 = $model->registerTransactionProduct($id_transaction, $id_product, $id_seller, $units, $created_at2);
                             if ($resultado2 != false) {
+                                $model -> decreaseInventory($_POST['idProduct'], $_POST['cantidad']);
                                 /*Crear la sesion y redirigir a la ruta pertinente*/
                                 Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowSuccess");
                             }

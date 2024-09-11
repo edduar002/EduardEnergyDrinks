@@ -505,7 +505,7 @@ EXCEPTION
         RAISE;
 END PAY_LIST_MANAGEMENT;
 
-CREATE OR REPLACE FUNCTION PRODUCTS_LIST(
+create or replace FUNCTION PRODUCTS_LIST(
     p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
 ) RETURN SYS_REFCURSOR
 IS
@@ -515,7 +515,7 @@ BEGIN
     OPEN v_cursor FOR
     SELECT *
     FROM PRODUCTS
-    WHERE ACTIVE = 1
+    WHERE ACTIVE = 1 AND units > 0
     AND (p_user_id IS NULL OR USER_ID != p_user_id); -- Si p_user_id es NULL, selecciona todos los productos, si no, selecciona los productos del usuario.
 
     RETURN v_cursor; -- Retornar el cursor con los registros
@@ -869,16 +869,14 @@ EXCEPTION
         RAISE;
 END GET_DATA_PRODUCT_P;
 
-create or replace FUNCTION LAST_TRANSACTION
+create or replace FUNCTION GET_LAST_TRANSACTION
 RETURN SYS_REFCURSOR
 IS
     cur SYS_REFCURSOR;
 BEGIN
     OPEN cur FOR
-    SELECT ID 
-    FROM transactions
-    WHERE ROWNUM = 1
-    ORDER BY CREATED_AT DESC;
+    SELECT NVL(MAX(ID), 0) AS ID
+    FROM TRANSACTIONS_LIST;
     
     RETURN cur;
 END;
@@ -980,3 +978,22 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END SHOPPING_LIST;
+
+create or replace FUNCTION DECREASE_INVENTORY(p_product_id IN NUMBER, t_cantidad IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE products
+    SET units = units - t_cantidad
+    WHERE id = p_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
