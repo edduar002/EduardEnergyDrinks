@@ -1,0 +1,4 @@
+Documentar codigo
+Detalle venta
+Detalle compra
+Carrito
