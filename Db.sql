@@ -65,7 +65,7 @@ CREATE TABLE USERS (
 
 CREATE TABLE PRODUCTS (
     ID              NUMBER NOT NULL,
-    USER_ID         NUMBER NOT NULL,
+    USERS_ID         NUMBER NOT NULL,
     ACTIVE          NUMBER(1) NOT NULL,
     NAME            VARCHAR2(200) NOT NULL,
     PRICE           NUMBER NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE PRODUCTS (
 
 CREATE TABLE PAYS (
     ID              NUMBER NOT NULL,
-    USER_ID         NUMBER NOT NULL,
+    USERS_ID         NUMBER NOT NULL,
     ACTIVE          NUMBER(1) NOT NULL,
     ELECTION        VARCHAR2(200) NOT NULL,
     NUMBER_ELECTION NUMBER NOT NULL,
@@ -614,14 +614,16 @@ create or replace FUNCTION REGISTER_USER(
     u_email IN VARCHAR2,
     u_password IN VARCHAR2,
     u_image IN VARCHAR2,
+    u_earnings IN NUMBER,
     u_created_at IN DATE
 ) RETURN VARCHAR2
 AS
     v_resultado VARCHAR2(100);
 BEGIN
     BEGIN
-        INSERT INTO USERS (active, code, name, surname, birthdate, genre, phone, email, password, image, created_at)
-        VALUES (u_active, u_code, u_name, u_surname, u_birthdate, u_genre, u_phone, u_email, u_password, u_image, u_created_at);
+        INSERT INTO USERS (active, code, name, surname, birthdate, genre, phone, email, password, image, earnings, created_at)
+        VALUES (u_active, u_code, u_name, u_surname, u_birthdate, u_genre, u_phone, u_email, u_password, u_image, u_earnings, u_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -629,6 +631,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 

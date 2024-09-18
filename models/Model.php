@@ -71,6 +71,8 @@
             oci_bind_by_name($stmt, ':resultado', $resultado, 100);
             /* Ejecutar la consulta */
             $success = oci_execute($stmt);
+            var_dump($resultado);
+            die();
             /* Manejar errores si la ejecución falla */
             if (!$success) {
                 $e = oci_error($stmt);
