@@ -145,6 +145,7 @@
                 $password = isset($_POST['password']) ? $_POST['password'] : false;
                 $created_at = date('Y-m-d');
                 $birthdate2 = (new DateTime($birthdate))->format('d/m/y');
+                $earnings = 0;
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Establecer archivo de foto*/
                 $file = $_FILES['image'];
@@ -156,13 +157,14 @@
                     $model = new Model();
                     /*Validar si la clave cumple con la seguridad necesaria*/
                     if(helps::validatePassword($password)){
+                        /*Validar si el email no esta registrado*/
                         if($model -> validateUniqueEmail($email) != 1){
                             /*Comprobar si la foto es valida*/
                             $fotoGuardada = Helps::saveImage($file, "imagesUsers");
                             /*Comprobar si la foto ha sido guardada*/
                             if ($fotoGuardada) {
                                 /*Llamar la funcion del modelo que registra el usuario*/  
-                                $resultado = $model->registerUser(1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $created_at2);
+                                $resultado = $model->registerUser(1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $earnings, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
                                 if ($resultado != false) {
                                     /*Crear sesion de inicio de sesion exitoso*/

@@ -19,11 +19,14 @@
         public function windowProducts(){
             /*Instanciar modelo*/
             $model = new Model();
-            /*Llamar la funcion del modelo*/ 
+            /*Establecer el id del usuario como nulo*/
             $user_id = NULL;
+            /*Comprobar si el usuario esta logueado*/
             if(isset($_SESSION['loginsucces'])){
+                /*Establecer el id del usuario con el id del usuario logueado*/
                 $user_id = $_SESSION['loginsucces']['ID'];
-            }        
+            }
+            /*Obtener la lista de productos*/        
             $listProducts = $model->productsList($user_id);
             /*Incluir la vista*/
             require_once "views/layout/Products.html";

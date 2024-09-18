@@ -11,28 +11,49 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowPurchase(){
-            $idProduct = $_POST['idProduct'];
-            $cantidad = $_POST['cantidad'];
-            $vendedor = $_POST['vendedor'];
-            /*Instanciar modelo*/
-            $model = new Model();
-            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
-            $listPays = $model->payListManagement($_SESSION['loginsucces']['ID']);
-            /*Incluir la vista*/
-            require_once "views/transaction/Purchase.html";
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_POST)) {
+                /*Asignar los datos si llegan*/
+                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
+                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
+                $vendedor = isset($_POST['vendedor']) ? $_POST['vendedor'] : false;
+                /*Comprobar si todos los datos llegaron*/
+                if($idProduct && $cantidad && $vendedor){
+                    /*Instanciar modelo*/
+                    $model = new Model();
+                    /*Obtener lista de direcciones propias*/
+                    $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
+                    /*Obtener lista de pagos propias*/
+                    $listPays = $model->payListManagement($_SESSION['loginsucces']['ID']);
+                    /*Incluir la vista*/
+                    require_once "views/transaction/Purchase.html";
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=detail&id=$idProduct");
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=detail&id=$idProduct");
+            }
         }
 
+        /*Funcion para ver el detalle de la compra*/
         public function detailShop(){
             /*Instanciar modelo*/      
             $model = new Model();
+            /*Obtener el detalle de la compra*/
             $detail = $model -> detailShop($_GET['id']);
             /*Incluir la vista*/
             require_once "views/transaction/DetailShop.html";
         }
 
+        /*Funcion para ver el detalle de la venta*/
         public function detailSale(){
             /*Instanciar modelo*/      
             $model = new Model();
+            /*Obtener el detalle de la venta*/
             $detail = $model -> detailSale($_GET['id']);
             /*Incluir la vista*/
             require_once "views/transaction/DetailSale.html";
@@ -40,53 +61,77 @@
 
         /*Funcion para abrir ventana de editar*/
         public function windowConfirm(){
-            $model = new Model();
-            $var = $model -> getUser($_POST['vendedor']);
-            $var2 = $model -> getPay($_POST['id_pay']);
-            $var3 = $model -> getDirection($_POST['id_direction']);
-            $var4 = $model -> getProduct($_POST['idProduct']);
-            $cantidad = $_POST['cantidad'];
-            /*Incluir la vista*/
-            require_once "views/transaction/Confirm.html";
-        }
-
-        /*Funcion para abrir ventana de editar*/
-        public function windowSuccess(){
-            /*Incluir la vista*/
-            require_once "views/transaction/Success.html";
-        }
-
-        public function purchase(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
-                /*Instanciar modelo*/      
-                $model = new Model();
                 /*Asignar los datos si llegan*/
-                $number_bill = $model -> getLastTransaction() + 1000;
-                $idBuyer = $_SESSION['loginsucces']['ID'];
-                $idDirection = $_POST['id_direction'];
-                $idPay = $_POST['id_pay'];
-                $total = $_POST['cantidad'] * ($model -> getProductDataPu($_POST['idProduct'])['PRICE']);
-                $date_time = date('Y-m-d');
-                $date_time2 = (new DateTime($date_time))->format('d/m/y');
-                $created_at = date('Y-m-d');
-                $created_at2 = (new DateTime($created_at))->format('d/m/y');
+                $idVendedor = isset($_POST['vendedor']) ? $_POST['vendedor'] : false;
+                $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
+                $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
+                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
+                /*Comprobar si todos los datos llegaron*/
+                if($idVendedor && $idPay && $idDirection && $idProduct){
+                    /*Instanciar modelo*/  
+                    $model = new Model();
+                    /*Obtener cada dato*/
+                    $vendedor = $model -> getUser($_POST['vendedor']);
+                    $pay = $model -> getPay($_POST['id_pay']);
+                    $direction = $model -> getDirection($_POST['id_direction']);
+                    $product = $model -> getProduct($_POST['idProduct']);
+                    $cantidad = $_POST['cantidad'];
+                    /*Incluir la vista*/
+                    require_once "views/transaction/Confirm.html";
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=transactionController&action=windowPurchase");
+                }
+            /*De lo contrario*/     
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=transactionController&action=windowPurchase");
+            }
+        }
+
+        /*Funcion para guardar la transaccion*/
+        public function purchase(){
+            /*Instanciar modelo*/      
+            $model = new Model();
+            /*Obtener factura*/
+            $number_bill = $model -> getLastTransaction() + 1000;
+            /*Obtener comprador*/
+            $idBuyer = $_SESSION['loginsucces']['ID'];
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_POST)) {
+                /*Asignar los datos si llegan*/
+                $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
+                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
+                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
+                $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
                 /*Comprobar si los datos llegan*/
-                if ($number_bill && $idBuyer && $idDirection && $idPay && $total && $date_time2 && $created_at2) {
-                    /*Llamar la funcion del modelo que registra el pago*/  
+                if ($idDirection && $idProduct && $cantidad && $idPay) {
+                    /*Obtener datos restantes*/
+                    $total = $cantidad * ($model -> getProductDataPu($idProduct['PRICE']));
+                    $date_time = date('Y-m-d');
+                    $date_time2 = (new DateTime($date_time))->format('d/m/y');
+                    $created_at = date('Y-m-d');
+                    $created_at2 = (new DateTime($created_at))->format('d/m/y');
+                    /*Llamar la funcion del modelo que registra la transaccion*/  
                     $resultado = $model->registerTransaction($number_bill, $idBuyer, $idDirection, $idPay, $total, $date_time2, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if ($resultado != false) {
+                        /*Obtener la ultima transaccion registrada*/
                         $id_transaction = $model -> getLastTransaction();
-                        $id_product = $_POST['idProduct'];
-                        $id_seller = $model -> getProductDataPu($_POST['idProduct'])['USER_ID'];
-                        $units = $_POST['cantidad'];
-                        $created_at = date('Y-m-d');
-                        $created_at2 = (new DateTime($created_at))->format('d/m/y');
-                        if($id_transaction && $id_product && $id_seller && $units && $created_at2){
-                            $resultado2 = $model->registerTransactionProduct($id_transaction, $id_product, $id_seller, $units, $created_at2);
+                        $id_seller = $model -> getProductDataPu($idProduct['USER_ID']);
+                        /*Comprobar si los datos llegan*/
+                        if($id_transaction && $idProduct && $id_seller && $cantidad && $created_at2){
+                            /*Llamar la funcion del modelo que registra la transaccion del producto*/  
+                            $resultado2 = $model->registerTransactionProduct($id_transaction, $idProduct, $id_seller, $cantidad, $created_at2);
+                            /*Comprobar si el registrado ha sido exitoso*/   
                             if ($resultado2 != false) {
-                                $model -> decreaseInventory($_POST['idProduct'], $_POST['cantidad']);
+                                /*Llamar la funcion del modelo que decrementa el inventario*/ 
+                                $model -> decreaseInventory($idProduct, $cantidad);
+                                /*Llamar la funcion que aumenta las ganancias del vendedor*/
+                                $model -> increaseProfits($id_seller, $total);
                                 /*Crear la sesion y redirigir a la ruta pertinente*/
                                 Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowSuccess");
                             }

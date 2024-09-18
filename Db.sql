@@ -58,6 +58,7 @@ CREATE TABLE USERS (
     EMAIL           VARCHAR2(200) NOT NULL,
     PASSWORD        VARCHAR2(200) NOT NULL,
     IMAGE           VARCHAR2(200) NOT NULL,
+    EARNINGS        NUMBER NOT NULL,
     CREATED_AT      DATE NOT NULL,
     CONSTRAINT users_pk PRIMARY KEY (ID)
 );
@@ -255,10 +256,8 @@ BEGIN
     UPDATE directions
     SET active = 0
     WHERE id = d_direction_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -274,10 +273,8 @@ BEGIN
     UPDATE pays
     SET active = 0
     WHERE id = p_pay_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -293,10 +290,8 @@ BEGIN
     UPDATE products
     SET active = 0
     WHERE id = p_product_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -312,10 +307,8 @@ BEGIN
     UPDATE users
     SET active = 0
     WHERE id = u_user_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -333,7 +326,6 @@ BEGIN
         SELECT * 
         FROM PRODUCT_DETAIL 
         WHERE id = p_product_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -355,7 +347,6 @@ BEGIN
     FROM DIRECTIONS
     WHERE ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -372,7 +363,6 @@ BEGIN
         SELECT * 
         FROM DIRECTIONS_LIST_MANAGEMENT 
         WHERE id = d_direction_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -392,9 +382,7 @@ BEGIN
     FROM USERS
     WHERE email = p_email
     AND ROWNUM = 1;  -- Garantiza que solo se obtenga una fila
-
     RETURN v_password;
-
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RETURN NULL;
@@ -414,7 +402,6 @@ BEGIN
         SELECT * 
         FROM PAYS_LIST_MANAGEMENT 
         WHERE id = p_pay_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -432,7 +419,6 @@ BEGIN
         SELECT * 
         FROM PRODUCT_DETAIL 
         WHERE id = p_product_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -451,7 +437,6 @@ BEGIN
     SELECT *
     FROM SESSION_START
     WHERE id = u_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -473,7 +458,6 @@ BEGIN
     FROM SESSION_START
     WHERE email = u_email
     AND ACTIVE = 1;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -497,7 +481,6 @@ BEGIN
     FROM PAYS
     WHERE ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -517,7 +500,6 @@ BEGIN
     FROM PRODUCTS
     WHERE ACTIVE = 1 AND units > 0
     AND (p_user_id IS NULL OR USER_ID != p_user_id); -- Si p_user_id es NULL, selecciona todos los productos, si no, selecciona los productos del usuario.
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -538,7 +520,6 @@ BEGIN
     FROM PRODUCTS
     WHERE ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -561,7 +542,6 @@ BEGIN
     BEGIN
         INSERT INTO DIRECTIONS (user_id, active, carrer, street, postal_code, direction, created_at)
         VALUES (d_user_id, d_active, d_carrer, d_street, d_postal_code, d_direction, d_created_at);
-
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -569,7 +549,6 @@ BEGIN
             v_resultado := 'Error al registrar direccion: ' || SQLERRM;
             ROLLBACK;
     END;
-
     RETURN v_resultado;
 END;
 
@@ -586,7 +565,6 @@ BEGIN
     BEGIN
         INSERT INTO PAYS (user_id, active, election, number_election, created_at)
         VALUES (p_user_id, p_active, p_election, p_number_election, p_created_at);
-
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -594,7 +572,6 @@ BEGIN
             v_resultado := 'Error al registrar pago: ' || SQLERRM;
             ROLLBACK;
     END;
-
     RETURN v_resultado;
 END;
 
@@ -616,7 +593,6 @@ BEGIN
     BEGIN
         INSERT INTO PRODUCTS (user_id, active, name, price, units, content, stock, description, image, created_at)
         VALUES (p_user_id, p_active, p_name, p_price, p_units, p_content, p_stock, p_description, p_image, p_created_at);
-
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -624,7 +600,6 @@ BEGIN
             v_resultado := 'Error al registrar producto: ' || SQLERRM;
             ROLLBACK;
     END;
-
     RETURN v_resultado;
 END;
 
@@ -647,7 +622,6 @@ BEGIN
     BEGIN
         INSERT INTO USERS (active, code, name, surname, birthdate, genre, phone, email, password, image, created_at)
         VALUES (u_active, u_code, u_name, u_surname, u_birthdate, u_genre, u_phone, u_email, u_password, u_image, u_created_at);
-
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -655,7 +629,6 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
-
     RETURN v_resultado;
 END;
 
@@ -676,10 +649,8 @@ BEGIN
         postal_code = NVL(d_postal_code, postal_code),
         direction = NVL(d_direction, direction)
     WHERE id = d_direction_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -701,10 +672,8 @@ BEGIN
         election = NVL(p_election, election),
         number_election = NVL(p_election_number, number_election)
     WHERE id = p_pay_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -736,10 +705,8 @@ BEGIN
         description = NVL(p_description, description),      
         image = NVL(p_image, image)
     WHERE id = p_product_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -767,10 +734,8 @@ BEGIN
         email = NVL(u_email, email),
         image = NVL(u_image, image)
     WHERE id = u_user_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -788,7 +753,6 @@ BEGIN
     INTO email_existe
     FROM users
     WHERE email = u_email;
-
     IF email_existe > 0 THEN
         RETURN 1;
     ELSE
@@ -809,7 +773,6 @@ BEGIN
     BEGIN
         INSERT INTO TRANSACTIONPRODUCT (id_transaction, id_product, id_seller, units, created_at)
         VALUES (tp_id_transaction, tp_id_product, tp_id_seller, tp_units, tp_created_at);
-
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -817,7 +780,6 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
-
     RETURN v_resultado;
 END;
 
@@ -836,7 +798,6 @@ BEGIN
     BEGIN
         INSERT INTO TRANSACTIONS (number_bill, id_buyer, id_direction, id_pay, total, date_time, created_at)
         VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, t_total, t_date_time, t_created_at);
-
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -844,7 +805,6 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
-
     RETURN v_resultado;
 END;
 
@@ -858,7 +818,6 @@ BEGIN
     SELECT *
     FROM PRODUCT_DATA_PU
     WHERE id = p_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -877,7 +836,6 @@ BEGIN
     OPEN cur FOR
     SELECT NVL(MAX(ID), 0) AS ID
     FROM TRANSACTIONS_LIST;
-    
     RETURN cur;
 END;
 
@@ -894,7 +852,6 @@ BEGIN
     FROM PAYS
     WHERE ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -915,7 +872,6 @@ BEGIN
     FROM TRANSACTIONS_LIST tl
     INNER JOIN TRANSACTIONPRODUCT tp ON tp.ID_TRANSACTION = tl.ID
     WHERE tp.ID_SELLER = p_user_id;  -- Compara si el ID que llega es del dueño del pago
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -932,7 +888,6 @@ BEGIN
         SELECT * 
         FROM TRANSACTIONS
         WHERE id = t_transaction_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -950,7 +905,6 @@ BEGIN
         SELECT * 
         FROM TRANSACTIONS
         WHERE id = t_transaction_id;
-
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -971,7 +925,6 @@ BEGIN
     SELECT *
     FROM TRANSACTIONS_LIST
     WHERE ID_BUYER = p_user_id;  -- Compara si el ID que llega es del dueño del pago
-
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -986,10 +939,25 @@ BEGIN
     UPDATE products
     SET units = units - t_cantidad
     WHERE id = p_product_id;
-    
     -- Confirmar la transacción
     COMMIT;
-    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION INCREASE_PROFITS(t_id_seller IN NUMBER, t_total IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE users
+    SET earnings = earnings + t_total
+    WHERE id = t_id_seller;
+    -- Confirmar la transacción
+    COMMIT;
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
