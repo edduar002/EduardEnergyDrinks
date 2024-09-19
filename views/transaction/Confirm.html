@@ -49,12 +49,31 @@
     <br>
     <br>
     <div class="text-center">
-        <form action="<?=init?><?=transaction?><?=purchase?>" method="post">
+        <form id="purchaseForm" action="<?=init?><?=transaction?><?=purchase?>" method="post">
             <input type="hidden" name="id_direction" value="<?=$direction['ID']?>">
             <input type="hidden" name="id_pay" value="<?=$pay['ID']?>">
             <input type="hidden" name="idProduct" value="<?=$product['ID']?>">
             <input type="hidden" name="cantidad" value="<?=$cantidad?>">
-            <input type="submit" class="btn btn-primary" value="Realizar compra">
+            <button type="button" class="btn btn-primary" id="openModalBtn">Realizar compra</button>
         </form>
+    </div>    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Compra Exitosa</h5>
+                <!-- Elimina el botón de cierre -->
+            </div>
+            <div class="modal-body">
+                <?php echo "La compra se ha realizado exitosamente"; ?>
+            </div>
+            <div class="modal-footer">
+                <!-- Único botón para confirmar y enviar el formulario -->
+                <button type="button" class="btn btn-primary" id="confirmPurchase">Confirmar</button>
+            </div>
+        </div>
     </div>
 </div>

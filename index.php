@@ -14,16 +14,6 @@
     /*Incluir el archivo de la vista de cabecera*/
     require_once 'views/layout/Header.html';
 
-    /*Funcion para mostrar un error*/
-    function showError(){
-        /*Instanciar la case*/
-        $error = new ErrorController();
-        /*Llamar metodo*/
-        $error -> index();
-        /*Retornar el resultado*/
-        return $error;
-    }
-
     /*Comprobar si llega el controlador por la URL*/
     if(isset($_GET['controller'])){
         /*Establecer nombre del controlador*/
@@ -41,8 +31,6 @@
         }
     /*De lo contrario*/      
     }else{
-        /*Mostrar error*/
-        showError();
         /*Salir*/
         exit();
     }
@@ -71,13 +59,11 @@
             $controlador -> $actionDefault();
         /*De lo contrario*/      
         }else{
-            /*Mostrar error*/
-            showError();
+            exit();
         }
     /*De lo contrario*/          
     }else{
-        /*Mostrar error*/
-        showError();
+        exit();
     }
 
     /*Incluir el archivo de la vista de pie de pagina*/

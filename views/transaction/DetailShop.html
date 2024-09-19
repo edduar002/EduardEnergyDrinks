@@ -1,0 +1,49 @@
+<div class="m-5">
+    <div class="mb-5 text-center">
+        <h2>Resumen</h2>
+    </div>
+    <h3 class="text-center">Datos del vendedor</h3>
+    <br>
+    <br>
+    <h4>Nombre: <?=$vendedor['NAME']?></h4>
+    <br>
+    <h4>Apellidos: <?=$vendedor['SURNAME']?></h4>
+    <br>
+    <h4>Email: <?=$vendedor['EMAIL']?></h4>
+    <br>
+    <h4>Telefono: <?=$vendedor['PHONE']?></h4>
+    <br>
+    <h3 class="text-center">Datos del envio</h3>
+    <br>
+    <br>
+    <h4>Carrera: <?=$direction['CARRER']?></h4>
+    <br>
+    <h4>Calle: <?=$direction['STREET']?></h4>
+    <br>
+    <h4>Codigo Postal: <?=$direction['POSTAL_CODE']?></h4>
+    <br>
+    <h4>Direccion: <?=$direction['DIRECTION']?></h4>
+    <br>
+    <br>
+    <h3 class="text-center">Datos del pago</h3>
+    <br>
+    <br>
+    <h4>Eleccion: <?=$pay['ELECTION']?></h4>
+    <br>
+    <h4>Numero: <?=$pay['NUMBER_ELECTION']?></h4>
+    <br>
+    <br>
+    <h3 class="text-center">Datos del producto</h3>
+    <br>
+    <br>
+    <h4>Nombre: <?=$product['NAME']?></h4>
+    <br>
+    <h4>Precio: <?=$product['PRICE']?></h4>
+    <br>
+    <h4>Contenido: <?=$product['CONTENT']?></h4>
+    <br>
+    <h4>Unidades: <?=$cantidad?></h4>
+    <br>
+    <br>
+    <h3>Total: <?=$cantidad * $product['PRICE']?></h3>
+</div>

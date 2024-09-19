@@ -9,6 +9,37 @@
 
     class TransactionController{
 
+        public function registerCar(){
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_POST)) {
+                /*Asignar los datos si llegan*/
+                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
+                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
+                $created_at = date('Y-m-d');
+                $created_at2 = (new DateTime($created_at))->format('d/m/y');
+                /*Comprobar si todos los datos llegaron*/
+                if($idProduct && $cantidad){
+                    /*Instanciar modelo*/
+                    $model = new Model();
+                    $registro = $model -> registercar($_SESSION['loginsucces']['ID'], 1, $created_at2);
+                    if($registro){
+                        $id_car = $model -> getLastCar();
+                        $registro2 = $model -> registerCarProduct($id_car, $idProduct, 1, $cantidad, 100, $created_at2);
+                    }
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=detail&id=$idProduct");
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=windowProducts");
+            }
+            
+            require_once "views/transaction/Car.html";
+        }
+
         /*Funcion para abrir ventana de registro*/
         public function windowPurchase(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
@@ -45,6 +76,8 @@
             $model = new Model();
             /*Obtener el detalle de la compra*/
             $detail = $model -> detailShop($_GET['id']);
+            var_dump($detail);
+            die();
             /*Incluir la vista*/
             require_once "views/transaction/DetailShop.html";
         }
@@ -55,6 +88,8 @@
             $model = new Model();
             /*Obtener el detalle de la venta*/
             $detail = $model -> detailSale($_GET['id']);
+            var_dump($detail);
+            die();
             /*Incluir la vista*/
             require_once "views/transaction/DetailSale.html";
         }
@@ -110,7 +145,7 @@
                 /*Comprobar si los datos llegan*/
                 if ($idDirection && $idProduct && $cantidad && $idPay) {
                     /*Obtener datos restantes*/
-                    $total = $cantidad * ($model -> getProductDataPu($idProduct['PRICE']));
+                    $total = $cantidad * ($model -> getProductDataPu($idProduct)['PRICE']);
                     $date_time = date('Y-m-d');
                     $date_time2 = (new DateTime($date_time))->format('d/m/y');
                     $created_at = date('Y-m-d');
@@ -121,7 +156,7 @@
                     if ($resultado != false) {
                         /*Obtener la ultima transaccion registrada*/
                         $id_transaction = $model -> getLastTransaction();
-                        $id_seller = $model -> getProductDataPu($idProduct['USER_ID']);
+                        $id_seller = $model -> getProductDataPu($idProduct)['USER_ID'];
                         /*Comprobar si los datos llegan*/
                         if($id_transaction && $idProduct && $id_seller && $cantidad && $created_at2){
                             /*Llamar la funcion del modelo que registra la transaccion del producto*/  
@@ -132,8 +167,8 @@
                                 $model -> decreaseInventory($idProduct, $cantidad);
                                 /*Llamar la funcion que aumenta las ganancias del vendedor*/
                                 $model -> increaseProfits($id_seller, $total);
-                                /*Crear la sesion y redirigir a la ruta pertinente*/
-                                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowSuccess");
+                                /*Redirigir*/
+                                header("Location:"."http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
                             }
                         }
                     } else {

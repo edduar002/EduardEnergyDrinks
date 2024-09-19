@@ -8,7 +8,7 @@
         </h2>
         <br>
         <h3>Unidades disponibles:
-            <?=$resultado['UNITS']?>
+            <?=$resultado['STOCK']?>
         </h3>
         <br>
         <h3>Precio:
@@ -24,12 +24,12 @@
             </p>
             <br>
             <?php if(isset($_SESSION['loginsucces'])) : ?>
-                <form action="<?=init?><?=transaction?><?=windowPurchase?>" method="post">
+                <form action="<?=init?><?=transaction?><?=registerCar?>" method="post">
                     <input type="hidden" name="idProduct" value="<?=$resultado['ID']?>">
                     <input type="hidden" name="vendedor" value="<?=$resultado['USER_ID']?>">
                     <div class="form-group">
                         <label for="cantidad">Cantidad</label>
-                        <input type="number" name="cantidad" class="form-control" placeholder="Ingresa la cantidad" max="<?=$resultado['UNITS']?>">
+                        <input type="number" name="cantidad" class="form-control" placeholder="Ingresa la cantidad" max="<?=$resultado['STOCK']?>">
                     </div>
                     <br>
                     <div class="d-flex justify-content-center">

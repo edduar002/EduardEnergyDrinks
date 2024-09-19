@@ -71,8 +71,6 @@
             oci_bind_by_name($stmt, ':resultado', $resultado, 100);
             /* Ejecutar la consulta */
             $success = oci_execute($stmt);
-            var_dump($resultado);
-            die();
             /* Manejar errores si la ejecución falla */
             if (!$success) {
                 $e = oci_error($stmt);
@@ -1014,7 +1012,88 @@
             /*Retornar el resultado si es una función*/ 
             return $resultado;
         }
+
+        /*Funcion para registrar la transaccion en la base de datos*/
+        function registerCar($user_id, $active, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_CAR(:user_id, :active, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':active', $active);         
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /* Manejar errores si la ejecución falla */
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        } 
+
+        /*Funcion para registrar la transaccion del producto en la base de datos*/
+        function registerCarProduct($car_id, $product_id, $active, $units, $price, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_CP(:car_id, :product_id, :active, :units, :price, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':car_id', $car_id);
+            oci_bind_by_name($stmt, ':product_id', $product_id);
+            oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':units', $units);     
+            oci_bind_by_name($stmt, ':price', $price);        
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /* Manejar errores si la ejecución falla */
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        } 
         
+        /*Funcion para obtener la ultima transacion registrada*/
+        public function getLastCar() {
+            // Preparar la consulta para ejecutar la función de Oracle
+            $query = "BEGIN :cursor := GET_LAST_CAR; END;";
+            $stmt = oci_parse($this->conn, $query);
+            // Declarar un cursor como parámetro de salida
+            $cursor = oci_new_cursor($this->conn);
+            // Asociar el cursor con el parámetro de salida
+            oci_bind_by_name($stmt, ":cursor", $cursor, -1, OCI_B_CURSOR);
+            // Ejecutar la función
+            oci_execute($stmt);
+            // Ejecutar el cursor
+            oci_execute($cursor);
+            // Obtener los datos del cursor
+            $row = oci_fetch_assoc($cursor);
+            // Cerrar cursor y statement
+            oci_free_statement($stmt);
+            oci_free_statement($cursor);
+            // Retornar el ID de la última transacción
+            return $row['ID'];
+        }
+
     }
 
 ?>

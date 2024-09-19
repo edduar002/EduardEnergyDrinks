@@ -98,6 +98,17 @@
                 window.location.href = url;
             });
         }
+        
+        // Mostrar el modal al hacer clic en el botón
+        document.getElementById('openModalBtn').addEventListener('click', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+            myModal.show();
+        });
+
+        // Enviar el formulario cuando se confirme la compra
+        document.getElementById('confirmPurchase').addEventListener('click', function() {
+            document.getElementById('purchaseForm').submit();
+        });
 
         $(".btn-tool").tooltip()
     });
