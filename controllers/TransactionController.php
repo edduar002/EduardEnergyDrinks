@@ -9,6 +9,15 @@
 
     class TransactionController{
 
+        public function windowCar(){
+            /*Instanciar modelo*/
+            $model = new Model();
+            $list = $model -> productsListCar($_SESSION['loginsucces']['ID']);
+            var_dump($list);
+            die();
+            require_once "views/transaction/Car.html";
+        }
+
         public function registerCar(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
@@ -36,8 +45,7 @@
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=windowProducts");
             }
-            
-            require_once "views/transaction/Car.html";
+            $this -> windowCar();
         }
 
         /*Funcion para abrir ventana de registro*/

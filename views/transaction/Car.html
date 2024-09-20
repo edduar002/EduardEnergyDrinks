@@ -1,65 +1,46 @@
 <div class="container my-5 p-5">
-    <br>
-    <div class="text-center">
-        <h2>Carrito de Compras</h2>
-    </div>
-    <br>
-    <br>
-    <div class="row">
-        <!-- Producto 1 -->
-        <div class="col-md-12 mb-3">
-            <div class="card">
-                <div class="row no-gutters">
-                    <div class="col-md-2">
-                        <img src="https://via.placeholder.com/150" class="card-img" alt="Producto 1">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto 1</h5>
-                            <p class="card-text">Precio: $10.00</p>
-                            <div class="d-flex align-items-center">
-                                <a href="#" class="btn btn-outline-secondary btn-sm mr-2">-</a>
-                                <input type="text" class="form-control text-center" value="1" style="width: 50px;">
-                                <a href="#" class="btn btn-outline-secondary btn-sm ml-2">+</a>
+    <?php if(sizeof($list) == 0) : ?>
+        <h1 class="text-center mt-5 mb-5">No hay productos agregados</h1>
+    <?php else : ?>
+        <br>
+        <div class="text-center">
+            <h2>Carrito de Compras</h2>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <?php foreach($list as $listCar) : ?>
+                <div class="col-md-12 mb-3">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <div class="col-md-2">
+                                <img src="https://via.placeholder.com/150" class="card-img" alt="Producto 1">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Producto 1</h5>
+                                    <p class="card-text">Precio: $10.00</p>
+                                    <div class="d-flex align-items-center">
+                                        <a href="#" class="btn btn-outline-secondary btn-sm mr-2">-</a>
+                                        <input type="text" class="form-control text-center" value="1" style="width: 50px;">
+                                        <a href="#" class="btn btn-outline-secondary btn-sm ml-2">+</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                <h5 class="mb-0">$10.00</h5>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 d-flex align-items-center justify-content-center">
-                        <h5 class="mb-0">$10.00</h5>
-                    </div>
+                </div>
+            <?php endforeach; ?>
+            <!-- Total -->
+            <div class="col-md-12 mt-4">
+                <div class="d-flex justify-content-end">
+                    <h4>Total: $25.00</h4>
+                    <br>
                 </div>
             </div>
         </div>
-        <!-- Producto 2 -->
-        <div class="col-md-12 mb-3">
-            <div class="card">
-                <div class="row no-gutters">
-                    <div class="col-md-2">
-                        <img src="https://via.placeholder.com/150" class="card-img" alt="Producto 2">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto 2</h5>
-                            <p class="card-text">Precio: $15.00</p>
-                            <div class="d-flex align-items-center">
-                                <a href="#" class="btn btn-outline-secondary btn-sm mr-2">-</a>
-                                <input type="text" class="form-control text-center" value="1" style="width: 50px;">
-                                <a href="#" class="btn btn-outline-secondary btn-sm ml-2">+</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-center justify-content-center">
-                        <h5 class="mb-0">$15.00</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Total -->
-        <div class="col-md-12 mt-4">
-            <div class="d-flex justify-content-end">
-                <h4>Total: $25.00</h4>
-                <br>
-            </div>
-        </div>
-    </div>
+    <?php endif; ?>    
 </div>

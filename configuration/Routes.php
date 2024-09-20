@@ -58,6 +58,7 @@
     /*Rutas para transaccion*/
 
     define("transaction", "/?controller=transactionController");
+    define("windowCar", "&action=windowCar");
     define("registerCar", "&action=registerCar");
     define("windowPurchase", "&action=windowPurchase");
     define("purchase", "&action=purchase");
