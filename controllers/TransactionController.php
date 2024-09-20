@@ -82,8 +82,6 @@
             $model = new Model();
             /*Obtener el detalle de la compra*/
             $detail = $model -> detailShop($_GET['id']);
-            var_dump($detail);
-            die();
             /*Incluir la vista*/
             require_once "views/transaction/DetailShop.html";
         }
@@ -94,8 +92,6 @@
             $model = new Model();
             /*Obtener el detalle de la venta*/
             $detail = $model -> detailSale($_GET['id']);
-            var_dump($detail);
-            die();
             /*Incluir la vista*/
             require_once "views/transaction/DetailSale.html";
         }
