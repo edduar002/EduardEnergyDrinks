@@ -13,8 +13,6 @@
             /*Instanciar modelo*/
             $model = new Model();
             $list = $model -> productsListCar($_SESSION['loginsucces']['ID']);
-            var_dump($list);
-            die();
             require_once "views/transaction/Car.html";
         }
 

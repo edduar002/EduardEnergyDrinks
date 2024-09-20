@@ -14,30 +14,34 @@
                     <div class="card">
                         <div class="row no-gutters">
                             <div class="col-md-2">
-                                <img src="https://via.placeholder.com/150" class="card-img" alt="Producto 1">
+                                <img src="resources/imagesProducts/<?=$listCar['IMAGE']?>" class="card-img" alt="Producto 1">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">Producto 1</h5>
-                                    <p class="card-text">Precio: $10.00</p>
+                                    <h5 class="card-title"><?=$listCar['NAME']?></h5>
+                                    <p class="card-text"><?=$listCar['PRICE']?></p>
                                     <div class="d-flex align-items-center">
                                         <a href="#" class="btn btn-outline-secondary btn-sm mr-2">-</a>
-                                        <input type="text" class="form-control text-center" value="1" style="width: 50px;">
+                                        <input type="text" class="form-control text-center" value="<?=$listCar['UNITS']?>" style="width: 50px;">
                                         <a href="#" class="btn btn-outline-secondary btn-sm ml-2">+</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                <h5 class="mb-0">$10.00</h5>
+                                <h5 class="mb-0"><?=$listCar['UNITS']*$listCar['PRICE']?></h5>
                             </div>
                         </div>
                     </div>
                 </div>
+                <?php 
+                    $total = 0;
+                    $total += $listCar['UNITS'] * $listCar['PRICE']
+                ?>
             <?php endforeach; ?>
             <!-- Total -->
             <div class="col-md-12 mt-4">
                 <div class="d-flex justify-content-end">
-                    <h4>Total: $25.00</h4>
+                    <h4>Total: <?=$total?></h4>
                     <br>
                 </div>
             </div>
