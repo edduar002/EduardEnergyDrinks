@@ -2,7 +2,7 @@
 
 DROP VIEW SESSION_START;
 
-DROP VIEW VIEW PRODUCT_DETAIL;
+DROP VIEW PRODUCT_DETAIL;
 
 DROP VIEW PRODUCT_LIST;
 
@@ -68,7 +68,7 @@ CREATE TABLE USERS (
     IMAGE           VARCHAR2(200) NOT NULL,
     EARNINGS        NUMBER NOT NULL,
     CREATED_AT      DATE NOT NULL,
-    CONSTRAINT users_pk PRIMARY KEY (ID)
+    CONSTRAINT users_pk PRIMARY KEY (USER_ID)
 );
 
 CREATE TABLE PRODUCTS (
@@ -83,18 +83,18 @@ CREATE TABLE PRODUCTS (
     DESCRIPTION     VARCHAR2(200) NOT NULL,
     IMAGE           VARCHAR2(200) NOT NULL,
     CREATED_AT      DATE NOT NULL,
-    CONSTRAINT products_pk PRIMARY KEY (ID),
+    CONSTRAINT products_pk PRIMARY KEY (PRODUCT_ID),
     CONSTRAINT products_user_fk FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID)
 );
 
 CREATE TABLE PAYS (
-    ID              NUMBER NOT NULL,
+    PAY_ID              NUMBER NOT NULL,
     USER_ID         NUMBER NOT NULL,
     ACTIVE          NUMBER(1) NOT NULL,
     ELECTION        VARCHAR2(200) NOT NULL,
     NUMBER_ELECTION NUMBER NOT NULL,
     CREATED_AT      DATE NOT NULL,
-    CONSTRAINT pays_pk PRIMARY KEY (ID),
+    CONSTRAINT pays_pk PRIMARY KEY (PAY_ID),
     CONSTRAINT pays_user_fk FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID)
 );
 
@@ -201,8 +201,8 @@ CREATE OR REPLACE TRIGGER USERS_TRG
 BEFORE INSERT ON USERS
 FOR EACH ROW
 BEGIN
-    IF :NEW.ID IS NULL THEN
-        SELECT EDUARDED.USERS_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+    IF :NEW.USER_ID IS NULL THEN
+        SELECT EDUARDED.USERS_SEQ.NEXTVAL INTO :NEW.USER_ID FROM DUAL;
     END IF;
 END;
 
@@ -210,8 +210,8 @@ CREATE OR REPLACE TRIGGER PRODUCTS_TRG
 BEFORE INSERT ON PRODUCTS
 FOR EACH ROW
 BEGIN
-    IF :NEW.ID IS NULL THEN
-        SELECT EDUARDED.PRODUCTS_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+    IF :NEW.PRODUCT_ID IS NULL THEN
+        SELECT EDUARDED.PRODUCTS_SEQ.NEXTVAL INTO :NEW.PRODUCT_ID FROM DUAL;
     END IF;
 END;
 
@@ -219,8 +219,8 @@ CREATE OR REPLACE TRIGGER PAYS_TRG
 BEFORE INSERT ON PAYS
 FOR EACH ROW
 BEGIN
-    IF :NEW.ID IS NULL THEN
-        SELECT EDUARDED.PAYS_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+    IF :NEW.PAY_ID IS NULL THEN
+        SELECT EDUARDED.PAYS_SEQ.NEXTVAL INTO :NEW.PAY_ID FROM DUAL;
     END IF;
 END;
 
@@ -228,8 +228,8 @@ CREATE OR REPLACE TRIGGER DIRECTIONS_TRG
 BEFORE INSERT ON DIRECTIONS
 FOR EACH ROW
 BEGIN
-    IF :NEW.ID IS NULL THEN
-        SELECT EDUARDED.DIRECTIONS_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+    IF :NEW.DIRECTION_ID IS NULL THEN
+        SELECT EDUARDED.DIRECTIONS_SEQ.NEXTVAL INTO :NEW.DIRECTION_ID FROM DUAL;
     END IF;
 END;
 
@@ -237,8 +237,8 @@ CREATE OR REPLACE TRIGGER TRANSACTIONS_TRG
 BEFORE INSERT ON TRANSACTIONS
 FOR EACH ROW
 BEGIN
-    IF :NEW.ID IS NULL THEN
-        SELECT EDUARDED.TRANSACTIONS_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+    IF :NEW.TRANSACTION_ID IS NULL THEN
+        SELECT EDUARDED.TRANSACTIONS_SEQ.NEXTVAL INTO :NEW.TRANSACTION_ID FROM DUAL;
     END IF;
 END;
 
@@ -246,8 +246,8 @@ CREATE OR REPLACE TRIGGER TRPR_TRG
 BEFORE INSERT ON TRANSACTIONPRODUCT
 FOR EACH ROW
 BEGIN
-    IF :NEW.ID IS NULL THEN
-        SELECT EDUARDED.TRPR_SEQ.NEXTVAL INTO :NEW.ID FROM DUAL;
+    IF :NEW.TP_ID IS NULL THEN
+        SELECT EDUARDED.TRPR_SEQ.NEXTVAL INTO :NEW.TP_ID FROM DUAL;
     END IF;
 END;
 
@@ -272,33 +272,879 @@ END;
 /*Crear o Reemplazar Vistas*/
 
 CREATE OR REPLACE VIEW SESSION_START AS
-SELECT ID, ACTIVE, CODE, NAME, SURNAME, PHONE, EMAIL, PASSWORD, IMAGE
+SELECT USER_ID, ACTIVE, CODE, NAME, SURNAME, PHONE, EMAIL, PASSWORD, IMAGE
 FROM users;
 
 CREATE OR REPLACE VIEW PRODUCT_DETAIL AS
-SELECT ID, USER_ID, NAME, PRICE, UNITS, CONTENT, STOCK, DESCRIPTION, IMAGE
+SELECT PRODUCT_ID, USER_ID, NAME, PRICE, UNITS, CONTENT, STOCK, DESCRIPTION, IMAGE
 FROM products;
 
 CREATE OR REPLACE VIEW PRODUCT_LIST AS
-SELECT ID, ACTIVE, NAME, PRICE, IMAGE
+SELECT PRODUCT_ID, ACTIVE, NAME, PRICE, IMAGE
 FROM products;
 
 CREATE OR REPLACE VIEW TRANSACTIONS_LIST AS
-SELECT ID, ID_BUYER, NUMBER_BILL, DATE_TIME
+SELECT TRANSACTION_ID, BUYER_ID, NUMBER_BILL, DATE_TIME
 FROM transactions;
 
 CREATE OR REPLACE VIEW PRODUCT_LIST_MANAGEMENT AS
-SELECT ID, ACTIVE, NAME, PRICE, UNITS, CONTENT, STOCK
+SELECT PRODUCT_ID, ACTIVE, NAME, PRICE, UNITS, CONTENT, STOCK
 FROM products;
 
 CREATE OR REPLACE VIEW DIRECTIONS_LIST_MANAGEMENT AS
-SELECT ID, ACTIVE, CARRER, STREET, POSTAL_CODE, DIRECTION 
+SELECT DIRECTION_ID, ACTIVE, CARRER, STREET, POSTAL_CODE, DIRECTION 
 FROM directions;
 
 CREATE OR REPLACE VIEW PAYS_LIST_MANAGEMENT AS
-SELECT ID, ACTIVE, ELECTION, NUMBER_ELECTION
+SELECT PAY_ID, ACTIVE, ELECTION, NUMBER_ELECTION
 FROM pays;
 
 CREATE OR REPLACE VIEW PRODUCT_DATA_PU AS
-SELECT ID, USER_ID, PRICE
+SELECT PRODUCT_ID, USER_ID, PRICE
 FROM products;
+
+/*Funciones*/
+
+create or replace FUNCTION DECREASE_INVENTORY(p_product_id IN NUMBER, t_cantidad IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE products
+    SET units = units - t_cantidad
+    WHERE product_id = p_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION DELETE_DIRECTION(d_direction_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE directions
+    SET active = 0
+    WHERE direction_id = d_direction_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar la direccion';
+END;
+
+create or replace FUNCTION DELETE_PAY(p_pay_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE pays
+    SET active = 0
+    WHERE pay_id = p_pay_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION DELETE_PRODUCT(p_product_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE products
+    SET active = 0
+    WHERE product_id = p_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el producto';
+END;
+
+create or replace FUNCTION DELETE_USER(u_user_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE users
+    SET active = 0
+    WHERE user_id = u_user_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el usuario';
+END;
+
+create or replace FUNCTION DETAIL_PRODUCT(p_product_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT * 
+        FROM PRODUCT_DETAIL 
+        WHERE product_id = p_product_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END DETAIL_PRODUCT;
+
+create or replace FUNCTION DETAIL_SALE(t_transaction_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT u.name AS USER_NAME, u.surname, u.email, u.phone, d.carrer, d.street, d.postal_code, d.direction, 
+        pa.election, pa.number_election, p.name AS PRODUCT_NAME, p.price, p.content
+        FROM TRANSACTIONS t
+        INNER JOIN TRANSACTIONPRODUCT tp ON t.transaction_id = tp.transaction_id
+        INNER JOIN products p ON p.product_id = tp.transaction_id
+        INNER JOIN users u ON u.user_id = t.buyer_id
+        INNER JOIN pays pa ON pa.pay_id = t.pay_id
+        INNER JOIN directions d ON d.direction_id = t.direction_id
+        WHERE t.transaction_id = t_transaction_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END DETAIL_SALE;
+
+create or replace FUNCTION DETAIL_SHOP(t_transaction_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT u.name AS USER_NAME, u.surname, u.email, u.phone, d.carrer, d.street, d.postal_code, 
+        d.direction, pa.election, pa.number_election, p.name AS PRODUCT_NAME, p.price, p.content
+        FROM TRANSACTIONS t
+        INNER JOIN TRANSACTIONPRODUCT tp ON t.transaction_id = tp.transaction_id
+        INNER JOIN products p ON p.product_id = tp.transaction_id
+        INNER JOIN users u ON u.user_id = tp.seller_id
+        INNER JOIN pays pa ON pa.pay_id = t.pay_id
+        INNER JOIN directions d ON d.direction_id = t.direction_id
+        WHERE t.transaction_id = t_transaction_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END DETAIL_SHOP;
+
+create or replace FUNCTION DIRECTION_LIST_MANAGEMENT(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM DIRECTIONS
+    WHERE ACTIVE = 1
+    AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END DIRECTION_LIST_MANAGEMENT;
+
+create or replace FUNCTION GET_DATA_PRODUCT_P(p_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor con el registro del usuario que coincide por email y está activo
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PRODUCT_DATA_PU
+    WHERE product_id = p_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Manejo de excepción si no se encuentra el usuario
+        RETURN NULL;
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_DATA_PRODUCT_P;
+
+create or replace FUNCTION GET_DIRECTION(d_direction_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT * 
+        FROM DIRECTIONS_LIST_MANAGEMENT 
+        WHERE direction_id = d_direction_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END GET_DIRECTION;
+
+create or replace FUNCTION GET_LAST_CAR
+RETURN SYS_REFCURSOR
+IS
+    cur SYS_REFCURSOR;
+BEGIN
+    OPEN cur FOR
+    SELECT NVL(MAX(CAR_ID), 0) AS ID
+    FROM CARS;
+    
+    RETURN cur;
+END;
+
+create or replace FUNCTION GET_LAST_TRANSACTION
+RETURN SYS_REFCURSOR
+IS
+    cur SYS_REFCURSOR;
+BEGIN
+    OPEN cur FOR
+    SELECT NVL(MAX(transaction_id), 0) AS ID
+    FROM TRANSACTIONS_LIST;
+    
+    RETURN cur;
+END;
+
+create or replace FUNCTION GET_PASSWORD(p_email IN VARCHAR2)
+RETURN VARCHAR2
+IS
+    v_password VARCHAR2(255);
+BEGIN
+    -- Asegúrate de usar un filtro que garantice una única fila
+    SELECT password
+    INTO v_password
+    FROM USERS
+    WHERE email = p_email
+    AND ROWNUM = 1;  -- Garantiza que solo se obtenga una fila
+
+    RETURN v_password;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN TOO_MANY_ROWS THEN
+        -- Maneja el caso en que se devuelvan múltiples filas (opcional)
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END GET_PASSWORD;
+
+create or replace FUNCTION GET_PAY(p_pay_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT * 
+        FROM PAYS_LIST_MANAGEMENT 
+        WHERE pay_id = p_pay_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END GET_PAY;
+
+create or replace FUNCTION GET_PRODUCT(p_product_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT * 
+        FROM PRODUCT_DETAIL 
+        WHERE product_id = p_product_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END GET_PRODUCT;
+
+create or replace FUNCTION GET_USER(u_id IN NUMBER)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor con el registro del usuario que coincide por email y está activo
+    OPEN v_cursor FOR
+    SELECT *
+    FROM SESSION_START
+    WHERE user_id = u_id;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Manejo de excepción si no se encuentra el usuario
+        RETURN NULL;
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_USER;
+
+create or replace FUNCTION INCREASE_PROFITS(t_id_seller IN NUMBER, t_total IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE users
+    SET earnings = earnings + t_total
+    WHERE user_id = t_id_seller;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION LOGIN(u_email IN VARCHAR2)
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor con el registro del usuario que coincide por email y está activo
+    OPEN v_cursor FOR
+    SELECT *
+    FROM SESSION_START
+    WHERE email = u_email
+    AND ACTIVE = 1;
+
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Manejo de excepción si no se encuentra el usuario
+        RETURN NULL;
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END LOGIN;
+
+create or replace FUNCTION PAY_LIST_MANAGEMENT(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PAYS
+    WHERE ACTIVE = 1
+    AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PAY_LIST_MANAGEMENT;
+
+create or replace FUNCTION PRODUCTS_LIST(
+    p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los productos donde ACTIVE sea igual a 1
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PRODUCTS
+    WHERE ACTIVE = 1 AND UNITS > 0
+    AND (p_user_id IS NULL OR USER_ID != p_user_id); -- Si p_user_id es NULL, selecciona todos los productos, si no, selecciona los productos del usuario.
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PRODUCTS_LIST;
+
+create or replace FUNCTION PRODUCTS_LIST_CAR(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT p.image, p.name, p.price, p.units
+    FROM CARS c
+    INNER JOIN carproduct cp ON c.car_id = cp.car_id
+    INNER JOIN products p ON p.product_id = cp.product_id
+    WHERE c.USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PRODUCTS_LIST_CAR;
+
+create or replace FUNCTION PRODUCTS_LIST_MANAGEMENT(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PRODUCTS
+    WHERE ACTIVE = 1
+    AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PRODUCTS_LIST_MANAGEMENT;
+
+create or replace FUNCTION REGISTER_CAR(
+    c_user_id IN NUMBER,
+    c_active IN NUMBER,
+    c_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO CARS (user_id, active, created_at)
+        VALUES (c_user_id, c_active, c_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_CP(
+    cp_id_car IN NUMBER,
+    cp_id_product IN NUMBER,
+    cp_active IN NUMBER,
+    cp_units IN NUMBER,
+    cp_price IN NUMBER,
+    cp_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO carproduct (car_id, product_id, active, units, price, created_at)
+        VALUES (cp_id_car, cp_id_product, cp_active, cp_units, cp_price, cp_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_DIRECTION(
+    d_user_id IN NUMBER,
+    d_active IN NUMBER,
+    d_carrer IN VARCHAR2,
+    d_street IN VARCHAR2,
+    d_postal_code IN NUMBER,
+    d_direction IN VARCHAR2, 
+    d_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO DIRECTIONS (user_id, active, carrer, street, postal_code, direction, created_at)
+        VALUES (d_user_id, d_active, d_carrer, d_street, d_postal_code, d_direction, d_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar direccion: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_PAY(
+    p_user_id IN NUMBER,
+    p_active IN NUMBER,
+    p_election IN VARCHAR2,
+    p_number_election IN NUMBER,
+    p_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO PAYS (user_id, active, election, number_election, created_at)
+        VALUES (p_user_id, p_active, p_election, p_number_election, p_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar pago: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_PRODUCT(
+    p_user_id IN NUMBER,
+    p_active IN NUMBER,
+    p_name IN VARCHAR2,
+    p_price IN NUMBER,
+    p_units IN NUMBER,
+    p_content IN VARCHAR2,
+    p_stock IN NUMBER,
+    p_description IN VARCHAR2,
+    p_image IN VARCHAR2,    
+    p_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO PRODUCTS (user_id, active, name, price, units, content, stock, description, image, created_at)
+        VALUES (p_user_id, p_active, p_name, p_price, p_units, p_content, p_stock, p_description, p_image, p_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar producto: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_USER(
+    u_active IN NUMBER,
+    u_code IN VARCHAR2,
+    u_name IN VARCHAR2,
+    u_surname IN VARCHAR2,
+    u_birthdate IN DATE,
+    u_genre IN VARCHAR2,
+    u_phone IN NUMBER,
+    u_email IN VARCHAR2,
+    u_password IN VARCHAR2,
+    u_image IN VARCHAR2,
+    u_earnings IN NUMBER,
+    u_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO USERS (active, code, name, surname, birthdate, genre, phone, email, password, image, earnings, created_at)
+        VALUES (u_active, u_code, u_name, u_surname, u_birthdate, u_genre, u_phone, u_email, u_password, u_image, u_earnings, u_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION SALES_LIST(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM TRANSACTIONS_LIST tl
+    INNER JOIN TRANSACTIONPRODUCT tp ON tp.transaction_id = tl.transaction_id
+    WHERE tp.seller_id = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END SALES_LIST;
+
+create or replace FUNCTION SHOPPING_LIST(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM TRANSACTIONS_LIST
+    WHERE buyer_id = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END SHOPPING_LIST;
+
+create or replace FUNCTION UPDATE_DIRECTION(
+    d_direction_id IN NUMBER,
+    d_carrer IN VARCHAR2 DEFAULT NULL,
+    d_street IN VARCHAR2 DEFAULT NULL,
+    d_postal_code IN NUMBER DEFAULT NULL,
+    d_direction IN VARCHAR2 DEFAULT NULL
+) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Construir la consulta dinámica para actualizar solo los campos no nulos
+    UPDATE directions
+    SET 
+        carrer = NVL(d_carrer, carrer),
+        street = NVL(d_street, street),
+        postal_code = NVL(d_postal_code, postal_code),
+        direction = NVL(d_direction, direction)
+    WHERE direction_id = d_direction_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 'Actualización exitosa';
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al actualizar la direccion';
+END;
+
+create or replace FUNCTION UPDATE_PAY(
+    p_pay_id IN NUMBER,
+    p_election IN VARCHAR2 DEFAULT NULL,
+    p_election_number IN VARCHAR2 DEFAULT NULL
+) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Construir la consulta dinámica para actualizar solo los campos no nulos
+    UPDATE pays
+    SET 
+        election = NVL(p_election, election),
+        number_election = NVL(p_election_number, number_election)
+    WHERE pay_id = p_pay_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 'Actualización exitosa';
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al actualizar el pago';
+END;
+
+create or replace FUNCTION UPDATE_PRODUCT(
+    p_product_id IN NUMBER,
+    p_name IN VARCHAR2 DEFAULT NULL,
+    p_price IN NUMBER DEFAULT NULL,
+    p_units IN NUMBER DEFAULT NULL,
+    p_content IN VARCHAR2 DEFAULT NULL,
+    p_stock IN NUMBER DEFAULT NULL,
+    p_description IN VARCHAR2 DEFAULT NULL,
+    p_image IN VARCHAR2 DEFAULT NULL
+) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Construir la consulta dinámica para actualizar solo los campos no nulos
+    UPDATE products
+    SET 
+        name = NVL(p_name, name),
+        price = NVL(p_price, price),
+        units = NVL(p_units, units),
+        content = NVL(p_content, content),
+        stock = NVL(p_stock, stock),
+        description = NVL(p_description, description),      
+        image = NVL(p_image, image)
+    WHERE product_id = p_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 'Actualización exitosa';
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al actualizar el producto';
+END;
+
+create or replace FUNCTION UPDATE_USER(
+    u_user_id IN NUMBER,
+    u_name IN VARCHAR2 DEFAULT NULL,
+    u_surname IN VARCHAR2 DEFAULT NULL,
+    u_phone IN NUMBER DEFAULT NULL,
+    u_email IN VARCHAR2 DEFAULT NULL,
+    u_image IN VARCHAR2 DEFAULT NULL
+) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Construir la consulta dinámica para actualizar solo los campos no nulos
+    UPDATE users
+    SET 
+        name = NVL(u_name, name),
+        surname = NVL(u_surname, surname),
+        phone = NVL(u_phone, phone),
+        email = NVL(u_email, email),
+        image = NVL(u_image, image)
+    WHERE user_id = u_user_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 'Actualización exitosa';
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al actualizar el usuario';
+END;
+
+create or replace FUNCTION VALIDATE_UNIQUE_EMAIL(u_email VARCHAR2)
+RETURN NUMBER
+IS
+    email_existe NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO email_existe
+    FROM users
+    WHERE email = u_email;
+
+    IF email_existe > 0 THEN
+        RETURN 1;
+    ELSE
+        RETURN 0;
+    END IF;
+END VALIDATE_UNIQUE_EMAIL;
+
+create or replace FUNCTION REGISTER_TRANSACTION(
+    t_number_bill IN NUMBER,
+    t_id_buyer IN NUMBER,
+    t_id_direction IN NUMBER,
+    t_id_pay IN NUMBER,
+    t_total IN NUMBER,
+    t_date_time IN DATE,
+    t_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO TRANSACTIONS (number_bill, buyer_id, direction_id, pay_id, total, date_time, created_at)
+        VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, t_total, t_date_time, t_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_TP(
+    tp_id_transaction IN NUMBER,
+    tp_id_product IN NUMBER,
+    tp_units IN NUMBER,
+    tp_price IN NUMBER,
+    tp_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO TRANSACTIONPRODUCT (transaction_id, product_id, seller_id, units, created_at)
+        VALUES (tp_id_transaction, tp_id_product, tp_units, tp_price, tp_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
