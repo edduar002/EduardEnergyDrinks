@@ -98,7 +98,7 @@
                 /*Instanciar el objeto*/
                 $model = new Model();
                 /*Listar todos los usuarios desde la base de datos*/
-                $datos = $model -> getUser($_SESSION['loginsucces']['ID']);
+                $datos = $model -> getUser($_SESSION['loginsucces']['USER_ID']);
                 /*Retornar el resultado*/
                 return $datos;
             }

@@ -46,7 +46,7 @@
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
-                $user_id = $_SESSION['loginsucces']['ID'];
+                $user_id = $_SESSION['loginsucces']['USER_ID'];
                 $carrer = isset($_POST['carrer']) ? $_POST['carrer'] : false;
                 $street = isset($_POST['street']) ? $_POST['street'] : false;
                 $postal_code = isset($_POST['postalCode']) ? $_POST['postalCode'] : false;

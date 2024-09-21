@@ -1148,3 +1148,27 @@ BEGIN
 
     RETURN v_resultado;
 END;
+
+CREATE OR REPLACE FUNCTION UNIQUE_CP(c_id_user IN NUMBER, cp_id_product IN NUMBER)
+RETURN NUMBER
+IS
+  v_count NUMBER;
+BEGIN
+  SELECT COUNT(*)
+  INTO v_count
+  FROM cars 
+  WHERE active = 1 
+  AND car_id IN (
+    SELECT car_id 
+    FROM carproduct 
+    WHERE user_id = c_id_user 
+    AND product_id = cp_id_product 
+    AND active = 1
+  );
+  
+  IF v_count > 0 THEN
+    RETURN 1;
+  ELSE
+    RETURN 0;
+  END IF;
+END;

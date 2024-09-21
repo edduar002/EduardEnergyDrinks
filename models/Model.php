@@ -1121,6 +1121,30 @@
             return $products;
         }
 
+        function uniqueCp($idUsuario, $idProducto) {
+            $sql = "BEGIN :result := UNIQUE_CP(:c_id_user, :cp_id_product); END;";
+            
+            // Preparar la consulta SQL
+            $stmt = oci_parse($this->conn, $sql);
+        
+            // Variable para almacenar el resultado
+            $result = 0;
+        
+            // Asignar parámetros
+            oci_bind_by_name($stmt, ":c_id_user", $idUsuario);
+            oci_bind_by_name($stmt, ":cp_id_product", $idProducto);
+            oci_bind_by_name($stmt, ":result", $result, -1, SQLT_INT);
+        
+            // Ejecutar la consulta
+            oci_execute($stmt);
+        
+            // Cerrar el recurso
+            oci_free_statement($stmt);
+        
+            // Retornar el resultado (1 o 0)
+            return $result;
+        }        
+
     }
 
 ?>

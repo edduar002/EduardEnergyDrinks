@@ -12,7 +12,8 @@
         public function windowCar(){
             /*Instanciar modelo*/
             $model = new Model();
-            $list = $model -> productsListCar($_SESSION['loginsucces']['ID']);
+            $total = 0;
+            $list = $model -> productsListCar($_SESSION['loginsucces']['USER_ID']);
             require_once "views/transaction/Car.html";
         }
 
@@ -28,10 +29,16 @@
                 if($idProduct && $cantidad){
                     /*Instanciar modelo*/
                     $model = new Model();
-                    $registro = $model -> registercar($_SESSION['loginsucces']['ID'], 1, $created_at2);
-                    if($registro){
-                        $id_car = $model -> getLastCar();
-                        $registro2 = $model -> registerCarProduct($id_car, $idProduct, 1, $cantidad, 100, $created_at2);
+                    $unico = $model -> uniqueCp($_SESSION['loginsucces']['USER_ID'], $idProduct);
+                    if($unico == 0){
+                        $registro = $model -> registercar($_SESSION['loginsucces']['USER_ID'], 1, $created_at2);
+                        if($registro){
+                            $id_car = $model -> getLastCar();
+                            $registro2 = $model -> registerCarProduct($id_car, $idProduct, 1, $cantidad, 100, $created_at2);
+                        }
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("carerror", "Ya has agregado el producto al carrito", "?controller=transactionController&action=windowCar");
                     }
                 /*De lo contrario*/    
                 }else{
@@ -43,7 +50,6 @@
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=windowProducts");
             }
-            $this -> windowCar();
         }
 
         /*Funcion para abrir ventana de registro*/
@@ -59,9 +65,9 @@
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Obtener lista de direcciones propias*/
-                    $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
+                    $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
                     /*Obtener lista de pagos propias*/
-                    $listPays = $model->payListManagement($_SESSION['loginsucces']['ID']);
+                    $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
                     /*Incluir la vista*/
                     require_once "views/transaction/Purchase.html";
                 /*De lo contrario*/    
@@ -136,7 +142,7 @@
             /*Obtener factura*/
             $number_bill = $model -> getLastTransaction() + 1000;
             /*Obtener comprador*/
-            $idBuyer = $_SESSION['loginsucces']['ID'];
+            $idBuyer = $_SESSION['loginsucces']['USER_ID'];
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/

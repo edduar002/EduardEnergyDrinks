@@ -50,9 +50,9 @@
     <br>
     <div class="text-center">
         <form id="purchaseForm" action="<?=init?><?=transaction?><?=purchase?>" method="post">
-            <input type="hidden" name="id_direction" value="<?=$direction['ID']?>">
-            <input type="hidden" name="id_pay" value="<?=$pay['ID']?>">
-            <input type="hidden" name="idProduct" value="<?=$product['ID']?>">
+            <input type="hidden" name="id_direction" value="<?=$direction['DIRECTOIN_ID']?>">
+            <input type="hidden" name="id_pay" value="<?=$pay['PAY_ID']?>">
+            <input type="hidden" name="idProduct" value="<?=$product['PRODUCT_ID']?>">
             <input type="hidden" name="cantidad" value="<?=$cantidad?>">
             <button type="button" class="btn btn-primary" id="openModalBtn">Realizar compra</button>
         </form>

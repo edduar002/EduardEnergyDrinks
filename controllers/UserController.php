@@ -32,7 +32,7 @@
             /*Instanciar el modelo*/
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los productos*/  
-            $listProducts = $model->productsListManagement($_SESSION['loginsucces']['ID']);
+            $listProducts = $model->productsListManagement($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementProducts.html";
         }
@@ -42,7 +42,7 @@
             /*Instanciar el modelo*/
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene las direcciones*/            
-            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['ID']);
+            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementDirections.html";
         }
@@ -52,7 +52,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los pagos*/  
-            $listPays = $model->payListManagement($_SESSION['loginsucces']['ID']);
+            $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementPays.html";
         }
@@ -68,7 +68,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los pagos*/  
-            $list = $model->shoppingList($_SESSION['loginsucces']['ID']);
+            $list = $model->shoppingList($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/MyShops.html";
         }
@@ -78,7 +78,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los pagos*/  
-            $list = $model->salesList($_SESSION['loginsucces']['ID']);
+            $list = $model->salesList($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/MySales.html";
         }

@@ -46,7 +46,7 @@
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
-                $user_id = $_SESSION['loginsucces']['ID'];
+                $user_id = $_SESSION['loginsucces']['USER_ID'];
                 $election = isset($_POST['election']) ? $_POST['election'] : false;
                 $electionNumber = isset($_POST['electionNumber']) ? $_POST['electionNumber'] : false;
                 $created_at = date('Y-m-d');

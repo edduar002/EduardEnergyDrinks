@@ -25,7 +25,7 @@
             <br>
             <?php if(isset($_SESSION['loginsucces'])) : ?>
                 <form action="<?=init?><?=transaction?><?=registerCar?>" method="post">
-                    <input type="hidden" name="idProduct" value="<?=$resultado['ID']?>">
+                    <input type="hidden" name="idProduct" value="<?=$resultado['PRODUCT_ID']?>">
                     <input type="hidden" name="vendedor" value="<?=$resultado['USER_ID']?>">
                     <div class="form-group">
                         <label for="cantidad">Cantidad</label>

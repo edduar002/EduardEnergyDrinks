@@ -27,7 +27,7 @@
                             <br>
                         <?php foreach($listDirections as $list) : ?>
                             <div>
-                                <input type="radio" id="pay_id" name="id_direction" value="<?=$list['ID']?>" checked>
+                                <input type="radio" id="pay_id" name="id_direction" value="<?=$list['DIRECTION_ID']?>" checked>
                                 <label class="d-block" for="id_direction">Carrera: <?=$list['CARRER']?></label>
                                 <label class="d-block" for="id_direction">Calle: <?=$list['STREET']?></label>
                                 <label class="d-block" for="id_direction">Codigo Postal: <?=$list['POSTAL_CODE']?></label>
@@ -47,7 +47,7 @@
                         <br>
                         <?php foreach($listPays as $list) : ?>
                             <div>
-                                <input type="radio" id="pay_direction" name="id_pay" value="<?=$list['ID']?>" checked>
+                                <input type="radio" id="pay_direction" name="id_pay" value="<?=$list['PAY_ID']?>" checked>
                                 <label class="d-block" for="id_pay">Eleccion: <?=$list['ELECTION']?></label>
                                 <label class="d-block" for="id_pay">Numero: <?=$list['NUMBER_ELECTION']?></label>
                             </div>

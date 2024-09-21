@@ -24,7 +24,7 @@
             /*Comprobar si el usuario esta logueado*/
             if(isset($_SESSION['loginsucces'])){
                 /*Establecer el id del usuario con el id del usuario logueado*/
-                $user_id = $_SESSION['loginsucces']['ID'];
+                $user_id = $_SESSION['loginsucces']['USER_ID'];
             }
             /*Obtener la lista de productos*/        
             $listProducts = $model->productsList($user_id);
@@ -63,7 +63,7 @@
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
-                $user_id = $_SESSION['loginsucces']['ID'];
+                $user_id = $_SESSION['loginsucces']['USER_ID'];
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $price = isset($_POST['price']) ? $_POST['price'] : false;
                 $units = isset($_POST['units']) ? $_POST['units'] : false;
