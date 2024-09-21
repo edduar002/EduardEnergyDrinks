@@ -17,6 +17,25 @@
             require_once "views/transaction/Car.html";
         }
 
+        public function decreaseQuantity(){
+            $model = new Model();
+        }
+
+        public function increaseQuantity(){
+            $model = new Model();
+        }
+
+
+        public function deleteProductCar(){
+            $model = new Model();
+        }
+
+
+        public function deleteCar(){
+            $model = new Model();
+        }
+
+
         public function registerCar(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {

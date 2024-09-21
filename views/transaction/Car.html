@@ -34,9 +34,9 @@
                                     <h5 class="card-title"><?=$listCar['NAME']?></h5>
                                     <p class="card-text"><?=$listCar['PRICE']?></p>
                                     <div class="d-flex align-items-center">
-                                        <a href="#" class="btn btn-outline-secondary btn-sm mr-2">-</a>
+                                        <a href="<?=init?><?=transaction?><?=decreaseQuantity?>" class="btn btn-outline-secondary btn-sm mr-2">-</a>
                                         <input type="text" class="form-control text-center" value="<?=$listCar['AMOUNT']?>" style="width: 50px;">
-                                        <a href="#" class="btn btn-outline-secondary btn-sm ml-2">+</a>
+                                        <a href="<?=init?><?=transaction?><?=increaseQuantity?>" class="btn btn-outline-secondary btn-sm ml-2">+</a>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                             </div>
                             <!-- Botón de eliminar -->
                             <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                <a href="" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="<?=init?><?=transaction?><?=deleteProductCar?>" class="btn btn-danger btn-sm">Eliminar</a>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
             <!-- Botón de eliminar todo el carrito -->
             <div class="col-md-12 mt-4">
                 <div class="d-flex justify-content-end">
-                    <a href="eliminarTodoCarrito.php" class="btn btn-danger">Eliminar todo el carrito</a>
+                    <a href="<?=init?><?=transaction?><?=deleteCar?>" class="btn btn-danger">Eliminar todo el carrito</a>
                 </div>
             </div>
         </div>

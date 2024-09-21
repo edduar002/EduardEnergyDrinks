@@ -65,5 +65,9 @@
     define("confirm", "&action=windowConfirm");
     define("detailShop", "&action=detailShop");
     define("detailSale", "&action=detailSale");
+    define("deleteProductCar", "&action=deleteProductCar");
+    define("deleteCar", "&action=deleteCar");
+    define("increaseQuantity", "&action=increaseQuantity");
+    define("decreaseQuantity", "&action=decreaseQuantity");
 
 ?>
