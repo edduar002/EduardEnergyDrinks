@@ -1145,6 +1145,110 @@
             return $result;
         }        
 
+        public function decreaseQuantity($productId){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DECREASE_QUANTITY(:cp_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':cp_id', $productId);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        public function deleteCar($userId){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DELETE_CAR(:user_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':user_id', $userId);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        public function deleteProductCar($productId){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DELETE_PRODUCT_CAR(:cp_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':cp_id', $productId);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        public function increaseQuantity($productId){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := INCREASE_QUANTITY(:cp_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':cp_id', $productId);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
     }
 
 ?>

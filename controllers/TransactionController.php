@@ -18,21 +18,58 @@
         }
 
         public function decreaseQuantity(){
-            $model = new Model();
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $idProduct = isset($_GET['id']) ? $_GET['id'] : false;
+                if($idProduct){
+                    $model = new Model();
+                    $resultado = $model -> decreaseQuantity($idProduct);  
+                    if($resultado){
+                        header("Location:"."http://localhost/EduardEnergyDrinks/?controller=transactionController&action=windowCar");
+                    }
+                }              
+            }
         }
 
         public function increaseQuantity(){
-            $model = new Model();
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $idProduct = isset($_GET['id']) ? $_GET['id'] : false;
+                if($idProduct){
+                    $model = new Model();
+                    $resultado = $model -> increaseQuantity($idProduct);
+                    if($resultado){
+                        header("Location:"."http://localhost/EduardEnergyDrinks/?controller=transactionController&action=windowCar");
+                    }
+                }
+            }
         }
-
 
         public function deleteProductCar(){
-            $model = new Model();
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $idProduct = isset($_GET['id']) ? $_GET['id'] : false;
+                if($idProduct){
+                    $model = new Model();
+                    $resultado = $model -> deleteProductCar($idProduct);
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("carerror", "Ya has agregado el producto al carrito", "?controller=transactionController&action=windowCar");
+                    }
+                }
+            }
         }
-
 
         public function deleteCar(){
             $model = new Model();
+            $resultado = $model -> deleteCar($_SESSION['loginsucces']['USER_ID']);
+            if($resultado){
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("carerror", "Ya has agregado el producto al carrito", "?controller=productController&action=windowProducts");
+            }
         }
 
 
