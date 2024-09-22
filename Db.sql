@@ -32,7 +32,7 @@ DROP TABLE TRANSACTIONPRODUCT;
 
 DROP TABLE CARS;
 
-DROP TABLE CAR_PRODUCT;
+DROP TABLE CARPRODUCT;
 
 /*Eliminar Secuencias*/
 
@@ -324,6 +324,44 @@ EXCEPTION
         RETURN 'Error al eliminar el pago';
 END;
 
+create or replace FUNCTION DECREASE_QUANTITY(cp_product_id IN NUMBER, c_user_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE carproduct
+    SET units = units - 1 WHERE car_id IN (SELECT car_id FROM cars WHERE user_id = c_user_id)
+    AND product_id = cp_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION DELETE_CAR(user_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE cars
+    SET active = 0
+    WHERE user_id = user_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
 create or replace FUNCTION DELETE_DIRECTION(d_direction_id IN NUMBER) 
 RETURN VARCHAR2 AS
 BEGIN
@@ -379,6 +417,25 @@ EXCEPTION
     WHEN OTHERS THEN
         -- En caso de error, devolver un mensaje
         RETURN 'Error al eliminar el producto';
+END;
+
+create or replace FUNCTION DELETE_PRODUCT_CAR(cp_product_id IN NUMBER, c_user_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE carproduct
+    SET active = 0 WHERE car_id IN (SELECT car_id FROM cars WHERE user_id = c_user_id)
+    AND product_id = cp_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
 END;
 
 create or replace FUNCTION DELETE_USER(u_user_id IN NUMBER) 
@@ -650,6 +707,25 @@ EXCEPTION
         RETURN 'Error al eliminar el pago';
 END;
 
+create or replace FUNCTION INCREASE_QUANTITY(cp_product_id IN NUMBER, c_user_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE carproduct
+    SET units = units + 1 WHERE car_id IN (SELECT car_id FROM cars WHERE user_id = c_user_id)
+    AND product_id = cp_product_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
 create or replace FUNCTION LOGIN(u_email IN VARCHAR2)
 RETURN SYS_REFCURSOR
 IS
@@ -712,6 +788,53 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END PRODUCTS_LIST;
+
+create or replace FUNCTION PRODUCTS_LIST_CAR(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT p.product_id AS PRODUCT_ID, cp.cp_id, p.image, p.name, p.price, p.units, cp.units AS AMOUNT
+    FROM CARS c
+    INNER JOIN carproduct cp ON c.car_id = cp.car_id
+    INNER JOIN products p ON p.product_id = cp.product_id
+    WHERE c.USER_ID = p_user_id
+    AND cp.active = 1 AND c.active = 1;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PRODUCTS_LIST_CAR;
+
+create or replace FUNCTION PRODUCTS_LIST_CAR_P(
+    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT u.name AS NAME_SELLER, u.surname, u.surname, u.email, u.phone, cp.cp_id, p.image, p.name AS NAME_PRODUCT, p.price, p.units, p.content, cp.units AS AMOUNT
+    FROM CARS c
+    INNER JOIN carproduct cp ON c.car_id = cp.car_id
+    INNER JOIN products p ON p.product_id = cp.product_id
+    INNER JOIN users u ON u.user_id = p.user_id
+    WHERE c.USER_ID = p_user_id
+    AND cp.active = 1 AND c.active = 1;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END PRODUCTS_LIST_CAR_P;
 
 create or replace FUNCTION PRODUCTS_LIST_MANAGEMENT(
     p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
@@ -865,6 +988,58 @@ BEGIN
     RETURN v_resultado;
 END;
 
+create or replace FUNCTION REGISTER_TP(
+    tp_id_transaction IN NUMBER,
+    tp_id_product IN NUMBER,
+    tp_units IN NUMBER,
+    tp_price IN NUMBER,
+    tp_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO TRANSACTIONPRODUCT (transaction_id, product_id, seller_id, units, created_at)
+        VALUES (tp_id_transaction, tp_id_product, tp_units, tp_price, tp_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
+create or replace FUNCTION REGISTER_TRANSACTION(
+    t_number_bill IN NUMBER,
+    t_id_buyer IN NUMBER,
+    t_id_direction IN NUMBER,
+    t_id_pay IN NUMBER,
+    t_total IN NUMBER,
+    t_date_time IN DATE,
+    t_created_at IN DATE
+) RETURN VARCHAR2
+AS
+    v_resultado VARCHAR2(100);
+BEGIN
+    BEGIN
+        INSERT INTO TRANSACTIONS (number_bill, buyer_id, direction_id, pay_id, total, date_time, created_at)
+        VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, t_total, t_date_time, t_created_at);
+
+        COMMIT;
+        v_resultado := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
+            ROLLBACK;
+    END;
+
+    RETURN v_resultado;
+END;
+
 create or replace FUNCTION REGISTER_USER(
     u_active IN NUMBER,
     u_code IN VARCHAR2,
@@ -937,6 +1112,30 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END SHOPPING_LIST;
+
+create or replace FUNCTION UNIQUE_CP(c_id_user IN NUMBER, cp_id_product IN NUMBER)
+RETURN NUMBER
+IS
+  v_count NUMBER;
+BEGIN
+  SELECT COUNT(*)
+  INTO v_count
+  FROM cars 
+  WHERE active = 1 
+  AND car_id IN (
+    SELECT car_id 
+    FROM carproduct 
+    WHERE user_id = c_id_user 
+    AND product_id = cp_id_product 
+    AND active = 1
+  );
+  
+  IF v_count > 0 THEN
+    RETURN 1;
+  ELSE
+    RETURN 0;
+  END IF;
+END;
 
 create or replace FUNCTION UPDATE_DIRECTION(
     d_direction_id IN NUMBER,
@@ -1074,178 +1273,3 @@ BEGIN
         RETURN 0;
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
-
-create or replace FUNCTION REGISTER_TRANSACTION(
-    t_number_bill IN NUMBER,
-    t_id_buyer IN NUMBER,
-    t_id_direction IN NUMBER,
-    t_id_pay IN NUMBER,
-    t_total IN NUMBER,
-    t_date_time IN DATE,
-    t_created_at IN DATE
-) RETURN VARCHAR2
-AS
-    v_resultado VARCHAR2(100);
-BEGIN
-    BEGIN
-        INSERT INTO TRANSACTIONS (number_bill, buyer_id, direction_id, pay_id, total, date_time, created_at)
-        VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, t_total, t_date_time, t_created_at);
-
-        COMMIT;
-        v_resultado := 1;
-    EXCEPTION
-        WHEN OTHERS THEN
-            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
-            ROLLBACK;
-    END;
-
-    RETURN v_resultado;
-END;
-
-create or replace FUNCTION REGISTER_TP(
-    tp_id_transaction IN NUMBER,
-    tp_id_product IN NUMBER,
-    tp_units IN NUMBER,
-    tp_price IN NUMBER,
-    tp_created_at IN DATE
-) RETURN VARCHAR2
-AS
-    v_resultado VARCHAR2(100);
-BEGIN
-    BEGIN
-        INSERT INTO TRANSACTIONPRODUCT (transaction_id, product_id, seller_id, units, created_at)
-        VALUES (tp_id_transaction, tp_id_product, tp_units, tp_price, tp_created_at);
-
-        COMMIT;
-        v_resultado := 1;
-    EXCEPTION
-        WHEN OTHERS THEN
-            v_resultado := 'Error al registrar usuario: ' || SQLERRM;
-            ROLLBACK;
-    END;
-
-    RETURN v_resultado;
-END;
-
-CREATE OR REPLACE FUNCTION UNIQUE_CP(c_id_user IN NUMBER, cp_id_product IN NUMBER)
-RETURN NUMBER
-IS
-  v_count NUMBER;
-BEGIN
-  SELECT COUNT(*)
-  INTO v_count
-  FROM cars 
-  WHERE active = 1 
-  AND car_id IN (
-    SELECT car_id 
-    FROM carproduct 
-    WHERE user_id = c_id_user 
-    AND product_id = cp_id_product 
-    AND active = 1
-  );
-  
-  IF v_count > 0 THEN
-    RETURN 1;
-  ELSE
-    RETURN 0;
-  END IF;
-END;
-
-create or replace FUNCTION INCREASE_QUANTITY(cp_id IN NUMBER) 
-RETURN VARCHAR2 AS
-BEGIN
-    -- Actualizar el campo activo a 0 para el producto con el ID especificado
-    UPDATE carproduct
-    SET units = units + 1
-    WHERE cp_id = cp_id;
-    
-    -- Confirmar la transacción
-    COMMIT;
-    
-    -- Retornar un mensaje de éxito
-    RETURN 1;
-EXCEPTION
-    WHEN OTHERS THEN
-        -- En caso de error, devolver un mensaje
-        RETURN 'Error al eliminar el pago';
-END;
-
-create or replace FUNCTION PRODUCTS_LIST_CAR(
-    p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
-) RETURN SYS_REFCURSOR
-IS
-    v_cursor SYS_REFCURSOR;
-BEGIN
-    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
-    -- y el USER_ID sea el dueño del pago
-    OPEN v_cursor FOR
-    SELECT cp.cp_id, p.image, p.name, p.price, p.units, cp.units AS AMOUNT
-    FROM CARS c
-    INNER JOIN carproduct cp ON c.car_id = cp.car_id
-    INNER JOIN products p ON p.product_id = cp.product_id
-    WHERE c.USER_ID = p_user_id
-    AND cp.active = 1 AND c.active = 1;  -- Compara si el ID que llega es del dueño del pago
-
-    RETURN v_cursor; -- Retornar el cursor con los registros
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Manejo de otras excepciones
-        RAISE;
-END PRODUCTS_LIST_CAR;
-
-create or replace FUNCTION DECREASE_QUANTITY(cp_id IN NUMBER) 
-RETURN VARCHAR2 AS
-BEGIN
-    -- Actualizar el campo activo a 0 para el producto con el ID especificado
-    UPDATE carproduct
-    SET units = units - 1
-    WHERE cp_id = cp_id;
-    
-    -- Confirmar la transacción
-    COMMIT;
-    
-    -- Retornar un mensaje de éxito
-    RETURN 1;
-EXCEPTION
-    WHEN OTHERS THEN
-        -- En caso de error, devolver un mensaje
-        RETURN 'Error al eliminar el pago';
-END;
-
-create or replace FUNCTION DELETE_PRODUCT_CAR(cp_id IN NUMBER) 
-RETURN VARCHAR2 AS
-BEGIN
-    -- Actualizar el campo activo a 0 para el producto con el ID especificado
-    UPDATE carproduct
-    SET active = 0
-    WHERE cp_id = cp_id;
-    
-    -- Confirmar la transacción
-    COMMIT;
-    
-    -- Retornar un mensaje de éxito
-    RETURN 1;
-EXCEPTION
-    WHEN OTHERS THEN
-        -- En caso de error, devolver un mensaje
-        RETURN 'Error al eliminar el pago';
-END;
-
-create or replace FUNCTION DELETE_CAR(user_id IN NUMBER) 
-RETURN VARCHAR2 AS
-BEGIN
-    -- Actualizar el campo activo a 0 para el producto con el ID especificado
-    UPDATE cars
-    SET active = 0
-    WHERE user_id = user_id;
-    
-    -- Confirmar la transacción
-    COMMIT;
-    
-    -- Retornar un mensaje de éxito
-    RETURN 1;
-EXCEPTION
-    WHEN OTHERS THEN
-        -- En caso de error, devolver un mensaje
-        RETURN 'Error al eliminar el pago';
-END;

@@ -199,6 +199,7 @@
             if (isset($_GET)) {
                 /*Asignar los datos si llegan*/
                 $total = isset($_GET['total']) ? $_GET['total'] : false;
+                /*Comprobar si el dato ha llegado*/
                 if($total){
                     /*Instanciar modelo*/
                     $model = new Model();
@@ -208,11 +209,15 @@
                     $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
                     /*Incluir la vista*/
                     require_once "views/transaction/Purchase.html";
+                /*De lo contrario*/    
                 }else{
-
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
                 }
+            /*De lo contrario*/   
             }else{
-                
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
             }
         }
 
@@ -312,16 +317,19 @@
                                     header("Location:"."http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
                                 /*De lo contrario*/  
                                 }else{
-
+                                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                                    Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=transactionController&action=windowPurchase");
                                 }
                             /*De lo contrario*/  
                             }else{
-
+                                /*Crear la sesion y redirigir a la ruta pertinente*/
+                                Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=transactionController&action=windowPurchase");
                             }
                         }
                     /*De lo contrario*/  
                     }else{
-
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=transactionController&action=windowPurchase");
                     }
                 /*De lo contrario*/  
                 } else {
