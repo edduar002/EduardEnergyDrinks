@@ -1094,6 +1094,7 @@
             return $row['ID'];
         }
 
+        /*Funcion para listar los productos del carrito*/
         public function productsListCar($user_id){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := PRODUCTS_LIST_CAR(:user_id); END;';
@@ -1121,6 +1122,7 @@
             return $products;
         }
 
+        /*Funcion para comprobar si el producto ya ha sido previamente agregado al carrito*/
         function uniqueCp($idUsuario, $idProducto) {
             $sql = "BEGIN :result := UNIQUE_CP(:c_id_user, :cp_id_product); END;";
             
@@ -1145,6 +1147,7 @@
             return $result;
         }        
 
+        /*Funcion para decrementar la cantidad del carrito*/
         public function decreaseQuantity($productId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DECREASE_QUANTITY(:cp_id); END;'; 
@@ -1171,6 +1174,7 @@
             return $resultado;
         }
 
+        /*Funcion para eliminar todo el carrito*/
         public function deleteCar($userId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_CAR(:user_id); END;'; 
@@ -1197,6 +1201,7 @@
             return $resultado;
         }
 
+        /*Funcion para eliminar un producto del carrito*/
         public function deleteProductCar($productId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_PRODUCT_CAR(:cp_id); END;'; 
@@ -1223,6 +1228,7 @@
             return $resultado;
         }
 
+        /*Funcion para incrementar la cantidad del carrito*/
         public function increaseQuantity($productId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := INCREASE_QUANTITY(:cp_id); END;'; 

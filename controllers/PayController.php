@@ -29,7 +29,7 @@
                     $pay = $model -> getPay($pay_id);
                     /*Incluir la vista*/
                     require_once "views/pay/Update.html";
-                    /*De lo contrario*/     
+                /*De lo contrario*/     
                 }else {
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementPays");
@@ -61,14 +61,17 @@
                     if ($resultado != false) {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el pago", "?controller=userController&action=managementPays");
+                    /*De lo contrario*/  
                     } else {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
                     }
+                /*De lo contrario*/  
                 } else {
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
                 }
+            /*De lo contrario*/  
             } else {
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
@@ -116,7 +119,6 @@
                 $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
                 $election = isset($_POST['election']) ? $_POST['election'] : false;
                 $number_election = isset($_POST['number_election']) ? $_POST['number_election'] : false;
-
                 /*Si el dato existe*/
                 if($pay_id){
                     /*Instanciar modelo*/      

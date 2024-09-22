@@ -269,6 +269,7 @@
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
                     }
+                /*De lo contrario*/  
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=userController&action=myProfile");

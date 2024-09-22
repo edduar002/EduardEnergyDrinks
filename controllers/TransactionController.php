@@ -9,70 +9,135 @@
 
     class TransactionController{
 
+        /*Funcion para abrir la ventana de carrito*/
         public function windowCar(){
             /*Instanciar modelo*/
             $model = new Model();
+            /*Variable bandera del total del carrito*/
             $total = 0;
+            /*Obtener la lista de los productos agregados al carrito*/
             $list = $model -> productsListCar($_SESSION['loginsucces']['USER_ID']);
+            /*Incluir la vista*/
             require_once "views/transaction/Car.html";
         }
 
+        /*Funcion para disminuir la cantidad del producto del carrito*/
         public function decreaseQuantity(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_GET)) {
                 /*Asignar los datos si llegan*/
                 $idProduct = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Comprobar si llega el dato*/
                 if($idProduct){
+                    /*Instanciar modelo*/
                     $model = new Model();
+                    /*Llamar la funcion*/
                     $resultado = $model -> decreaseQuantity($idProduct);  
+                    /*Si el resultado es correcto*/
                     if($resultado){
+                        /*Redirigir*/
                         header("Location:"."http://localhost/EduardEnergyDrinks/?controller=transactionController&action=windowCar");
+                    /*De lo contrario*/
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al decrementar las unidades", "?controller=transactionController&action=windowCar");
                     }
+                /*De lo contrario*/
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al decrementar las unidades", "?controller=transactionController&action=windowCar");
                 }              
+            /*De lo contrario*/
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al decrementar las unidades", "?controller=transactionController&action=windowCar");
             }
         }
 
+        /*Funcion para aumentar la cantidad del producto del carrito*/
         public function increaseQuantity(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_GET)) {
                 /*Asignar los datos si llegan*/
                 $idProduct = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Comprobar si llega el dato*/
                 if($idProduct){
+                    /*Instanciar modelo*/
                     $model = new Model();
-                    $resultado = $model -> increaseQuantity($idProduct);
+                    /*Llamar la funcion*/
+                    $resultado = $model -> increaseQuantity($idProduct);  
+                    /*Si el resultado es correcto*/
                     if($resultado){
+                        /*Redirigir*/
                         header("Location:"."http://localhost/EduardEnergyDrinks/?controller=transactionController&action=windowCar");
+                    /*De lo contrario*/
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al incrementar las unidades", "?controller=transactionController&action=windowCar");
                     }
-                }
+                /*De lo contrario*/
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al incrementar las unidades", "?controller=transactionController&action=windowCar");
+                }              
+            /*De lo contrario*/
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowCar");
             }
         }
 
+        /*Funcion para eliminar un producto del carrito*/
         public function deleteProductCar(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_GET)) {
                 /*Asignar los datos si llegan*/
                 $idProduct = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Comprobar si el dato llego*/
                 if($idProduct){
+                    /*Instanciar el modelo*/
                     $model = new Model();
+                    /*Llamar la funcion que elimina el producto del carrito*/
                     $resultado = $model -> deleteProductCar($idProduct);
+                    /*Comprobar si se ha eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("carerror", "Ya has agregado el producto al carrito", "?controller=transactionController&action=windowCar");
+                        Helps::createSessionAndRedirect("carsucces", "El producto ha sido eliminado con exito", "?controller=transactionController&action=windowCar");
+                    /*De lo contrario*/
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("carerror", "Ha ocurrido en error al eliminar el producto", "?controller=transactionController&action=windowCar");
                     }
+                /*De lo contrario*/
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("carerror", "Ha ocurrido en error al eliminar el producto", "?controller=transactionController&action=windowCar");
                 }
+            /*De lo contrario*/
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowCar");
             }
         }
 
+        /*Funcion para eliminar todo el carrito*/
         public function deleteCar(){
+            /*Instanciar el modelo*/
             $model = new Model();
+            /*Llamar la funcion que elimina el carrito*/
             $resultado = $model -> deleteCar($_SESSION['loginsucces']['USER_ID']);
+            /*Comprobar si el carrito ha sido eliminado con exito*/
             if($resultado){
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("carerror", "Ya has agregado el producto al carrito", "?controller=productController&action=windowProducts");
+                Helps::createSessionAndRedirect("carsucces", "El carrito ha sido eliminado con exito", "?controller=productController&action=windowProducts");
+            /*De lo contrario*/
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al eliminar el carrito", "?controller=transactionController&action=windowCar");
             }
         }
 
-
+        /*Funcion para guardar productos en el carrito*/
         public function registerCar(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
@@ -85,57 +150,59 @@
                 if($idProduct && $cantidad){
                     /*Instanciar modelo*/
                     $model = new Model();
+                    /*Llamar la funcion que comprueba si el producto ya ha sido o no agregado al carrito previamente*/
                     $unico = $model -> uniqueCp($_SESSION['loginsucces']['USER_ID'], $idProduct);
+                    /*Comprobar si el producto no ha sido agregado previamente*/
                     if($unico == 0){
+                        /*Llamar la funcion que registra el producto en el carrito*/
                         $registro = $model -> registercar($_SESSION['loginsucces']['USER_ID'], 1, $created_at2);
+                        /*Comprobar si el registro ha sido exitoso*/
                         if($registro){
+                            /*Obtener el id del ultimo carrito registrado*/
                             $id_car = $model -> getLastCar();
+                            /*Llamar la funcion que registra el producto del carrito*/
                             $registro2 = $model -> registerCarProduct($id_car, $idProduct, 1, $cantidad, 100, $created_at2);
+                            /*Comprobar si el registro del producto del carrito fue exitoso*/
+                            if($registro2){
+                                /*Crear la sesion y redirigir a la ruta pertinente*/
+                                Helps::createSessionAndRedirect("carsucces", "El producto ha sido agregado con exito", "?controller=transactionController&action=windowCar");
+                            /*De lo contrario*/   
+                            }else{
+                                /*Crear la sesion y redirigir a la ruta pertinente*/
+                                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=detail&id=$idProduct");
+                            }
+                        /*De lo contrario*/   
+                        }else{
+                            /*Crear la sesion y redirigir a la ruta pertinente*/
+                            Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=detail&id=$idProduct");
                         }
+                    /*De lo contrario*/   
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("carerror", "Ya has agregado el producto al carrito", "?controller=transactionController&action=windowCar");
+                        Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=detail&id=$idProduct");
                     }
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=detail&id=$idProduct");
+                    Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=detail&id=$idProduct");
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=windowProducts");
+                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
             }
         }
 
         /*Funcion para abrir ventana de registro*/
         public function windowPurchase(){
-            /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
-                /*Asignar los datos si llegan*/
-                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
-                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
-                $vendedor = isset($_POST['vendedor']) ? $_POST['vendedor'] : false;
-                /*Comprobar si todos los datos llegaron*/
-                if($idProduct && $cantidad && $vendedor){
-                    /*Instanciar modelo*/
-                    $model = new Model();
-                    /*Obtener lista de direcciones propias*/
-                    $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
-                    /*Obtener lista de pagos propias*/
-                    $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
-                    /*Incluir la vista*/
-                    require_once "views/transaction/Purchase.html";
-                /*De lo contrario*/    
-                }else{
-                    /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=detail&id=$idProduct");
-                }
-            /*De lo contrario*/    
-            }else{
-                /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("transacionterror", "Ha ocurrido un error al realizar la compra", "?controller=productController&action=detail&id=$idProduct");
-            }
+            /*Instanciar modelo*/
+            $model = new Model();
+            /*Obtener lista de direcciones propias*/
+            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
+            /*Obtener lista de pagos propias*/
+            $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
+            /*Incluir la vista*/
+            require_once "views/transaction/Purchase.html";
         }
 
         /*Funcion para ver el detalle de la compra*/
@@ -160,6 +227,8 @@
 
         /*Funcion para abrir ventana de editar*/
         public function windowConfirm(){
+            var_dump(4);
+            die();
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
@@ -233,19 +302,27 @@
                                 $model -> increaseProfits($id_seller, $total);
                                 /*Redirigir*/
                                 header("Location:"."http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
+                            /*De lo contrario*/  
+                            }else{
+
                             }
+                        /*De lo contrario*/  
+                        }else{
+
                         }
-                    } else {
-                        /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
+                    /*De lo contrario*/  
+                    }else{
+
                     }
+                /*De lo contrario*/  
                 } else {
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
                 }
+            /*De lo contrario*/  
             } else {
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
+                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
             }
         }
 

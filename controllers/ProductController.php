@@ -90,18 +90,22 @@
                         if ($resultado == 1) {
                             /*Crear la sesion y redirigir a la ruta pertinente*/
                             Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el producto", "?controller=userController&action=managementProducts");
+                        /*De lo contrario*/  
                         } else {
                             /*Crear la sesion y redirigir a la ruta pertinente*/
                             Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
                         }
+                    /*De lo contrario*/  
                     } else {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("registroerror", "El archivo no corresponde a una imagen", "?controller=productController&action=windowRegister");
                     }
+                /*De lo contrario*/  
                 } else {
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
                 }
+            /*De lo contrario*/  
             }else {
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowRegister");
@@ -212,6 +216,7 @@
                             /*Crear la sesion y redirigir a la ruta pertinente*/
                             Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=productController&action=windowUpdate&id=$product_id");
                         }
+                    /*De lo contrario*/  
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=productController&action=windowUpdate&id=$product_id");

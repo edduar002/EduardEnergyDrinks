@@ -63,14 +63,17 @@
                     if ($resultado != false) {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente la direccion", "?controller=userController&action=managementDirections");
+                    /*De lo contrario*/  
                     } else {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=directionController&action=windowRegister");
                     }
+                /*De lo contrario*/  
                 } else {
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=directionController&action=windowRegister");
                 }
+            /*De lo contrario*/  
             } else {
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowRegister");
