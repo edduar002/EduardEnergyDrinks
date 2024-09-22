@@ -1148,12 +1148,13 @@
         }        
 
         /*Funcion para decrementar la cantidad del carrito*/
-        public function decreaseQuantity($productId){
+        public function decreaseQuantity($productId, $userId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := DECREASE_QUANTITY(:cp_id); END;'; 
+            $sql = 'BEGIN :resultado := DECREASE_QUANTITY(:cp_product_id, :c_user_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
-            oci_bind_by_name($stmt, ':cp_id', $productId);
+            oci_bind_by_name($stmt, ':cp_product_id', $productId);
+            oci_bind_by_name($stmt, ':c_user_id', $userId);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
             /*Asignar el valor de salida si estás usando la función*/ 
@@ -1202,12 +1203,13 @@
         }
 
         /*Funcion para eliminar un producto del carrito*/
-        public function deleteProductCar($productId){
+        public function deleteProductCar($productId, $userId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := DELETE_PRODUCT_CAR(:cp_id); END;'; 
+            $sql = 'BEGIN :resultado := DELETE_PRODUCT_CAR(:cp_product_id, :c_user_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
-            oci_bind_by_name($stmt, ':cp_id', $productId);
+            oci_bind_by_name($stmt, ':cp_product_id', $productId);
+            oci_bind_by_name($stmt, ':c_user_id', $userId);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
             /*Asignar el valor de salida si estás usando la función*/ 
@@ -1229,12 +1231,13 @@
         }
 
         /*Funcion para incrementar la cantidad del carrito*/
-        public function increaseQuantity($productId){
+        public function increaseQuantity($productId, $userId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := INCREASE_QUANTITY(:cp_id); END;'; 
+            $sql = 'BEGIN :resultado := INCREASE_QUANTITY(:cp_product_id, :c_user_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
-            oci_bind_by_name($stmt, ':cp_id', $productId);
+            oci_bind_by_name($stmt, ':cp_product_id', $productId);
+            oci_bind_by_name($stmt, ':c_user_id', $userId);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
             /*Asignar el valor de salida si estás usando la función*/ 
@@ -1253,6 +1256,34 @@
             oci_close($this->conn);
             /*Retornar el resultado si es una función*/ 
             return $resultado;
+        }
+
+        /*Funcion para listar los productos del carrito al confirmar la compra*/
+        public function productsListCarP($user_id){
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := PRODUCTS_LIST_CAR_P(:user_id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $products;
         }
 
     }

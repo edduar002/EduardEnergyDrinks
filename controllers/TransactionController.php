@@ -32,7 +32,7 @@
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Llamar la funcion*/
-                    $resultado = $model -> decreaseQuantity($idProduct);  
+                    $resultado = $model -> decreaseQuantity($idProduct, $_SESSION['loginsucces']['USER_ID']);  
                     /*Si el resultado es correcto*/
                     if($resultado){
                         /*Redirigir*/
@@ -65,7 +65,7 @@
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Llamar la funcion*/
-                    $resultado = $model -> increaseQuantity($idProduct);  
+                    $resultado = $model -> increaseQuantity($idProduct, $_SESSION['loginsucces']['USER_ID']);  
                     /*Si el resultado es correcto*/
                     if($resultado){
                         /*Redirigir*/
@@ -98,7 +98,7 @@
                     /*Instanciar el modelo*/
                     $model = new Model();
                     /*Llamar la funcion que elimina el producto del carrito*/
-                    $resultado = $model -> deleteProductCar($idProduct);
+                    $resultado = $model -> deleteProductCar($idProduct, $_SESSION['loginsucces']['USER_ID']);
                     /*Comprobar si se ha eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -195,14 +195,25 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowPurchase(){
-            /*Instanciar modelo*/
-            $model = new Model();
-            /*Obtener lista de direcciones propias*/
-            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
-            /*Obtener lista de pagos propias*/
-            $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
-            /*Incluir la vista*/
-            require_once "views/transaction/Purchase.html";
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $total = isset($_GET['total']) ? $_GET['total'] : false;
+                if($total){
+                    /*Instanciar modelo*/
+                    $model = new Model();
+                    /*Obtener lista de direcciones propias*/
+                    $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
+                    /*Obtener lista de pagos propias*/
+                    $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
+                    /*Incluir la vista*/
+                    require_once "views/transaction/Purchase.html";
+                }else{
+
+                }
+            }else{
+                
+            }
         }
 
         /*Funcion para ver el detalle de la compra*/
@@ -227,25 +238,21 @@
 
         /*Funcion para abrir ventana de editar*/
         public function windowConfirm(){
-            var_dump(4);
-            die();
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
-                $idVendedor = isset($_POST['vendedor']) ? $_POST['vendedor'] : false;
                 $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
                 $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
-                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
+                $total = isset($_POST['total']) ? $_POST['total'] : false;
                 /*Comprobar si todos los datos llegaron*/
-                if($idVendedor && $idPay && $idDirection && $idProduct){
+                if($idPay && $idDirection && $total){
                     /*Instanciar modelo*/  
                     $model = new Model();
                     /*Obtener cada dato*/
-                    $vendedor = $model -> getUser($_POST['vendedor']);
                     $pay = $model -> getPay($_POST['id_pay']);
                     $direction = $model -> getDirection($_POST['id_direction']);
-                    $product = $model -> getProduct($_POST['idProduct']);
-                    $cantidad = $_POST['cantidad'];
+                    /*Obtener el carrito del usuario que va a comprar*/
+                    $list = $model -> productsListCarP($_SESSION['loginsucces']['USER_ID']);
                     /*Incluir la vista*/
                     require_once "views/transaction/Confirm.html";
                 /*De lo contrario*/    
@@ -272,13 +279,11 @@
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
                 $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
-                $idProduct = isset($_POST['idProduct']) ? $_POST['idProduct'] : false;
-                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
                 $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
+                $total = isset($_POST['total']) ? $_POST['total'] : false;
                 /*Comprobar si los datos llegan*/
-                if ($idDirection && $idProduct && $cantidad && $idPay) {
+                if ($idDirection && $idPay && $total) {
                     /*Obtener datos restantes*/
-                    $total = $cantidad * ($model -> getProductDataPu($idProduct)['PRICE']);
                     $date_time = date('Y-m-d');
                     $date_time2 = (new DateTime($date_time))->format('d/m/y');
                     $created_at = date('Y-m-d');
@@ -289,26 +294,30 @@
                     if ($resultado != false) {
                         /*Obtener la ultima transaccion registrada*/
                         $id_transaction = $model -> getLastTransaction();
-                        $id_seller = $model -> getProductDataPu($idProduct)['USER_ID'];
-                        /*Comprobar si los datos llegan*/
-                        if($id_transaction && $idProduct && $id_seller && $cantidad && $created_at2){
-                            /*Llamar la funcion del modelo que registra la transaccion del producto*/  
-                            $resultado2 = $model->registerTransactionProduct($id_transaction, $idProduct, $id_seller, $cantidad, $created_at2);
-                            /*Comprobar si el registrado ha sido exitoso*/   
-                            if ($resultado2 != false) {
-                                /*Llamar la funcion del modelo que decrementa el inventario*/ 
-                                $model -> decreaseInventory($idProduct, $cantidad);
-                                /*Llamar la funcion que aumenta las ganancias del vendedor*/
-                                $model -> increaseProfits($id_seller, $total);
-                                /*Redirigir*/
-                                header("Location:"."http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
+                        /*Obtener la lista de los productos agregados al carrito*/
+                        $list = $model -> productsListCar($_SESSION['loginsucces']['USER_ID']);
+                        foreach($list as $listCar){
+                            $id_seller = $model -> getProductDataPu($listCar['PRODUCT_ID'])['USER_ID'];
+                            /*Comprobar si los datos llegan*/
+                            if($id_transaction && $id_seller && $created_at2){
+                                /*Llamar la funcion del modelo que registra la transaccion del producto*/  
+                                $resultado2 = $model->registerTransactionProduct($id_transaction, $listCar['PRODUCT_ID'], $id_seller, $listCar['AMOUNT'], $created_at2);
+                                /*Comprobar si el registrado ha sido exitoso*/   
+                                if ($resultado2 != false) {
+                                    /*Llamar la funcion del modelo que decrementa el inventario*/ 
+                                    $model -> decreaseInventory($listCar['PRODUCT_ID'], $listCar['AMOUNT']);
+                                    /*Llamar la funcion que aumenta las ganancias del vendedor*/
+                                    $model -> increaseProfits($id_seller, $total);
+                                    /*Redirigir*/
+                                    header("Location:"."http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
+                                /*De lo contrario*/  
+                                }else{
+
+                                }
                             /*De lo contrario*/  
                             }else{
 
                             }
-                        /*De lo contrario*/  
-                        }else{
-
                         }
                     /*De lo contrario*/  
                     }else{

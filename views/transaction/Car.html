@@ -34,9 +34,9 @@
                                     <h5 class="card-title"><?=$listCar['NAME']?></h5>
                                     <p class="card-text"><?=$listCar['PRICE']?></p>
                                     <div class="d-flex align-items-center">
-                                        <a href="<?=init?><?=transaction?><?=decreaseQuantity?>&id=<?=$listCar['CP_ID']?>" class="btn btn-outline-secondary btn-sm mr-2">-</a>
+                                        <a href="<?=init?><?=transaction?><?=decreaseQuantity?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-outline-secondary btn-sm mr-2">-</a>
                                         <input type="text" class="form-control text-center" value="<?=$listCar['AMOUNT']?>" style="width: 50px;">
-                                        <a href="<?=init?><?=transaction?><?=increaseQuantity?>&id=<?=$listCar['CP_ID']?>" class="btn btn-outline-secondary btn-sm ml-2">+</a>
+                                        <a href="<?=init?><?=transaction?><?=increaseQuantity?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-outline-secondary btn-sm ml-2">+</a>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                             </div>
                             <!-- Botón de eliminar -->
                             <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                <a href="<?=init?><?=transaction?><?=deleteProductCar?>&id=<?=$listCar['CP_ID']?>" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="<?=init?><?=transaction?><?=deleteProductCar?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-danger btn-sm">Eliminar</a>
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                     <a href="<?=init?><?=transaction?><?=deleteCar?>" class="btn btn-danger">Eliminar todo el carrito</a>
 
                     <!-- Nuevo enlace "Continuar" a la derecha -->
-                    <a href="<?=init?><?=transaction?><?=windowPurchase?>" class="btn btn-primary">Continuar</a>
+                    <a href="<?=init?><?=transaction?><?=windowPurchase?>&total=<?=$total?>" class="btn btn-primary">Continuar</a>
                 </div>
             </div>
         </div>

@@ -5,14 +5,16 @@
     <h3 class="text-center">Datos del vendedor</h3>
     <br>
     <br>
-    <h4>Nombre: <?=$vendedor['NAME']?></h4>
-    <br>
-    <h4>Apellidos: <?=$vendedor['SURNAME']?></h4>
-    <br>
-    <h4>Email: <?=$vendedor['EMAIL']?></h4>
-    <br>
-    <h4>Telefono: <?=$vendedor['PHONE']?></h4>
-    <br>
+    <?php foreach($list as $listCar) : ?>
+        <h4>Nombre: <?=$listCar['NAME_SELLER']?></h4>
+        <br>
+        <h4>Apellidos: <?=$listCar['SURNAME']?></h4>
+        <br>
+        <h4>Email: <?=$listCar['EMAIL']?></h4>
+        <br>
+        <h4>Telefono: <?=$listCar['PHONE']?></h4>
+        <br>
+    <?php endforeach; ?>
     <h3 class="text-center">Datos del envio</h3>
     <br>
     <br>
@@ -36,24 +38,25 @@
     <h3 class="text-center">Datos del producto</h3>
     <br>
     <br>
-    <h4>Nombre: <?=$product['NAME']?></h4>
-    <br>
-    <h4>Precio: <?=$product['PRICE']?></h4>
-    <br>
-    <h4>Contenido: <?=$product['CONTENT']?></h4>
-    <br>
-    <h4>Unidades: <?=$cantidad?></h4>
-    <br>
-    <br>
-    <h3>Total: <?=$cantidad * $product['PRICE']?></h3>
+    <?php foreach($list as $listCar) : ?>
+        <h4>Nombre: <?=$listCar['NAME_PRODUCT']?></h4>
+        <br>
+        <h4>Precio: <?=$listCar['PRICE']?></h4>
+        <br>
+        <h4>Contenido: <?=$listCar['CONTENT']?></h4>
+        <br>
+        <h4>Unidades: <?=$listCar['AMOUNT']?></h4>
+        <br>
+        <br>
+    <?php endforeach; ?>
+    <h3>Total: <?=$total?></h3>
     <br>
     <br>
     <div class="text-center">
         <form id="purchaseForm" action="<?=init?><?=transaction?><?=purchase?>" method="post">
-            <input type="hidden" name="id_direction" value="<?=$direction['DIRECTOIN_ID']?>">
-            <input type="hidden" name="id_pay" value="<?=$pay['PAY_ID']?>">
-            <input type="hidden" name="idProduct" value="<?=$product['PRODUCT_ID']?>">
-            <input type="hidden" name="cantidad" value="<?=$cantidad?>">
+            <input type="hidden" name="id_direction" value="<?=$idDirection?>">
+            <input type="hidden" name="id_pay" value="<?=$idPay?>">
+            <input type="hidden" name="total" value="<?=$total?>">
             <button type="button" class="btn btn-primary" id="openModalBtn">Realizar compra</button>
         </form>
     </div>    
