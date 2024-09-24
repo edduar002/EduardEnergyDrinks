@@ -86,8 +86,9 @@
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
                         $resultado = $model->registerProduct($user_id, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
+
                         /*Comprobar si el registrado ha sido exitoso*/
-                        if ($resultado == 1) {
+                        if ($resultado != -1) {
                             /*Crear la sesion y redirigir a la ruta pertinente*/
                             Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el producto", "?controller=userController&action=managementProducts");
                         /*De lo contrario*/  

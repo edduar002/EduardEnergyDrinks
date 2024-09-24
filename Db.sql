@@ -310,7 +310,7 @@ RETURN VARCHAR2 AS
 BEGIN
     -- Actualizar el campo activo a 0 para el producto con el ID especificado
     UPDATE products
-    SET units = units - t_cantidad
+    SET stock = stock - t_cantidad
     WHERE product_id = p_product_id;
     
     -- Confirmar la transacción
@@ -779,7 +779,7 @@ BEGIN
     OPEN v_cursor FOR
     SELECT *
     FROM PRODUCTS
-    WHERE ACTIVE = 1 AND UNITS > 0
+    WHERE ACTIVE = 1 AND STOCK > 0
     AND (p_user_id IS NULL OR USER_ID != p_user_id); -- Si p_user_id es NULL, selecciona todos los productos, si no, selecciona los productos del usuario.
 
     RETURN v_cursor; -- Retornar el cursor con los registros
@@ -798,7 +798,7 @@ BEGIN
     -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
     -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
-    SELECT p.product_id AS PRODUCT_ID, cp.cp_id, p.image, p.name, p.price, p.units, cp.units AS AMOUNT
+    SELECT p.product_id AS PRODUCT_ID, cp.cp_id, p.image, p.name, p.price, p.units, cp.units AS AMOUNT, p.stock
     FROM CARS c
     INNER JOIN carproduct cp ON c.car_id = cp.car_id
     INNER JOIN products p ON p.product_id = cp.product_id
@@ -958,7 +958,7 @@ BEGIN
     RETURN v_resultado;
 END;
 
-create or replace FUNCTION REGISTER_PRODUCT(
+CREATE OR REPLACE FUNCTION REGISTER_PRODUCT(
     p_user_id IN NUMBER,
     p_active IN NUMBER,
     p_name IN VARCHAR2,
@@ -969,23 +969,34 @@ create or replace FUNCTION REGISTER_PRODUCT(
     p_description IN VARCHAR2,
     p_image IN VARCHAR2,    
     p_created_at IN DATE
-) RETURN VARCHAR2
+) RETURN NUMBER
 AS
-    v_resultado VARCHAR2(100);
+    v_count NUMBER;
 BEGIN
-    BEGIN
+    -- Verificar si el producto con el mismo nombre ya existe para ese usuario
+    SELECT COUNT(*) INTO v_count
+    FROM PRODUCTS
+    WHERE user_id = p_user_id AND name = p_name;
+
+    IF v_count > 0 THEN
+        -- Si existe, actualiza el stock
+        UPDATE PRODUCTS
+        SET stock = stock + p_stock
+        WHERE user_id = p_user_id AND name = p_name;
+        COMMIT;
+        RETURN 1; -- Retorna 1 si se actualizó exitosamente
+    ELSE
+        -- Si no existe, inserta el nuevo producto
         INSERT INTO PRODUCTS (user_id, active, name, price, units, content, stock, description, image, created_at)
         VALUES (p_user_id, p_active, p_name, p_price, p_units, p_content, p_stock, p_description, p_image, p_created_at);
-
         COMMIT;
-        v_resultado := 1;
-    EXCEPTION
-        WHEN OTHERS THEN
-            v_resultado := 'Error al registrar producto: ' || SQLERRM;
-            ROLLBACK;
-    END;
+        RETURN 2; -- Retorna 2 si se insertó exitosamente
+    END IF;
 
-    RETURN v_resultado;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RETURN -1; -- Retorna -1 en caso de error
 END;
 
 create or replace FUNCTION REGISTER_TP(

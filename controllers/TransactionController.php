@@ -309,10 +309,16 @@
                                 $resultado2 = $model->registerTransactionProduct($id_transaction, $listCar['PRODUCT_ID'], $id_seller, $listCar['AMOUNT'], $created_at2);
                                 /*Comprobar si el registrado ha sido exitoso*/   
                                 if ($resultado2 != false) {
+                                    /*Obtener producto en concreto*/
+                                    $product = $model -> getProduct($listCar['PRODUCT_ID']);
+                                    /*Agregar productos*/
+                                    $model -> registerProduct($_SESSION['loginsucces']['USER_ID'], 1, $product['NAME'], $product['PRICE'], $product['UNITS'], $product['CONTENT'], $listCar['AMOUNT'], $product['DESCRIPTION'], $product['IMAGE'], $created_at2);
                                     /*Llamar la funcion del modelo que decrementa el inventario*/ 
                                     $model -> decreaseInventory($listCar['PRODUCT_ID'], $listCar['AMOUNT']);
                                     /*Llamar la funcion que aumenta las ganancias del vendedor*/
                                     $model -> increaseProfits($id_seller, $total);
+                                    /*Eliminar carrito*/
+                                    $model -> deleteCar($_SESSION['loginsucces']['USER_ID']);
                                     /*Redirigir*/
                                     header("Location:"."http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
                                 /*De lo contrario*/  

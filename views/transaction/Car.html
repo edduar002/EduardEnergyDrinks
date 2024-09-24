@@ -34,9 +34,13 @@
                                     <h5 class="card-title"><?=$listCar['NAME']?></h5>
                                     <p class="card-text"><?=$listCar['PRICE']?></p>
                                     <div class="d-flex align-items-center">
-                                        <a href="<?=init?><?=transaction?><?=decreaseQuantity?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-outline-secondary btn-sm mr-2">-</a>
-                                        <input type="text" class="form-control text-center" value="<?=$listCar['AMOUNT']?>" style="width: 50px;">
-                                        <a href="<?=init?><?=transaction?><?=increaseQuantity?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-outline-secondary btn-sm ml-2">+</a>
+                                        <?php if($listCar['AMOUNT'] > 0) : ?>
+                                            <a href="<?=init?><?=transaction?><?=decreaseQuantity?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-outline-secondary btn-sm mr-2">-</a>
+                                        <?php endif;?>
+                                        <input type="text" class="form-control text-center" value="<?=$listCar['AMOUNT']?>" style="width: 50px;" readonly>
+                                        <?php if($listCar['AMOUNT'] < $listCar['STOCK']) : ?>
+                                            <a href="<?=init?><?=transaction?><?=increaseQuantity?>&id=<?=$listCar['PRODUCT_ID']?>" class="btn btn-outline-secondary btn-sm ml-2">+</a>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
