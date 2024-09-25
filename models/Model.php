@@ -47,14 +47,15 @@
         }                      
 
         /*Funcion para registrar el usuario en la base de datos*/
-        function registerUser($active, $code, $name, $surname, $birthdate, $genre, $phone, $email, $password1, $image, $earnings, $created_at) {
+        function registerUser($active, $level, $code, $name, $surname, $birthdate, $genre, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at) {
             /*Encriptar la clave*/
             $password = password_hash($password1, PASSWORD_BCRYPT, ['cost'=>4]);
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_USER(:active, :code, :name, :surname, TO_DATE(:birthdate, \'DD/MM/YY\'), :genre, :phone, :email, :password, :image, :earnings, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_USER(:active, :user_level, :code, :name, :surname, TO_DATE(:birthdate, \'DD/MM/YY\'), :genre, :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /* Asignar los valores de entrada y salida */
             oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':user_level', $level);
             oci_bind_by_name($stmt, ':code', $code);
             oci_bind_by_name($stmt, ':name', $name);
             oci_bind_by_name($stmt, ':surname', $surname);
@@ -62,9 +63,10 @@
             oci_bind_by_name($stmt, ':genre', $genre);
             oci_bind_by_name($stmt, ':phone', $phone);
             oci_bind_by_name($stmt, ':email', $email);
-            oci_bind_by_name($stmt, ':password', $password);
+            oci_bind_by_name($stmt, ':user_password', $password);
             oci_bind_by_name($stmt, ':image', $image); 
-            oci_bind_by_name($stmt, ':earnings', $earnings);                          
+            oci_bind_by_name($stmt, ':earnings', $earnings); 
+            oci_bind_by_name($stmt, ':higher_id', $higher_id);                    
             oci_bind_by_name($stmt, ':created_at', $created_at);
             /* Variable bandera para asignar el resultado */
             $resultado = '';

@@ -58,6 +58,7 @@
     /*Rutas para transaccion*/
 
     define("transaction", "/?controller=transactionController");
+    define("shop", "&action=shop");
     define("windowCar", "&action=windowCar");
     define("registerCar", "&action=registerCar");
     define("windowPurchase", "&action=windowPurchase");
@@ -74,6 +75,11 @@
 
     define("network", "/?controller=networkController");
     define("windowAddUser", "&action=windowAddUser");
-    define("addUser", "&action=addUser")    
+    define("addUser", "&action=addUser"); 
+    
+    /*Rutas para el administrador*/
+
+    define("administrator", "/?controller=administrator");
+    define("registerProductAdmin", "&action=registerProduct");
 
 ?>

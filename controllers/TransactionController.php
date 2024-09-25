@@ -21,6 +21,61 @@
             require_once "views/transaction/Car.html";
         }
 
+        /*Funcion para realizar la compra de un producto*/
+        public function shop(){
+            /*Comprobar si el dato está llegando*/
+            if (isset($_GET)) {
+                /*Comprobar si el dato existe*/
+                $id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if ($id) {
+                    /*Instanciar el modelo*/
+                    $model = new Model();
+                    /*Llamar funcion que trae un videojuego en especifico*/
+                    $resultado = $model->detailProduct($id);
+                    /*Obtener fecha actual*/
+                    $created_at = date('Y-m-d');
+                    $created_at2 = (new DateTime($created_at))->format('d/m/y');
+                    /*Comprobar si el videojuego ha llegado*/
+                    if ($resultado) {
+                        /*Instanciar modelo*/
+                        $model = new Model();
+                        /*Llamar la funcion que comprueba si el producto ya ha sido o no agregado al carrito previamente*/
+                        $unico = $model -> uniqueCp($_SESSION['loginsucces']['USER_ID'], $id);
+                        /*Comprobar si el producto no ha sido agregado previamente*/
+                        if($unico == 0){
+                            /*Llamar la funcion que registra el producto en el carrito*/
+                            $registro = $model -> registercar($_SESSION['loginsucces']['USER_ID'], 1, $created_at2);
+                            /*Comprobar si el registro ha sido exitoso*/
+                            if($registro){
+                                /*Obtener el id del ultimo carrito registrado*/
+                                $id_car = $model -> getLastCar();
+                                /*Llamar la funcion que registra el producto del carrito*/
+                                $registro2 = $model -> registerCarProduct($id_car, $id, 1, 1, 100, $created_at2);
+                                /*Comprobar si el registro del producto del carrito fue exitoso*/
+                                if($registro2){
+                                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                                    Helps::createSessionAndRedirect("carsucces", "El producto ha sido agregado con exito", "?controller=transactionController&action=windowCar");
+                                /*De lo contrario*/   
+                                }else{
+                                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                                    Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=windowProducts");
+                                }
+                            /*De lo contrario*/   
+                            }else{
+                                /*Crear la sesion y redirigir a la ruta pertinente*/
+                                Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=windowProducts");
+                            }
+                        /*De lo contrario*/   
+                        }else{
+                            /*Crear la sesion y redirigir a la ruta pertinente*/
+                            Helps::createSessionAndRedirect("carerror", "Ha ocurrido un error al guardar el producto en el carrito", "?controller=productController&action=windowProducts");
+                        }
+                    }
+                }
+            }
+        }
+
         /*Funcion para disminuir la cantidad del producto del carrito*/
         public function decreaseQuantity(){
             /*Comprobar si llegan los datos del formulario enviados por post*/

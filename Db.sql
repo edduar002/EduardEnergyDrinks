@@ -34,6 +34,8 @@ DROP TABLE CARS;
 
 DROP TABLE CARPRODUCT;
 
+DROP TABLE ADMINISTRATORS;
+
 /*Eliminar Secuencias*/
 
 DROP SEQUENCE USERS_SEQ;
@@ -52,37 +54,41 @@ DROP SEQUENCE CARS_SEQ;
 
 DROP SEQUENCE CARPR_SEQ;
 
+DROP SEQUENCE ADMINISTRATORS_SEQ;
+
 /*Crear Tablas*/
 
 CREATE TABLE USERS (
-    USER_ID              NUMBER NOT NULL,
-    ACTIVE          NUMBER(1) NOT NULL,
-    LEVEL           NUMBER(1) NOT NULL,
-    CODE            VARCHAR2(200) NOT NULL,
-    NAME            VARCHAR2(200) NOT NULL,
-    SURNAME         VARCHAR2(250) NOT NULL,
-    BIRTHDATE       DATE NOT NULL,
-    GENRE           VARCHAR2(200) NOT NULL,
-    PHONE           NUMBER NOT NULL,
-    EMAIL           VARCHAR2(200) NOT NULL,
-    PASSWORD        VARCHAR2(200) NOT NULL,
-    IMAGE           VARCHAR2(200) NOT NULL,
-    EARNINGS        NUMBER NOT NULL,
-    CREATED_AT      DATE NOT NULL,
-    CONSTRAINT users_pk PRIMARY KEY (USER_ID)
+    USER_ID          NUMBER NOT NULL,
+    ACTIVE           NUMBER(1) NOT NULL,
+    USER_LEVEL       NUMBER(1) NOT NULL, -- Cambié LEVEL a USER_LEVEL
+    CODE             VARCHAR2(10) NOT NULL,
+    NAME             VARCHAR2(30) NOT NULL,
+    SURNAME          VARCHAR2(40) NOT NULL,
+    BIRTHDATE        DATE NOT NULL,
+    GENRE            VARCHAR2(10) NOT NULL,
+    PHONE            NUMBER NOT NULL,
+    EMAIL            VARCHAR2(30) NOT NULL,
+    USER_PASSWORD    VARCHAR2(20) NOT NULL, -- Cambié PASSWORD a USER_PASSWORD
+    IMAGE            VARCHAR2(100) NOT NULL,
+    EARNINGS         NUMBER NOT NULL,
+    HIGHER_USER_ID   NUMBER NULL,
+    CREATED_AT       DATE NOT NULL,
+    CONSTRAINT users_pk PRIMARY KEY (USER_ID),
+    CONSTRAINT higher_fk FOREIGN KEY (HIGHER_USER_ID) REFERENCES USERS(USER_ID)
 );
 
 CREATE TABLE PRODUCTS (
     PRODUCT_ID             NUMBER NOT NULL,
     USER_ID         NUMBER NOT NULL,
     ACTIVE          NUMBER(1) NOT NULL,
-    NAME            VARCHAR2(200) NOT NULL,
+    NAME            VARCHAR2(30) NOT NULL,
     PRICE           NUMBER NOT NULL,
     UNITS           NUMBER NOT NULL,
-    CONTENT         VARCHAR2(200) NOT NULL,
+    CONTENT         VARCHAR2(10) NOT NULL,
     STOCK           NUMBER NOT NULL,
-    DESCRIPTION     VARCHAR2(200) NOT NULL,
-    IMAGE           VARCHAR2(200) NOT NULL,
+    DESCRIPTION     VARCHAR2(60) NOT NULL,
+    IMAGE           VARCHAR2(100) NOT NULL,
     CREATED_AT      DATE NOT NULL,
     CONSTRAINT products_pk PRIMARY KEY (PRODUCT_ID),
     CONSTRAINT products_user_fk FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID)
@@ -92,7 +98,7 @@ CREATE TABLE PAYS (
     PAY_ID              NUMBER NOT NULL,
     USER_ID         NUMBER NOT NULL,
     ACTIVE          NUMBER(1) NOT NULL,
-    ELECTION        VARCHAR2(200) NOT NULL,
+    ELECTION        VARCHAR2(20) NOT NULL,
     NUMBER_ELECTION NUMBER NOT NULL,
     CREATED_AT      DATE NOT NULL,
     CONSTRAINT pays_pk PRIMARY KEY (PAY_ID),
@@ -103,10 +109,10 @@ CREATE TABLE DIRECTIONS (
     DIRECTION_ID              NUMBER NOT NULL,
     USER_ID         NUMBER NOT NULL,
     ACTIVE          NUMBER(1) NOT NULL,
-    CARRER          VARCHAR2(200) NOT NULL,
-    STREET          VARCHAR2(250) NOT NULL,
+    CARRER          VARCHAR2(15) NOT NULL,
+    STREET          VARCHAR2(15) NOT NULL,
     POSTAL_CODE     NUMBER NOT NULL,
-    DIRECTION       VARCHAR2(200) NOT NULL,
+    DIRECTION       VARCHAR2(50) NOT NULL,
     CREATED_AT      DATE NOT NULL,
     CONSTRAINT directions_pk PRIMARY KEY (DIRECTION_ID),
     CONSTRAINT directions_user_fk FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID)
@@ -119,6 +125,15 @@ CREATE TABLE CARS (
     CREATED_AT        DATE NOT NULL,
     CONSTRAINT cars_pk PRIMARY KEY (CAR_ID),
     CONSTRAINT c_user_fk FOREIGN KEY (USER_ID) REFERENCES USERS (USER_ID)
+)
+
+CREATE TABLE ADMINISTRATORS (
+    ADMINISTRATOR_ID                NUMBER NOT NULL,
+    ADMINISTRATOR_LEVEL           NUMBER(1) NOT NULL,
+    EMAIL           VARCHAR2(30) NOT NULL,
+    ADMINISTRATOR_PASSWORD        VARCHAR2(20) NOT NULL,
+    CREATED_AT        DATE NOT NULL,
+    CONSTRAINT administrators_pk PRIMARY KEY (ADMINISTRATOR_ID)
 )
 
 CREATE TABLE CARPRODUCT (
@@ -162,6 +177,10 @@ CREATE TABLE TRANSACTIONPRODUCT (
     CONSTRAINT trpr_user_fk FOREIGN KEY (SELLER_ID) REFERENCES USERS (USER_ID)
 );
 
+/*Crear administrador*/
+
+INSERT INTO administrators values (1, 0, 'admin@gmail.com', '123', SYSDATE);
+
 /*Crear Secuencias*/
 
 CREATE SEQUENCE USERS_SEQ
@@ -193,6 +212,10 @@ START WITH 1
 INCREMENT BY 1;
 
 CREATE SEQUENCE CARPR_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE ADMINISTRATORS_SEQ
 START WITH 1
 INCREMENT BY 1;
 
@@ -267,6 +290,15 @@ FOR EACH ROW
 BEGIN
     IF :NEW.CP_ID IS NULL THEN
         SELECT EDUARDED.CARPR_SEQ.NEXTVAL INTO :NEW.CP_ID FROM DUAL;
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER ADMINISTRATOR_TRG
+BEFORE INSERT ON ADMINISTRATORS
+FOR EACH ROW
+BEGIN
+    IF :NEW.ADMINISTRATOR_ID IS NULL THEN
+        SELECT EDUARDED.ADMINISTRATORS_SEQ.NEXTVAL INTO :NEW.ADMINISTRATOR_ID FROM DUAL;
     END IF;
 END;
 
@@ -614,7 +646,7 @@ IS
     v_password VARCHAR2(255);
 BEGIN
     -- Asegúrate de usar un filtro que garantice una única fila
-    SELECT password
+    SELECT user_password
     INTO v_password
     FROM USERS
     WHERE email = p_email
@@ -1054,6 +1086,7 @@ END;
 
 create or replace FUNCTION REGISTER_USER(
     u_active IN NUMBER,
+    u_user_level IN NUMBER,
     u_code IN VARCHAR2,
     u_name IN VARCHAR2,
     u_surname IN VARCHAR2,
@@ -1064,14 +1097,15 @@ create or replace FUNCTION REGISTER_USER(
     u_password IN VARCHAR2,
     u_image IN VARCHAR2,
     u_earnings IN NUMBER,
+    u_higuer_user_level IN NUMBER,
     u_created_at IN DATE
 ) RETURN VARCHAR2
 AS
     v_resultado VARCHAR2(100);
 BEGIN
     BEGIN
-        INSERT INTO USERS (active, code, name, surname, birthdate, genre, phone, email, password, image, earnings, created_at)
-        VALUES (u_active, u_code, u_name, u_surname, u_birthdate, u_genre, u_phone, u_email, u_password, u_image, u_earnings, u_created_at);
+        INSERT INTO USERS (active, user_level, code, name, surname, birthdate, genre, phone, email, user_password, image, earnings, higher_user_id, created_at)
+        VALUES (u_active, u_user_level, u_code, u_name, u_surname, u_birthdate, u_genre, u_phone, u_email, u_password, u_image, u_earnings, u_higuer_user_level, u_created_at);
 
         COMMIT;
         v_resultado := 1;

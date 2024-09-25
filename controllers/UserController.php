@@ -137,6 +137,7 @@
                 /*Asignar los datos si llegan*/
                 $code = helps::generateRandomCode();
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
+                $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $surname = isset($_POST['surname']) ? $_POST['surname'] : false;
                 $genre = isset($_POST['genre']) ? $_POST['genre'] : false;
                 $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : false;
@@ -164,7 +165,7 @@
                             /*Comprobar si la foto ha sido guardada*/
                             if ($fotoGuardada) {
                                 /*Llamar la funcion del modelo que registra el usuario*/  
-                                $resultado = $model->registerUser(1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $earnings, $created_at2);
+                                $resultado = $model->registerUser(1, -1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
                                 if ($resultado != false) {
                                     /*Crear sesion de inicio de sesion exitoso*/
