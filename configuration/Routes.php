@@ -70,4 +70,10 @@
     define("increaseQuantity", "&action=increaseQuantity");
     define("decreaseQuantity", "&action=decreaseQuantity");
 
+    /*Rutas para establecer la red*/
+
+    define("network", "/?controller=networkController");
+    define("windowAddUser", "&action=windowAddUser");
+    define("addUser", "&action=addUser")    
+
 ?>
