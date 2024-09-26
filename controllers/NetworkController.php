@@ -17,6 +17,8 @@
 
         /*Funcion para abrir ventana de registro*/
         public function addUser(){
+            var_dump(4);
+            die();
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
@@ -28,7 +30,7 @@
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el pago*/  
                     $resultado = $model->addUser($userId, $code);
-                    /*Comprobar si el registrado ha sido exitoso*/                    
+                    /*Comprobar si el registrado ha sido exitoso*/                  
                     if ($resultado != false) {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el pago", "?controller=userController&action=managementPays");

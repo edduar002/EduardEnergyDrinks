@@ -338,6 +338,25 @@ FROM products;
 
 /*Funciones*/
 
+create or replace FUNCTION ADD_USER(userId IN NUMBER, code IN VARCHAR2) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE users
+    SET HIGHER_USER_ID = userId
+    WHERE code = code;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
 create or replace FUNCTION DECREASE_INVENTORY(p_product_id IN NUMBER, t_cantidad IN NUMBER) 
 RETURN VARCHAR2 AS
 BEGIN
@@ -808,12 +827,15 @@ create or replace FUNCTION PRODUCTS_LIST(
 IS
     v_cursor SYS_REFCURSOR;
 BEGIN
-    -- Abrir un cursor para seleccionar todos los productos donde ACTIVE sea igual a 1
+    -- Abrir un cursor para seleccionar productos activos, con stock disponible y del superior
     OPEN v_cursor FOR
-    SELECT *
-    FROM PRODUCTS
-    WHERE ACTIVE = 1 AND STOCK > 0
-    AND (p_user_id IS NULL OR USER_ID != p_user_id); -- Si p_user_id es NULL, selecciona todos los productos, si no, selecciona los productos del usuario.
+    SELECT P.*
+    FROM PRODUCTS P
+    JOIN USERS U ON P.USER_ID = U.USER_ID
+    WHERE P.ACTIVE = 1 
+    AND P.STOCK > 0
+    AND (p_user_id IS NULL 
+         OR U.HIGHER_USER_ID = p_user_id); -- Selecciona los productos del usuario superior si p_user_id no es NULL.
 
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
@@ -991,7 +1013,7 @@ BEGIN
     RETURN v_resultado;
 END;
 
-CREATE OR REPLACE FUNCTION REGISTER_PRODUCT(
+create or replace FUNCTION REGISTER_PRODUCT(
     p_user_id IN NUMBER,
     p_active IN NUMBER,
     p_name IN VARCHAR2,
