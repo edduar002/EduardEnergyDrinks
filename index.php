@@ -25,7 +25,7 @@
         /*Comprobar si existe el inicio de sesion exitoso del administrador*/
         if(isset($_SESSION['loginsuccesa'])){
             /*Establecer nombre del controlador*/
-            $nombre = "AdministradorController";
+            $nombre = "AdministratorController";
         /*De lo contrario*/    
         }else{
             /*Establecer nombre del controlador*/
@@ -51,7 +51,7 @@
             /*Comprobar si existe la sesion de login administrador exitoso*/
             if(isset($_SESSION['loginsuccesa'])){
                 /*Establecer metodo por defecto*/
-                $actionDefault = "Administrar";
+                $actionDefault = "Home";
             /*De lo contrario*/      
             }else{
                 /*Establecer metodo por defecto*/

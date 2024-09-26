@@ -20,6 +20,13 @@
             require_once "views/administrator/Home.html";
         }
 
+        public function windowManagementUsers(){
+            $model = new Model();
+            $list = $model -> getUsers();
+            /*Incluir la vista*/
+            require_once "views/administrator/ManagementUsers.html";
+        }
+
         /*Funcion para iniciar de sesion*/
         public function login(){
             /*Comprobar si llegan los datos del formulario enviados por post*/

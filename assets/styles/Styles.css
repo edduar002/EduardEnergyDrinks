@@ -147,3 +147,7 @@ footer p{
     font-family: 'Bangers', cursive;
     font-size: 38px;
 }
+
+#gestionesAdmin li{
+    list-style: none;
+}

@@ -1344,6 +1344,31 @@
             return $resultado;
         }
 
+        public function getUsers(){
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := GET_USERS; END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }
+
     }
 
 ?>

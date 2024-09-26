@@ -92,9 +92,17 @@
         }
 
         const confirmDeleteUserButton = document.getElementById('confirmDeleteUser');
+        const exampleModal3 = document.getElementById('exampleModal3');
+        let userId;
+        if (exampleModal3) {
+            exampleModal3.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                userId = button.getAttribute('data-id');
+            });
+        }
         if (confirmDeleteUserButton) {
             confirmDeleteUserButton.addEventListener('click', function () {
-                const url = "<?=init?><?=user?><?=deleteUser?>";
+                const url = `<?=init?><?=user?><?=deleteUser?>&id=${userId}`;
                 window.location.href = url;
             });
         }

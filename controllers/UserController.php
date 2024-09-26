@@ -208,30 +208,31 @@
 
         /*Funcion para eliminar*/
         public function delete(){
-            /*Obtener usuario logueado*/
-            $user = $_SESSION['loginsucces'];
-            /*Comprobar si el dato existe*/
-            $user_id = isset($user['ID']) ? $user['ID'] : false;
-            /*Si el dato existe*/
-            if($user_id){
-                /*Instanciar modelo*/      
-                $model = new Model();
-                /*Llamar la funcion del modelo que elimina el usuario*/  
-                $resultado = $model->deleteUser($user_id);
-                /*Comprobar si el usuario ha sido eliminado con exito*/
-                if($resultado){
-                    /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=productController&action=windowProducts');
-                    Helps::deleteSession('loginsucces');
-                /*De lo contrario*/ 
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $user_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($user_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que elimina el usuario*/  
+                    $resultado = $model->deleteUser($user_id);
+                    /*Comprobar si el usuario ha sido eliminado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=productController&action=windowProducts');
+                        Helps::deleteSession('loginsucces');
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=productController&action=windowProducts');
+                    }
+                /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=productController&action=windowProducts');
+                    Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
                 }
-            /*De lo contrario*/    
-            }else{
-                /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
             }
         }
 

@@ -89,5 +89,6 @@
     
     define("windowLoginAdministrator", "&action=windowlogin");
     define("registerProductAdmin", "&action=registerProduct");
+    define("windowManagementUsers", "&action=windowManagementUsers");
 
 ?>
