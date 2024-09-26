@@ -11,6 +11,7 @@
     /*Ruta para usuario*/
 
     define("user", "/?controller=userController");
+
     define("windowLogin", "&action=windowlogin");
     define("windowRegisterUser", "&action=windowRegister");
     define("login", "&action=login");
@@ -29,6 +30,7 @@
     /*Ruta para producto*/
 
     define("product", "/?controller=productController");
+
     define("windowRegisterProduct", "&action=windowRegister");
     define("windowProducts", "&action=windowProducts");
     define("registerProduct", "&action=register");
@@ -40,6 +42,7 @@
     /*Rutas para pago*/
 
     define("pay", "/?controller=payController");
+
     define("windowRegisterPay", "&action=windowRegister");
     define("registerPay", "&action=register");
     define("windowUpdatePay", "&action=windowUpdate");
@@ -49,6 +52,7 @@
     /*Rutas para envio*/
 
     define("direction", "/?controller=directionController");
+
     define("windowRegisterDirection", "&action=windowRegister");
     define("registerDirection", "&action=register");
     define("windowUpdateDirection", "&action=windowUpdate");
@@ -58,6 +62,7 @@
     /*Rutas para transaccion*/
 
     define("transaction", "/?controller=transactionController");
+
     define("shop", "&action=shop");
     define("windowCar", "&action=windowCar");
     define("registerCar", "&action=registerCar");
@@ -74,12 +79,15 @@
     /*Rutas para establecer la red*/
 
     define("network", "/?controller=networkController");
+
     define("windowAddUser", "&action=windowAddUser");
     define("addUser", "&action=addUser"); 
     
     /*Rutas para el administrador*/
 
-    define("administrator", "/?controller=administrator");
+    define("administrator", "/?controller=administratorController");
+    
+    define("windowLoginAdministrator", "&action=windowlogin");
     define("registerProductAdmin", "&action=registerProduct");
 
 ?>

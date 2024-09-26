@@ -14,7 +14,9 @@
     <title>EDUARD E.D.</title>
 </head>
 
-<?php $information = Helps::showUserInformation(); ?>
+<?php if(isset($_SESSION['loginsucces'])) : ?>
+    <?php $information = Helps::showUserInformation();?>
+<?php endif; ?>    
 
 <body>
     <!--Contenedor principal-->
@@ -25,7 +27,11 @@
                 <div class="container-fluid">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <?php if(!isset($_SESSION['loginsucces'])) : ?>
+                            <?php if(!isset($_SESSION['loginsucces']) && !isset($_SESSION['loginsuccesa'])) : ?>
+                            <li class="nav-item mx-3">
+                                <a class="nav-link active" aria-current="page"
+                                    href="<?=init?><?=administrator?><?=windowLoginAdministrator?>">¿Eres Administrador?</a>
+                            </li>
                             <li class="nav-item mx-3">
                                 <a class="nav-link active" aria-current="page"
                                     href="<?=init?><?=user?><?=windowLogin?>">Iniciar sesion</a>
@@ -70,6 +76,9 @@
                                             data-bs-target="#exampleModal">Cerrar sesion</a></li>
                                 </ul>
                             </li>
+                            <?php elseif(isset($_SESSION['loginsuccesa'])) : ?>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Cerrar sesion</a></li>
                             <?php endif; ?>
                         </ul>
                     </div>

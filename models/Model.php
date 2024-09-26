@@ -44,7 +44,35 @@
                 /*Retornar el resultado*/
                 return null;
             }
-        }                      
+        }  
+        
+        /*Funcion para que el usuario se loguee, comprobando desde la base de datos si los datos son validos*/
+        public function logina($email, $password) {
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := LOGINA(:email, :password); END;';
+            $stid = oci_parse($this->conn, $query);
+            
+            /* Variable para almacenar el resultado numérico (1 o 0) */
+            $resultado = 0;
+            
+            /* Asignar los valores de entrada y el resultado de salida */
+            oci_bind_by_name($stid, ':email', $email);
+            oci_bind_by_name($stid, ':password', $password);
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, SQLT_INT);
+            
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            
+            /* Verificar si el resultado es 1 (usuario existe) */
+            if ($resultado == 1) {
+                return 1; // Usuario encontrado
+            } else {
+                return 0; // Usuario no encontrado
+            }
+        }        
 
         /*Funcion para registrar el usuario en la base de datos*/
         function registerUser($active, $level, $code, $name, $surname, $birthdate, $genre, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at) {
@@ -1291,11 +1319,11 @@
         /*Funcion para agregar usuario a la red*/
         public function addUser($userId, $code){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := ADD_USER(:userId, :code); END;'; 
+            $sql = 'BEGIN :resultado := ADD_USER(:userId, :userCode); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
             oci_bind_by_name($stmt, ':userId', $userId);
-            oci_bind_by_name($stmt, ':code', $code);
+            oci_bind_by_name($stmt, ':userCode', $code);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
             /*Asignar el valor de salida si estás usando la función*/ 

@@ -338,13 +338,13 @@ FROM products;
 
 /*Funciones*/
 
-create or replace FUNCTION ADD_USER(userId IN NUMBER, code IN VARCHAR2) 
+create or replace FUNCTION ADD_USER(userId IN NUMBER, userCode IN VARCHAR2) 
 RETURN VARCHAR2 AS
 BEGIN
     -- Actualizar el campo activo a 0 para el producto con el ID especificado
     UPDATE users
     SET HIGHER_USER_ID = userId
-    WHERE code = code;
+    WHERE code = userCode;
     
     -- Confirmar la transacción
     COMMIT;
@@ -799,6 +799,32 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END LOGIN;
+
+CREATE OR REPLACE FUNCTION LOGINA(a_email IN VARCHAR2, a_password IN VARCHAR2)
+RETURN NUMBER
+IS
+    v_count NUMBER;
+BEGIN
+    -- Contar los registros que coinciden con el email
+    SELECT COUNT(*)
+    INTO v_count
+    FROM ADMINISTRATORS
+    WHERE email = a_email
+    AND administrator_password = a_password;
+
+    -- Retornar 1 si el usuario existe, 0 si no
+    IF v_count > 0 THEN
+        RETURN 1;
+    ELSE
+        RETURN 0;
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 0;
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END LOGINA;
 
 create or replace FUNCTION PAY_LIST_MANAGEMENT(
     p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre

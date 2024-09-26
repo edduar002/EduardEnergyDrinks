@@ -87,6 +87,7 @@
         public function logout(){
             /*Llamar al archivo de ayudas*/
             Helps::deleteSession("loginsucces");
+            Helps::deleteSession("loginsuccesa");
             /*Redirigir*/
             header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=userController&action=windowlogin");
             /*Crear sesion*/

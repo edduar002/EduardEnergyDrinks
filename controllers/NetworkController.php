@@ -17,8 +17,6 @@
 
         /*Funcion para abrir ventana de registro*/
         public function addUser(){
-            var_dump(4);
-            die();
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
                 /*Asignar los datos si llegan*/
