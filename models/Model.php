@@ -37,7 +37,7 @@
             oci_free_statement($stid);
             oci_free_statement($cursor);
             /*Verificar si el usuario fue encontrado y si la contraseña es correcta*/ 
-            if ($userData && password_verify($password, $userData['PASSWORD'])) {
+            if ($userData && password_verify($password, $userData['USER_PASSWORD'])) {
                 /*Retornar el resultado*/
                 return $userData;
             } else {
@@ -66,7 +66,7 @@
             oci_bind_by_name($stmt, ':user_password', $password);
             oci_bind_by_name($stmt, ':image', $image); 
             oci_bind_by_name($stmt, ':earnings', $earnings); 
-            oci_bind_by_name($stmt, ':higher_id', $higher_id);                    
+            oci_bind_by_name($stmt, ':higher_user_id', $higher_id);                    
             oci_bind_by_name($stmt, ':created_at', $created_at);
             /* Variable bandera para asignar el resultado */
             $resultado = '';
@@ -1286,6 +1286,34 @@
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
             return $products;
+        }
+
+        /*Funcion para agregar usuario a la red*/
+        public function addUser($userId, $code){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := ADD_USER(:userId, :code); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':userId', $userId);
+            oci_bind_by_name($stmt, ':code', $code);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
         }
 
     }
