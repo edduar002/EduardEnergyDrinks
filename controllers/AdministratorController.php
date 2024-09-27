@@ -15,75 +15,83 @@
             require_once "views/administrator/Login.html";
         }
 
-        /*Funcion para abrir ventana de registro*/
+        /*Funcion para abrir ventana de registro de producto*/
         public function windowRegisterProduct(){
             /*Incluir la vista*/
             require_once "views/administrator/CreateProduct.html";
         }
 
+        /*Funcion para abrir la pantalla de inicio*/
         public function home(){
             /*Incluir la vista*/
             require_once "views/administrator/Home.html";
         }
 
+        /*Funcion para abrir la ventana de gestion de los productos*/
         public function windowManagementProducts(){
+            /*Instanciar modelo*/  
             $model = new Model();
-            $listProducts = $model -> getProducts();   
+            /*Obtener la lista de los productos creados por los usuarios*/
+            $listProducts = $model -> getProducts(); 
+            /*Obtener la lista de los productos creados por el administrador*/  
             $listProductsAdmin = $model -> getProductsAdmin();          
             /*Incluir la vista*/
             require_once "views/administrator/ManagementProducts.html";
         }
 
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
         public function windowManagementUsers(){
+            /*Instanciar modelo*/  
             $model = new Model();
+            /*Obtener lista de usuarios*/
             $list = $model -> getUsers();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementUsers.html";
         }
 
-        /*Funcion para abrir ventana de registro*/
+        /*Funcion para abrir ventana para la asignacion de usuarios fundadores*/
         public function windowAddUser(){
             /*Incluir la vista*/
             require_once "views/administrator/AddUser.html";
         }
 
-        /*Funcion para abrir ventana de registro*/
+        /*Funcion para agregar usuarios fundadores*/
         public function addUser(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
-                /*Asignar los datos si llegan*/
+            if(isset($_POST)){
+                /*Asignar el dato si llega*/
                 $code = isset($_POST['code']) ? $_POST['code'] : false;
-                /*Comprobar si los datos llegan*/
-                if ($code) {
+                /*Comprobar si el dato llega*/
+                if($code){
                     /*Instanciar modelo*/      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que registra el pago*/  
+                    /*Llamar la funcion del modelo que asigna los usuarios fundadores*/  
                     $resultado = $model->addUser(0, $code);
-                    /*Comprobar si el registrado ha sido exitoso*/                  
-                    if ($resultado != false) {
+                    /*Comprobar si la asignacion ha sido exitosa*/                  
+                    if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el pago", "?controller=userController&action=managementPays");
+                        Helps::createSessionAndRedirect("aciertoasignacion", "Se ha asignado el usuario fundador exitosamente", "?controller=administratorController&action=windowAddUser");
                     /*De lo contrario*/  
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
+                        Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error al asignar el usuario fundador", "?controller=administratorController&action=windowAddUser");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
+                    Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowAddUser");
                 }
             /*De lo contrario*/  
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
+                Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowAddUser");
             }
         }
 
-        /*Funcion para registrar*/
+        /*Funcion para registrar un producto*/
         public function registerProduct(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $price = isset($_POST['price']) ? $_POST['price'] : false;
@@ -98,76 +106,74 @@
                 /*Establecer nombre del archivo de la foto*/
                 $image = $file['name'];
                 /*Comprobar si los datos llegan*/
-                if ($name && $price && $units && $content && $stock && $description) {
+                if($name && $price && $units && $content && $stock && $description){
                     /*Comprobar si la foto es valida*/
                     $fotoGuardada = Helps::saveImage($file, "imagesProducts");
                     /*Comprobar si la foto ha sido guardada*/
-                    if ($fotoGuardada) {
+                    if($fotoGuardada){
                         /*Instanciar modelo*/
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
                         $resultado = $model->registerProduct(NULL, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
-
                         /*Comprobar si el registrado ha sido exitoso*/
-                        if ($resultado != -1) {
+                        if($resultado != -1){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el producto", "?controller=userController&action=managementProducts");
+                            Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el producto", "?controller=administratorController&action=windowManagementProducts");
                         /*De lo contrario*/  
-                        } else {
+                        }else{
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
+                            Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro del producto", "?controller=administratorController&action=windowRegisterProduct");
                         }
                     /*De lo contrario*/  
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "El archivo no corresponde a una imagen", "?controller=productController&action=windowRegister");
+                        Helps::createSessionAndRedirect("errorregistro", "El archivo no corresponde a una imagen", "?controller=administratorController&action=windowRegisterProduct");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
+                    Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowRegisterProduct");
                 }
             /*De lo contrario*/  
-            }else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowRegister");
+                Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowRegisterProduct");
             }
         }
 
         /*Funcion para iniciar de sesion*/
         public function login(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $email = isset($_POST['email']) ? $_POST['email'] : false;
                 $password = isset($_POST['password']) ? $_POST['password'] : false;
                 /*Comprobar si los datos llegan*/
-                if ($email && $password) {
+                if($email && $password){
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Llamar la funcion del modelo que valida las credenciales de acceso*/  
                     $resultado = $model->logina($email, $password);
                     /*Comprobar si el usuario existe*/
-                    if ($resultado != NULL) {
+                    if($resultado != NULL){
                         /*Crear sesion de inicio de sesion exitoso*/
                         $_SESSION['loginsuccesa'] = 'Admin logueado';
-                        $_SESSION['loginsuccesam'] = "Has ingresado exitosamente a EDUARD ENERGY DRINKS";
-                        /*Redirigir al lugar requerido*/
-                        header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=administratorController&action=home");
-                    /*De lo contrario*/
-                    } else {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("iniciarsesionerror", "Este usuario no se encuentra registrado", "?controller=userController&action=windowlogin");
+                        Helps::createSessionAndRedirect("aciertoiniciarsesion", "Bienvenido a EduardEnergyDrinks", "?controller=administratorController&action=home");
+                    /*De lo contrario*/
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("erroriniciarsesion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowlogin");
                     }
                 /*De lo contrario*/
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("iniciarsesionerror", "Ha ocurrido un error al iniciar sesion", "?controller=userController&action=windowlogin");
+                    Helps::createSessionAndRedirect("erroriniciarsesion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowlogin");
                 }
             /*De lo contrario*/    
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("iniciarsesionerror", "Ha ocurrido un error inesperado", "?controller=userController&action=windowlogin");
+                Helps::createSessionAndRedirect("erroriniciarsesion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowlogin");
             }
         }
 

@@ -1,28 +1,15 @@
-<?php if(isset($_SESSION['iniciarsesionerror'])) : ?>
-<div id="alerta" class="position-absolute col-6">
-    <div>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error: </strong>
-            <?=$_SESSION['iniciarsesionerror']?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<?php if(isset($_SESSION['erroriniciarsesion'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['erroriniciarsesion']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
     </div>
-</div>
 <?php endif; ?>
-<?php helps::deleteSession('iniciarsesionerror'); ?>
-
-<?php if(isset($_SESSION['logoutm'])) : ?>
-<div id="alerta" class="position-absolute col-6">
-    <div>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Informacion: </strong>
-            <?=$_SESSION['logoutm']?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
-<?php helps::deleteSession('logoutm'); ?>
+<?php helps::deleteSession('erroriniciarsesion'); ?>
 
 <div class="row col-12 mt-5 mb-3 p-4">
     <div class="col-6 mt-5 ms-5">
