@@ -18,7 +18,7 @@
         /*Funcion para abrir ventana de editar*/
         public function windowUpdate(){
             /*Comprobar si llega el id enviado por get*/            
-            if (isset($_GET)) {
+            if(isset($_GET)){
                 /*Asignar el dato si llega*/                
                 $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Asignar el dato si llega*/                
@@ -30,21 +30,21 @@
                     /*Incluir la vista*/
                     require_once "views/pay/Update.html";
                 /*De lo contrario*/     
-                }else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementPays");
+                    Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementPays");
                 }
             /*De lo contrario*/      
-            }else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error inesperado", "controller=userController&action=managementPays");
+                Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error inesperado", "controller=userController&action=managementPays");
             }
         }
 
         /*Funcion para registrar*/
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
                 $election = isset($_POST['election']) ? $_POST['election'] : false;
@@ -52,29 +52,29 @@
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Comprobar si los datos llegan*/
-                if ($user_id && $election && $electionNumber) {
+                if($user_id && $election && $electionNumber){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el pago*/  
                     $resultado = $model->registerPay($user_id, 1, $election, $electionNumber, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
-                    if ($resultado != false) {
+                    if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el pago", "?controller=userController&action=managementPays");
+                        Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el pago", "?controller=userController&action=managementPays");
                     /*De lo contrario*/  
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
+                        Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
+                    Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
                 }
             /*De lo contrario*/  
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
+                Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
             }
         }
 
@@ -93,21 +93,21 @@
                     /*Comprobar si el pago ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=userController&action=managementPays');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el pago", '?controller=userController&action=managementPays');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementPays');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementPays');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementPays');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementPays');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=managementPays");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementPays");
             }
         }
 
@@ -128,21 +128,21 @@
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del pago se ha realizado con exito", "?controller=userController&action=managementPays");
+                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del pago se ha realizado con exito", "?controller=userController&action=managementPays");
                     /*De lo contrario*/    
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del pago", "?controller=payController&action=managementPays&id=$pay_id");
+                        Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error al realizar la actualizacion del pago", "?controller=payController&action=windowUpdate&id=$pay_id");
                     }
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=payController&action=windowUpdate&id=$pay_id");
+                    Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=payController&action=windowUpdate&id=$pay_id");
                 }
             /*De lo contrario*/        
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=payController&action=managementPays");
+                Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=payController&action=managementPays");
             }
         }
 
