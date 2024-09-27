@@ -93,5 +93,7 @@
     define("windowManagementUsers", "&action=windowManagementUsers");
     define("registerProductA", "&action=registerProduct");
     define("windowManagementProducts", "&action=windowManagementProducts");
+    define("windowAddUserAdmin", "&action=windowAddUser");
+    define("addUserAdmin", "&action=addUser"); 
 
 ?>
