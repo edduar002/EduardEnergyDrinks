@@ -163,7 +163,7 @@
                     /*De lo contrario*/
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("erroriniciarsesion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowlogin");
+                        Helps::createSessionAndRedirect("erroriniciarsesion", "Este administrador no se encuentra registrado", "?controller=administratorController&action=windowlogin");
                     }
                 /*De lo contrario*/
                 }else{

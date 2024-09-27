@@ -18,7 +18,7 @@
         /*Funcion para abrir ventana de editar*/
         public function windowUpdate(){
             /*Comprobar si llega el id enviado por get*/
-            if (isset($_GET)) {
+            if(isset($_GET)){
                 /*Asignar el dato si llega*/
                 $direction_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Asignar el dato si llega*/
@@ -30,21 +30,21 @@
                     /*Incluir la vista*/
                     require_once "views/direction/Update.html";
                 /*De lo contrario*/     
-                }else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementDirections");
+                    Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementDirections");
                 }
             /*De lo contrario*/      
-            }else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error inesperado", "controller=userController&action=managementDirections");
+                Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error inesperado", "controller=userController&action=managementDirections");
             }
         }
 
         /*Funcion para registrar*/
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if (isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
                 $carrer = isset($_POST['carrer']) ? $_POST['carrer'] : false;
@@ -54,29 +54,29 @@
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Comprobar si los datos llegan*/
-                if ($user_id && $carrer && $street && $postal_code && $direction) {
+                if($user_id && $carrer && $street && $postal_code && $direction){
                     /*Instanciar modelo*/                    
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra la direccion*/  
                     $resultado = $model->registerDirection($user_id, 1, $carrer, $street, $postal_code, $direction, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/
-                    if ($resultado != false) {
+                    if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente la direccion", "?controller=userController&action=managementDirections");
+                        Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente la direccion", "?controller=userController&action=managementDirections");
                     /*De lo contrario*/  
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=directionController&action=windowRegister");
+                        Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=directionController&action=windowRegister");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else {
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=directionController&action=windowRegister");
+                    Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowRegister");
                 }
             /*De lo contrario*/  
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowRegister");
+                Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowRegister");
             }
         }
 
@@ -95,21 +95,21 @@
                     /*Comprobar si la direccion ha sido eliminada con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=userController&action=managementDirections');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el pago", '?controller=userController&action=managementDirections');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementDirections');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementDirections');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementDirections');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=userController&action=managementDirections');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=managementDirections");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementDirections");
             }
         }
 
@@ -132,21 +132,21 @@
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion de la direccion se ha realizado con exito", "?controller=userController&action=managementDirections");
+                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion de la direccion se ha realizado con exito", "?controller=userController&action=managementDirections");
                     /*De lo contrario*/    
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion de la direccion", "?controller=directionController&action=managementDirections&id=$direction_id");
+                        Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error al realizar la actualizacion de la direccion", "?controller=directionController&action=windowUpdate&id=$direction_id");
                     }
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowUpdate&id=$direction_id");
+                    Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=directionController&action=windowUpdate&id=$direction_id");
                 }
             /*De lo contrario*/        
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=directionController&action=managementDirections");
+                Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=directionController&action=managementDirections");
             }
         }
 
