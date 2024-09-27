@@ -88,7 +88,10 @@
     define("administrator", "/?controller=administratorController");
     
     define("windowLoginAdministrator", "&action=windowlogin");
+    define("windowRegisterProductA", "&action=windowRegisterProduct");
     define("registerProductAdmin", "&action=registerProduct");
     define("windowManagementUsers", "&action=windowManagementUsers");
+    define("registerProductA", "&action=registerProduct");
+    define("windowManagementProducts", "&action=windowManagementProducts");
 
 ?>

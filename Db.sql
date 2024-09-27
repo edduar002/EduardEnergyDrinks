@@ -80,7 +80,7 @@ CREATE TABLE USERS (
 
 CREATE TABLE PRODUCTS (
     PRODUCT_ID             NUMBER NOT NULL,
-    USER_ID         NUMBER NOT NULL,
+    USER_ID         NUMBER NULL,
     ACTIVE          NUMBER(1) NOT NULL,
     NAME            VARCHAR2(30) NOT NULL,
     PRICE           NUMBER NOT NULL,
@@ -1368,19 +1368,38 @@ BEGIN
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
 
-create or replace FUNCTION GET_USERS RETURN SYS_REFCURSOR
+create or replace FUNCTION GET_PRODUCTS RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
 BEGIN
     -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
     -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
-    SELECT *
-    FROM USERS;  -- Compara si el ID que llega es del dueño del pago
+    SELECT p.product_id, p.name, p.price, p.stock, p.units, p.content, u.name AS USER_NAME, u.user_id
+    FROM PRODUCTS p
+    INNER JOIN USERS u ON u.user_id = p.user_id;  -- Compara si el ID que llega es del dueño del pago
 
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
         -- Manejo de otras excepciones
         RAISE;
-END GET_USERS;
+END GET_PRODUCTS;
+
+create or replace FUNCTION GET_PRODUCTS_ADMIN RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT p.product_id, p.name, p.price, p.stock, p.units, p.content
+    FROM PRODUCTS p
+    where user_id is null;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_PRODUCTS_ADMIN;
