@@ -1403,3 +1403,20 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END GET_PRODUCTS_ADMIN;
+
+create or replace FUNCTION GET_USERS RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM USERS;  -- Compara si el ID que llega es del dueño del pago
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_USERS;
