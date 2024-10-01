@@ -1,3 +1,29 @@
+<?php if(isset($_SESSION['aciertologout'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertologout']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertologout'); ?>
+
+<?php if(isset($_SESSION['erroriniciarsesion'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['erroriniciarsesion']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('erroriniciarsesion'); ?>
+
 <div class="row col-12 mt-5 mb-3 p-4">
     <div class="col-6 mt-5 ms-5">
         <h2 id="loginText" class="text-center">INICIO DE SESIÓN</h2>

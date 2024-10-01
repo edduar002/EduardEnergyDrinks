@@ -1317,12 +1317,13 @@
         }
 
         /*Funcion para agregar usuario a la red*/
-        public function addUser($userId, $code){
+        public function addUser($userId, $level, $code){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := ADD_USER(:userId, :userCode); END;'; 
+            $sql = 'BEGIN :resultado := ADD_USER(:userId, :userLevel, :userCode); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
             oci_bind_by_name($stmt, ':userId', $userId);
+            oci_bind_by_name($stmt, ':userLevel', $level);
             oci_bind_by_name($stmt, ':userCode', $code);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';

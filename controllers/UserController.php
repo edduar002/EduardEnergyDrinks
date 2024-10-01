@@ -88,46 +88,43 @@
             /*Llamar al archivo de ayudas*/
             Helps::deleteSession("loginsucces");
             Helps::deleteSession("loginsuccesa");
-            /*Redirigir*/
-            header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=userController&action=windowlogin");
-            /*Crear sesion*/
-            $_SESSION['logoutm'] = "Sesión cerrada con exito";
+            /*Crear la sesion y redirigir a la ruta pertinente*/
+            Helps::createSessionAndRedirect("aciertologout", "Sesión cerrada con exito", "?controller=userController&action=windowlogin");
         }
 
         /*Funcion para iniciar de sesion*/
         public function login(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $email = isset($_POST['email']) ? $_POST['email'] : false;
                 $password = isset($_POST['password']) ? $_POST['password'] : false;
                 /*Comprobar si los datos llegan*/
-                if ($email && $password) {
+                if($email && $password){
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Llamar la funcion del modelo que valida las credenciales de acceso*/  
                     $resultado = $model->login($email, $password);
                     /*Comprobar si el usuario existe*/
-                    if ($resultado != NULL) {
+                    if($resultado != NULL){
                         /*Crear sesion de inicio de sesion exitoso*/
                         $_SESSION['loginsucces'] = $resultado;
-                        $_SESSION['loginsuccesm'] = "Has ingresado exitosamente a EDUARD ENERGY DRINKS";
-                        /*Redirigir al lugar requerido*/
-                        header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
-                    /*De lo contrario*/
-                    } else {
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("iniciarsesionerror", "Este usuario no se encuentra registrado", "?controller=userController&action=windowlogin");
+                        Helps::createSessionAndRedirect("aciertoiniciosesion", "Has ingresado exitosamente a EDUARD ENERGY DRINKS", "?controller=productController&action=windowProducts");
+                    /*De lo contrario*/
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("erroriniciarsesion", "Este usuario no se encuentra registrado", "?controller=userController&action=windowlogin");
                     }
                 /*De lo contrario*/
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("iniciarsesionerror", "Ha ocurrido un error al iniciar sesion", "?controller=userController&action=windowlogin");
+                    Helps::createSessionAndRedirect("erroriniciarsesion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowlogin");
                 }
             /*De lo contrario*/    
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("iniciarsesionerror", "Ha ocurrido un error inesperado", "?controller=userController&action=windowlogin");
+                Helps::createSessionAndRedirect("erroriniciarsesion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowlogin");
             }
         }
 
@@ -135,8 +132,9 @@
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
-                /*Asignar los datos si llegan*/
+                /*Llamar la funcion que genera codigo aleatorio*/
                 $code = helps::generateRandomCode();
+                /*Asignar los datos si llegan*/
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $surname = isset($_POST['surname']) ? $_POST['surname'] : false;
@@ -164,45 +162,44 @@
                             /*Comprobar si la foto es valida*/
                             $fotoGuardada = Helps::saveImage($file, "imagesUsers");
                             /*Comprobar si la foto ha sido guardada*/
-                            if ($fotoGuardada) {
+                            if ($fotoGuardada){
                                 /*Llamar la funcion del modelo que registra el usuario*/  
                                 $resultado = $model->registerUser(1, -1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
-                                if ($resultado != false) {
+                                if($resultado != false){
                                     /*Crear sesion de inicio de sesion exitoso*/
                                     $_SESSION['loginsucces'] = $resultado;
-                                    $_SESSION['loginsuccesm'] = "Bienvenido a EDUARD ENERGY DRINKS";
-                                    /*Redirigir al lugar requerido*/
-                                    header("Location:" . "http://localhost/EduardEnergyDrinks/?controller=productController&action=windowProducts");
-                                /*De lo contrario*/
-                                } else {
                                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro", "?controller=userController&action=windowRegister");
+                                    Helps::createSessionAndRedirect("aciertoiniciosesion", "Bienvenido a EDUARD ENERGY DRINKS", "?controller=productController&action=windowProducts");
+                                /*De lo contrario*/
+                                }else{
+                                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                                    Helps::createSessionAndRedirect("erroregistro", "Ha ocurrido un error al realizar el registro", "?controller=userController&action=windowRegister");
                                 }
                             /*De lo contrario*/    
-                            } else {
+                            }else{
                                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                                Helps::createSessionAndRedirect("registroerror", "El archivo no corresponde a una imagen", "?controller=userController&action=windowRegister");
+                                Helps::createSessionAndRedirect("erroregistro", "El archivo no corresponde a una imagen", "?controller=userController&action=windowRegister");
                             }
                         /*De lo contrario*/    
-                        } else {
+                        }else{
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("registroerror", "Esta direccion de correo ya se encuentra asociada a un usuario", "?controller=userController&action=windowRegister");
+                            Helps::createSessionAndRedirect("erroregistro", "Esta direccion de correo ya se encuentra asociada a un usuario", "?controller=userController&action=windowRegister");
                         }
                     /*De lo contrario*/    
-                    }else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "La clave no cumple los parametros de seguridad", "?controller=userController&action=windowRegister");
+                        Helps::createSessionAndRedirect("erroregistro", "La clave no cumple los parametros de seguridad", "?controller=userController&action=windowRegister");
                     }
                 /*De lo contrario*/    
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro", "?controller=userController&action=windowRegister");
+                    Helps::createSessionAndRedirect("erroregistro", "Ha ocurrido un error inesperado", "?controller=userController&action=windowRegister");
                 }
             /*De lo contrario*/    
-            }else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=userController&action=windowRegister");
+                Helps::createSessionAndRedirect("erroregistro", "Ha ocurrido un error inesperado", "?controller=userController&action=windowRegister");
             }
         }
 
@@ -221,18 +218,21 @@
                     /*Comprobar si el usuario ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el pago", '?controller=productController&action=windowProducts');
+                        Helps::createSessionAndRedirect('eliminaracierto', "Se ha eliminado exitosamente el usuario", '?controller=productController&action=windowProducts');
                         Helps::deleteSession('loginsucces');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=productController&action=windowProducts');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del usuario", '?controller=userController&action=myProfile');
                     }
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowProducts");
+                    Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");
                 }
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");
             }
         }
 
@@ -266,21 +266,21 @@
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del usuario se ha realizado con exito", "?controller=userController&action=myProfile");
+                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del usuario se ha realizado con exito", "?controller=userController&action=myProfile");
                     /*De lo contrario*/    
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
+                        Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=userController&action=myProfile");
                     }
                 /*De lo contrario*/  
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=userController&action=myProfile");
+                    Helps::createSessionAndRedirect("erroractualizar", "El archivo no corresponde a una imagen", "?controller=userController&action=myProfile");
                 } 
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");
+                Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");
             }
         }
 

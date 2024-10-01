@@ -21,6 +21,8 @@
             if (isset($_POST)) {
                 /*Obtener id del usuario logueado*/
                 $userId = $_SESSION['loginsucces']['USER_ID'];
+                /*Obtener nivel del usuario logueado*/
+                $level = $_SESSION['loginsucces']['USER_LEVEL'];
                 /*Asignar el dato si llega*/
                 $code = isset($_POST['code']) ? $_POST['code'] : false;
                 /*Comprobar si el dato llega*/
@@ -28,7 +30,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que agrega el usuario a la red*/  
-                    $resultado = $model->addUser($userId, $code);
+                    $resultado = $model->addUser($userId, ($level+1), $code);
                     /*Comprobar si el registrado ha sido exitoso*/                  
                     if ($resultado != false) {
                         /*Crear la sesion y redirigir a la ruta pertinente*/

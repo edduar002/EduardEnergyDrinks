@@ -1,3 +1,16 @@
+<?php if(isset($_SESSION['erroregistro'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['erroregistro']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('erroregistro'); ?>
+
 <div class="col-12 p-5 m-1 row">
     <h2 class="text-center">Formulario de registro</h2>
     <br>
