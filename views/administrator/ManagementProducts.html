@@ -11,6 +11,19 @@
 <?php endif; ?>
 <?php helps::deleteSession('aciertoregistro'); ?>
 
+<?php if(isset($_SESSION['errorventana'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['errorventana']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('errorventana'); ?>
+
 <div class="col-12 m-5">
     <div class="col-10 m-5">
         <?php if(sizeof($listProducts) == 0) : ?>

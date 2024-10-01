@@ -35,11 +35,11 @@
         /*Funcion para abrir ventana de editar*/
         public function windowUpdate(){
             /*Comprobar si llega el id enviado por get*/
-            if (isset($_GET)) {
+            if(isset($_GET)){
                 /*Asignar el dato si llega*/                
                 $product_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Asignar el dato si llega*/                
-                if ($product_id){
+                if($product_id){
                     /*Instanciar modelo*/ 
                     $model = new Model();
                     /*Llamar la funcion del modelo*/ 
@@ -47,21 +47,21 @@
                     /*Incluir la vista*/
                     require_once "views/product/Update.html";
                 /*De lo contrario*/     
-                }else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementProducts");
+                    Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementProducts");
                 }
             /*De lo contrario*/      
-            }else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("updateerror", "Ha ocurrido un error inesperado", "controller=userController&action=managementProducts");
+                Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "controller=userController&action=managementProducts");
             }
         }
 
         /*Funcion para registrar*/
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
@@ -86,63 +86,62 @@
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
                         $resultado = $model->registerProduct($user_id, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
-
                         /*Comprobar si el registrado ha sido exitoso*/
-                        if ($resultado != -1) {
+                        if($resultado != -1){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("registrosucces", "Se ha registrado exitosamente el producto", "?controller=userController&action=managementProducts");
-                        /*De lo contrario*/  
-                        } else {
+                            Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el producto", "?controller=userController&action=managementProducts");
+                        /*De lo contrario*/
+                        }else{
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
+                            Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
                         }
-                    /*De lo contrario*/  
-                    } else {
+                    /*De lo contrario*/
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("registroerror", "El archivo no corresponde a una imagen", "?controller=productController&action=windowRegister");
+                        Helps::createSessionAndRedirect("errorregistro", "El archivo no corresponde a una imagen", "?controller=productController&action=windowRegister");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error al realizar el registro del producto", "?controller=productController&action=windowRegister");
+                    Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=productController&action=windowRegister");
                 }
             /*De lo contrario*/  
-            }else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("registroerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowRegister");
+                Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=productController&action=windowRegister");
             }
         }
 
         /*Funcion para ver el detalle*/
         public function detail(){
             /*Comprobar si el dato está llegando*/
-            if (isset($_GET)) {
+            if(isset($_GET)){
                 /*Comprobar si el dato existe*/
                 $id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Si el dato existe*/
-                if ($id) {
+                if($id){
                     /*Instanciar el modelo*/
                     $model = new Model();
                     /*Llamar funcion que trae un videojuego en especifico*/
                     $resultado = $model->detailProduct($id);
                     /*Comprobar si el videojuego ha llegado*/
-                    if ($resultado) {
+                    if($resultado){
                         /*Incluir la vista*/
                         require_once 'views/product/Detail.html';
                     /*De lo contrario*/
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("detailerror", "Ha ocurrido un error al intentar ver el producto", "?controller=VideojuegoController&action=inicio");
+                        Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error al intentar ver el producto", "?controller=VideojuegoController&action=inicio");
                     }
                 /*De lo contrario*/
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("detailerror", "Ha ocurrido un error al intentar ver el producto", "?controller=VideojuegoController&action=inicio");
+                    Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error inesperado", "?controller=VideojuegoController&action=inicio");
                 }
             /*De lo contrario*/
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("detailerror", "Ha ocurrido un error inesperado", "?controller=VideojuegoController&action=inicio");
+                Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error inesperado", "?controller=VideojuegoController&action=inicio");
             }
         }
 
@@ -161,29 +160,29 @@
                     /*Comprobar si el producto ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarsucces', "Se ha eliminado exitosamente el producto", '?controller=userController&action=managementProducts');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el producto", '?controller=userController&action=managementProducts');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del producto", '?controller=controller=userController&action=managementProducts');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del producto", '?controller=controller=userController&action=managementProducts');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('eliminarerror', "Ha ocurrido un error al realizar la eliminacion del producto", '?controller=controller=userController&action=managementProducts');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=controller=userController&action=managementProducts');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("eliminarerror", "Ha ocurrido un error inesperado", "?controller=controller=userController&action=managementProducts");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=controller=userController&action=managementProducts");
             }
         }
 
         /*Funcion para actualizar*/
         public function update(){
-            /*Comprobar si llega el id enviado por get*/  
-            if(isset($_GET)){
-                /*Comprobar si el dato existe*/
+            /*Comprobar si llega el id enviado por get y los datos del producto por post*/  
+            if(isset($_GET) && isset($_POST)){
+                /*Comprobar si los datos existen*/
                 $product_id = isset($_GET['id']) ? $_GET['id'] : false;
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $price = isset($_POST['price']) ? $_POST['price'] : false;
@@ -211,26 +210,26 @@
                         /*Comprobar si el estado ha sido editado*/
                         if($resultado){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("actualizarsuccess", "La actualizacion del producto se ha realizado con exito", "?controller=productController&action=windowUpdate&id=$product_id");
+                            Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del producto se ha realizado con exito", "?controller=productController&action=windowUpdate&id=$product_id");
                         /*De lo contrario*/    
                         }else{
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error al realizar la actualizacion del usuario", "?controller=productController&action=windowUpdate&id=$product_id");
+                            Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error al realizar la actualizacion del producto", "?controller=productController&action=windowUpdate&id=$product_id");
                         }
                     /*De lo contrario*/  
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("actualizarerror", "El archivo no corresponde a una imagen", "?controller=productController&action=windowUpdate&id=$product_id");
+                        Helps::createSessionAndRedirect("erroractualizar", "El archivo no corresponde a una imagen", "?controller=productController&action=windowUpdate&id=$product_id");
                     } 
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=productController&action=windowUpdate&id=$product_id");
+                    Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=productController&action=windowUpdate&id=$product_id");
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("actualizarerror", "Ha ocurrido un error inesperado", "?controller=userController&action=managementProducts");
+                Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementProducts");
             }
         }
 

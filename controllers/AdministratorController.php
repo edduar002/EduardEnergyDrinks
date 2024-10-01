@@ -15,6 +15,32 @@
             require_once "views/administrator/Login.html";
         }
 
+        /*Funcion para abrir ventana de editar*/
+        public function windowUpdate(){
+            /*Comprobar si llega el id enviado por get*/
+            if(isset($_GET)){
+                /*Asignar el dato si llega*/                
+                $product_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Asignar el dato si llega*/                
+                if($product_id){
+                    /*Instanciar modelo*/ 
+                    $model = new Model();
+                    /*Llamar la funcion del modelo*/ 
+                    $product = $model -> getProduct($product_id);
+                    /*Incluir la vista*/
+                    require_once "views/product/Update.html";
+                /*De lo contrario*/     
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error al cargar la ventana", "?controller=administratorController&action=windowManagementProducts");
+                }
+            /*De lo contrario*/      
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementProducts");
+            }
+        }
+
         /*Funcion para abrir ventana de registro de producto*/
         public function windowRegisterProduct(){
             /*Incluir la vista*/
