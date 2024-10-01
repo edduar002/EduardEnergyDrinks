@@ -338,12 +338,12 @@ FROM products;
 
 /*Funciones*/
 
-create or replace FUNCTION ADD_USER(userId IN NUMBER, userCode IN VARCHAR2) 
+create or replace FUNCTION ADD_USER(userId IN NUMBER, userLevel IN NUMBER, userCode IN VARCHAR2) 
 RETURN VARCHAR2 AS
 BEGIN
     -- Actualizar el campo activo a 0 para el producto con el ID especificado
     UPDATE users
-    SET HIGHER_USER_ID = userId
+    SET HIGHER_USER_ID = userId, USER_LEVEL = userLevel
     WHERE code = userCode;
     
     -- Confirmar la transacción
