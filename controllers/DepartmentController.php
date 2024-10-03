@@ -1,18 +1,18 @@
 <?php
 
     /*
-    Clase controlador de pago
+    Clase controlador de departamento
     */
 
     /*Incluir el modelo*/
     require_once 'models/Model.php';
 
-    class PayController{
+    class DepartmentController{
 
         /*Funcion para abrir ventana de registro*/
         public function windowRegister(){
             /*Incluir la vista*/
-            require_once "views/pay/Create.html";
+            require_once "views/department/Create.html";
         }
 
         /*Funcion para abrir ventana de editar*/
@@ -20,24 +20,24 @@
             /*Comprobar si llega el id enviado por get*/            
             if(isset($_GET)){
                 /*Asignar el dato si llega*/                
-                $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $department_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Asignar el dato si llega*/                
-                if ($pay_id){
+                if ($department_id){
                     /*Instanciar modelo*/                      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que obtiene el pago*/                    
-                    $pay = $model -> getPay($pay_id);
+                    /*Llamar la funcion del modelo que obtiene el departamento*/                    
+                    $department = $model -> getDepartment($department_id);
                     /*Incluir la vista*/
-                    require_once "views/pay/Update.html";
+                    require_once "views/department/Update.html";
                 /*De lo contrario*/     
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementPays");
+                    Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementDepartments");
                 }
             /*De lo contrario*/      
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error inesperado", "controller=userController&action=managementPays");
+                Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error inesperado", "controller=userController&action=managementDepartments");
             }
         }
 
@@ -47,34 +47,33 @@
             if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
-                $election = isset($_POST['election']) ? $_POST['election'] : false;
-                $electionNumber = isset($_POST['electionNumber']) ? $_POST['electionNumber'] : false;
+                $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Comprobar si los datos llegan*/
-                if($user_id && $election && $electionNumber){
+                if($user_id && $name){
                     /*Instanciar modelo*/      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que registra el pago*/  
-                    $resultado = $model->registerPay($user_id, 1, $election, $electionNumber, $created_at2);
+                    /*Llamar la funcion del modelo que registra el departamento*/  
+                    $resultado = $model->registerDepartment($user_id, 1, $name, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el pago", "?controller=userController&action=managementPays");
+                        Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el departamento", "?controller=userController&action=managementDepartments");
                     /*De lo contrario*/  
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro de la direccion", "?controller=payController&action=windowRegister");
+                        Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error al realizar el registro del departamento", "?controller=departmentController&action=windowRegister");
                     }
                 /*De lo contrario*/  
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
+                    Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=departmentController&action=windowRegister");
                 }
             /*De lo contrario*/  
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=payController&action=windowRegister");
+                Helps::createSessionAndRedirect("errorregistro", "Ha ocurrido un error inesperado", "?controller=departmentController&action=windowRegister");
             }
         }
 
@@ -83,31 +82,31 @@
             /*Comprobar si llega el id enviado por get*/  
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
-                $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $department_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Si el dato existe*/
-                if($pay_id){
+                if($department_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que elimina el pago*/  
-                    $resultado = $model->deletePay($pay_id);
-                    /*Comprobar si el pago ha sido eliminado con exito*/
+                    /*Llamar la funcion del modelo que elimina el departamento*/  
+                    $resultado = $model->deleteDepartment($department_id);
+                    /*Comprobar si el departamento ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el pago", '?controller=userController&action=managementPays');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el departamento", '?controller=userController&action=managementDepartments');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del pago", '?controller=userController&action=managementPays');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del departamento", '?controller=userController&action=managementDepartments');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=userController&action=managementPays');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=userController&action=managementDepartments');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementPays");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementDepartments");
             }
         }
 
@@ -116,33 +115,32 @@
             /*Comprobar si llega el id enviado por get*/  
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
-                $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
-                $election = isset($_POST['election']) ? $_POST['election'] : false;
-                $number_election = isset($_POST['number_election']) ? $_POST['number_election'] : false;
+                $department_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $name = isset($_POST['name']) ? $_POST['name'] : false;
                 /*Si el dato existe*/
-                if($pay_id){
+                if($department_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que actualiza el pago*/  
-                    $resultado = $model -> updatePay($pay_id, $election, $number_election);
+                    /*Llamar la funcion del modelo que actualiza el departamento*/  
+                    $resultado = $model -> updateDepartment($department_id, $name);
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del pago se ha realizado con exito", "?controller=userController&action=managementPays");
+                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del departamento se ha realizado con exito", "?controller=userController&action=managementDepartments");
                     /*De lo contrario*/    
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error al realizar la actualizacion del pago", "?controller=payController&action=windowUpdate&id=$pay_id");
+                        Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error al realizar la actualizacion del departamento", "?controller=departmentController&action=windowUpdate&id=$department_id");
                     }
                 /*De lo contrario*/    
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=payController&action=windowUpdate&id=$pay_id");
+                    Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=departmentController&action=windowUpdate&id=$department_id");
                 }
             /*De lo contrario*/        
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=payController&action=managementPays");
+                Helps::createSessionAndRedirect("erroractualizar", "Ha ocurrido un error inesperado", "?controller=departmentController&action=managementDepartments");
             }
         }
 

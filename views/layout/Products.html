@@ -16,6 +16,33 @@
     </div>
 </div>
 
+<?php if(isset($_SESSION['errorcarrito'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['errorcarrito']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('errorcarrito'); ?>
+
+<?php if(isset($_SESSION['aciertoeliminar'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertoeliminar']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertoeliminar'); ?>
+
+
 <?php if(isset($_SESSION['errordetalle'])) : ?>
     <div id="alerta2" class="position-absolute col-6">
         <div>

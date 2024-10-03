@@ -49,6 +49,46 @@
     define("deletePay", "&action=delete");
     define("updatePay", "&action=update");
 
+    /*Rutas para departamento*/
+
+    define("department", "/?controller=departmentController");
+
+    define("windowRegisterDepartment", "&action=windowRegister");
+    define("registerDepartment", "&action=register");
+    define("windowUpdateDepartment", "&action=windowUpdate");
+    define("deleteDepartment", "&action=delete");
+    define("updateDepartment", "&action=update");
+
+    /*Rutas para genero*/
+
+    define("genre", "/?controller=genreController");
+
+    define("windowRegisterGenre", "&action=windowRegister");
+    define("registerGenre", "&action=register");
+    define("windowUpdateGenre", "&action=windowUpdate");
+    define("deleteGenre", "&action=delete");
+    define("updateGenre", "&action=update");
+
+    /*Rutas para entidad bancaria*/
+
+    define("bankEntity", "/?controller=payController");
+
+    define("windowRegisterBankEntity", "&action=windowRegister");
+    define("registerBankEntity", "&action=register");
+    define("windowUpdateBankEntity", "&action=windowUpdate");
+    define("deleteBankEntity", "&action=delete");
+    define("updateBankEntity", "&action=update");
+
+    /*Rutas para estado de la compra*/
+
+    define("purchasingStatus", "/?controller=payController");
+
+    define("windowRegisterPurchasingStatus", "&action=windowRegister");
+    define("registerPurchasingStatus", "&action=register");
+    define("windowUpdatePurchasingStatus", "&action=windowUpdate");
+    define("deletePurchasingStatus", "&action=delete");
+    define("updatePurchasingStatus", "&action=update");
+
     /*Rutas para envio*/
 
     define("direction", "/?controller=directionController");

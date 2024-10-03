@@ -1,3 +1,16 @@
+<?php if(isset($_SESSION['errortransaccion'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['errortransaccion']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('errortransaccion'); ?>
+
 <div class="container m-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">

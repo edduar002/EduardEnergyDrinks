@@ -7,7 +7,7 @@
     /*Incluir el modelo*/
     require_once 'models/Model.php';
 
-    class ProductController{
+    class productController{
 
         /*Funcion para abrir ventana de registro*/
         public function windowRegister(){
@@ -122,26 +122,26 @@
                 if($id){
                     /*Instanciar el modelo*/
                     $model = new Model();
-                    /*Llamar funcion que trae un videojuego en especifico*/
+                    /*Llamar funcion que trae un producto en especifico*/
                     $resultado = $model->detailProduct($id);
-                    /*Comprobar si el videojuego ha llegado*/
+                    /*Comprobar si el producto ha llegado*/
                     if($resultado){
                         /*Incluir la vista*/
                         require_once 'views/product/Detail.html';
                     /*De lo contrario*/
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error al intentar ver el producto", "?controller=VideojuegoController&action=inicio");
+                        Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error al intentar ver el producto", "?controller=productController&action=inicio");
                     }
                 /*De lo contrario*/
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error inesperado", "?controller=VideojuegoController&action=inicio");
+                    Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error inesperado", "?controller=productController&action=inicio");
                 }
             /*De lo contrario*/
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error inesperado", "?controller=VideojuegoController&action=inicio");
+                Helps::createSessionAndRedirect("errordetalle", "Ha ocurrido un error inesperado", "?controller=productController&action=inicio");
             }
         }
 
