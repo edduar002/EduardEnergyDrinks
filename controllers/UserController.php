@@ -27,8 +27,6 @@
             $model = new Model();
             /*Llamar la funcion que obtiene los generos guardados*/
             $listGenres = $model -> getGenres();
-            var_dump($listGenres);
-            die();
             /*Incluir la vista*/
             require_once "views/user/Register.html";
         }
@@ -144,7 +142,7 @@
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $surname = isset($_POST['surname']) ? $_POST['surname'] : false;
-                $genre = isset($_POST['genre']) ? $_POST['genre'] : false;
+                $genre_id = isset($_POST['genre']) ? $_POST['genre'] : false;
                 $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : false;
                 $phone = isset($_POST['phone']) ? $_POST['phone'] : false;
                 $email = isset($_POST['email']) ? $_POST['email'] : false;
@@ -158,7 +156,7 @@
                 /*Establecer nombre del archivo de la foto*/
                 $image = $file['name'];
                 /*Comprobar si los datos llegan*/
-                if ($code && $name && $surname && $birthdate && $genre && $email && $password && $file) {
+                if ($code && $name && $surname && $birthdate && $genre_id && $email && $password && $file) {
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Validar si la clave cumple con la seguridad necesaria*/
@@ -170,7 +168,7 @@
                             /*Comprobar si la foto ha sido guardada*/
                             if ($fotoGuardada){
                                 /*Llamar la funcion del modelo que registra el usuario*/  
-                                $resultado = $model->registerUser(1, -1, $code, $name, $surname, $birthdate2, $genre, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
+                                $resultado = $model->registerUser($genre_id, 1, $code, $name, $surname, $birthdate2, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
                                 if($resultado != false){
                                     /*Crear sesion de inicio de sesion exitoso*/

@@ -16,91 +16,140 @@
     </div>
 </div>
 
-<?php if(isset($_SESSION['errorcarrito'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['errorcarrito']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="container mt-5">
+    <div class="row g-4">
+        <!-- Primera Noticia -->
+        <div class="col-md-6">
+            <div class="p-4 bg-light rounded-3 h-100">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="https://via.placeholder.com/300" class="img-fluid rounded"
+                            alt="Imagen de la noticia 1">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="container-fluid py-3">
+                            <h2 class="fw-bold">Título de la Noticia 1</h2>
+                            <p class="fs-5">Este es un breve resumen de la noticia 1, que ofrece un pequeño adelanto
+                                para atraer al lector.</p>
+                            <a href="#" class="btn btn-primary">Leer más</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Segunda Noticia -->
+        <div class="col-md-6">
+            <div class="p-4 bg-light rounded-3 h-100">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="https://via.placeholder.com/300" class="img-fluid rounded"
+                            alt="Imagen de la noticia 2">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="container-fluid py-3">
+                            <h2 class="fw-bold">Título de la Noticia 2</h2>
+                            <p class="fs-5">Este es un breve resumen de la noticia 2, que ofrece un pequeño adelanto
+                                para atraer al lector.</p>
+                            <a href="#" class="btn btn-primary">Leer más</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+<?php if(isset($_SESSION['errorcarrito'])) : ?>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['errorcarrito']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('errorcarrito'); ?>
 
 <?php if(isset($_SESSION['aciertoeliminar'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['aciertoeliminar']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['aciertoeliminar']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertoeliminar'); ?>
 
 
 <?php if(isset($_SESSION['errordetalle'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['errordetalle']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['errordetalle']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('errordetalle'); ?>
 
 <?php if(isset($_SESSION['eliminaracierto'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['eliminaracierto']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['eliminaracierto']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('eliminaracierto'); ?>
 
 <?php if(isset($_SESSION['aciertoiniciosesion'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['aciertoiniciosesion']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['aciertoiniciosesion']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertoiniciosesion'); ?>
 
 <!--PRODUCTOS-->
 <section id="content" class="row col-12 ms-5 mb-5">
     <?php if(sizeof($listProducts) == 0) : ?>
-        <h1 class="text-center mt-5 mb-5">No hay bebidas disponibles</h1>
+    <h1 class="text-center mt-5 mb-5">No hay bebidas disponibles</h1>
     <?php else : ?>
-        <?php foreach($listProducts as $list) : ?>
-            <div class="card w-25 mx-4 mb-5">
-                <img class="card-img-top img-fluid" src="resources/imagesProducts/<?=$list['IMAGE']?>" alt="" width="5px" height="200px">
-                <div class="card-body">
-                    <h3 class="card-title text-center"><?=$list['NAME']?></h3>
-                    <p class="card-text text-center text-success">
-                        <?=$list['PRICE']?>
-                    </p>
-                    <div class="d-flex justify-content-center align-items-center gap-2">
-                        <a href="<?=init?><?=transaction?><?=shop?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-success">Comprar Ahora</a>
-                        <a href="<?=init?><?=product?><?=detailProduct?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-primary">Ver Detalle</a>
-                    </div>                    
-                </div>
+    <?php foreach($listProducts as $list) : ?>
+    <div class="card w-25 mx-4 mb-5">
+        <img class="card-img-top img-fluid" src="resources/imagesProducts/<?=$list['IMAGE']?>" alt="" width="5px"
+            height="200px">
+        <div class="card-body">
+            <h3 class="card-title text-center">
+                <?=$list['NAME']?>
+            </h3>
+            <p class="card-text text-center text-success">
+                <?=$list['PRICE']?>
+            </p>
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <a href="<?=init?><?=transaction?><?=shop?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-success">Comprar
+                    Ahora</a>
+                <a href="<?=init?><?=product?><?=detailProduct?>&id=<?=$list['PRODUCT_ID']?>"
+                    class="btn btn-primary">Ver Detalle</a>
             </div>
-        <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endforeach; ?>
     <?php endif; ?>
 </section>

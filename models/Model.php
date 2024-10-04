@@ -75,20 +75,19 @@
         }        
 
         /*Funcion para registrar el usuario en la base de datos*/
-        function registerUser($active, $level, $code, $name, $surname, $birthdate, $genre, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at) {
+        function registerUser($genre_id, $active, $code, $name, $surname, $birthdate, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at) {
             /*Encriptar la clave*/
             $password = password_hash($password1, PASSWORD_BCRYPT, ['cost'=>4]);
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_USER(:active, :user_level, :code, :name, :surname, TO_DATE(:birthdate, \'DD/MM/YY\'), :genre, :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_USER(:u_genre_id, :active, :code, :name, :surname, TO_DATE(:birthdate, \'DD/MM/YY\'), :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /* Asignar los valores de entrada y salida */
+            oci_bind_by_name($stmt, ':u_genre_id', $genre_id);
             oci_bind_by_name($stmt, ':active', $active);
-            oci_bind_by_name($stmt, ':user_level', $level);
             oci_bind_by_name($stmt, ':code', $code);
             oci_bind_by_name($stmt, ':name', $name);
             oci_bind_by_name($stmt, ':surname', $surname);
             oci_bind_by_name($stmt, ':birthdate', $birthdate);
-            oci_bind_by_name($stmt, ':genre', $genre);
             oci_bind_by_name($stmt, ':phone', $phone);
             oci_bind_by_name($stmt, ':email', $email);
             oci_bind_by_name($stmt, ':user_password', $password);
@@ -1556,15 +1555,14 @@
         }
 
         /*Funcion para registrar el pago*/
-        function registerGenre($user_id, $active, $name, $created_at) {
+        function registerGenre($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_GENRE(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_GENRE(:g_active, :g_name, TO_DATE(:g_created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
-            oci_bind_by_name($stmt, ':user_id', $user_id);
-            oci_bind_by_name($stmt, ':active', $active);
-            oci_bind_by_name($stmt, ':name', $name);       
-            oci_bind_by_name($stmt, ':created_at', $created_at);
+            oci_bind_by_name($stmt, ':g_active', $active);
+            oci_bind_by_name($stmt, ':g_name', $name);       
+            oci_bind_by_name($stmt, ':g_created_at', $created_at);
             /*Variable bandera para asignar el resultado*/
             $resultado = '';
             oci_bind_by_name($stmt, ':resultado', $resultado, 100);

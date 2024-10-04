@@ -134,7 +134,7 @@
     define("registerProductA", "&action=registerProduct");
     define("windowManagementProducts", "&action=windowManagementProducts");
     define("windowManagementDepartments", "&action=windowManagementDepartments");
-    define("windowManagementPurchasingStatus", "&action=windowManagementPurchasingStatus");
+    define("windowManagementPurchasingStatus", "&action=windowManagementPurchasingStatues");
     define("windowManagementBankEntities", "&action=windowManagementBankEntities");
     define("windowManagementNews", "&action=windowManagementNews");
     define("windowManagementGenres", "&action=windowManagementGenres");

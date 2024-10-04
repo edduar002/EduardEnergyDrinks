@@ -37,7 +37,7 @@
                     <label for="genre">Genero</label>
                     <select name="genre" name="genre" class="form-control" required>
                         <?php foreach($listGenres as $genres) : ?>
-                            <option value="<?=$usos -> id?>"><?=$genres -> name?></option>
+                            <option value="<?=$genres['GENRE_ID']?>"><?=$genres['NAME']?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

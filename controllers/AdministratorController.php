@@ -75,6 +75,56 @@
             require_once "views/administrator/ManagementUsers.html";
         }
 
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function windowManagementGenres(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Obtener lista de usuarios*/
+            $list = $model -> getGenres();
+            /*Incluir la vista*/
+            require_once "views/administrator/ManagementGenres.html";
+        }
+
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function windowManagementDepartments(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Obtener lista de usuarios*/
+            $list = $model -> getUsers();
+            /*Incluir la vista*/
+            require_once "views/administrator/ManagementDepartments.html";
+        }
+
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function windowManagementPurchasingStatues(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Obtener lista de usuarios*/
+            $list = $model -> getUsers();
+            /*Incluir la vista*/
+            require_once "views/administrator/ManagementPurchasingStatues.html";
+        }
+
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function windowManagementNews(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Obtener lista de usuarios*/
+            $list = $model -> getUsers();
+            /*Incluir la vista*/
+            require_once "views/administrator/ManagementNews.html";
+        }
+
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function windowManagementBankEntities(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Obtener lista de usuarios*/
+            $list = $model -> getUsers();
+            /*Incluir la vista*/
+            require_once "views/administrator/ManagementBankEntities.html";
+        }
+
         /*Funcion para abrir ventana para la asignacion de usuarios fundadores*/
         public function windowAddUser(){
             /*Incluir la vista*/
