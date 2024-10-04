@@ -1420,6 +1420,434 @@
             return $products;
         }
 
+        /*Funcion para actualizar un pago*/
+        function updateDepartment($id, $name) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_DEPARTMENT(:id, :name); END;';
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':name', $name);
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            // Retornar el resultado
+            return $resultado;
+        }
+
+        /*Funcion para registrar el pago*/
+        function registerDepartment($user_id, $active, $name, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_DEPARTMENT(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':name', $name);      
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        }   
+
+        /*Funcion para eliminar un pago*/
+        public function deleteDepartment($department_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DELETE_DEPARTMENT(:department_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':department_id', $department_id);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        /*Funcion para obtener un pago en concreto*/
+        public function getDeparment($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_DEPARTMENT(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/ 
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
+        /*Funcion para actualizar un pago*/
+        function updateGenre($id, $name) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_GENRE(:id, :name); END;';
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':name', $name);
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            // Retornar el resultado
+            return $resultado;
+        }
+
+        /*Funcion para registrar el pago*/
+        function registerGenre($user_id, $active, $name, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_GENRE(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':name', $name);       
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        }   
+
+        /*Funcion para eliminar un pago*/
+        public function deleteGenre($genre_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DELETE_GENRE(:genre_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':genre_id', $genre_id);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        /*Funcion para obtener un pago en concreto*/
+        public function getGenre($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_GENRE(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/ 
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
+        /*Funcion para actualizar un pago*/
+        function updateBankEntity($id, $name) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_BANK_ENTITY(:id, :name); END;';
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':name', $name);
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            // Retornar el resultado
+            return $resultado;
+        }
+
+        /*Funcion para registrar el pago*/
+        function registerBankEntity($user_id, $active, $name, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_BANK_ENTITY(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':name', $name);         
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        }   
+
+        /*Funcion para eliminar un pago*/
+        public function deleteBankEntity($bank_entity_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DELETE_BANK_ENTITY(:bank_entity_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':bank_entity_id', $bank_entity_id);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        /*Funcion para obtener un pago en concreto*/
+        public function getBankEntity($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_BANK_ENTITY(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/ 
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
+        /*Funcion para actualizar un pago*/
+        function updatePurchasingStatus($id, $name) {
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := UPDATE_PURCHASING_STATUS(:id, :name); END;';
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':name', $name);
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            // Retornar el resultado
+            return $resultado;
+        }
+
+        /*Funcion para registrar el pago*/
+        function registerPurchasingStatus($user_id, $active, $name, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_PURCHASING_STATUS(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':name', $name);         
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        }   
+
+        /*Funcion para eliminar un pago*/
+        public function deletePurchasingStatus($purchasing_status_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DELETE_PURCHASING_STATUS(:purchasing_status_id); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':purchasing_status_id', $purchasing_status_id);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        /*Funcion para obtener un pago en concreto*/
+        public function getPurchasingStatus($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_PURCHASING_STATUS(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/ 
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
     }
 
 ?>

@@ -6,6 +6,18 @@ DROP VIEW PRODUCT_DETAIL;
 
 DROP VIEW PRODUCT_LIST;
 
+DROP VIEW PAYS_LIST_MANAGEMENT;
+
+DROP VIEW GENRES_LIST_MANAGEMENT;
+
+DROP VIEW DIRECTIONS_LIST_MANAGEMENT;
+
+DROP VIEW BANKS_ENTITY_LIST_MANAGEMENT;
+
+DROP VIEW DEPARTMENTS_MANAGEMENT;
+
+DROP VIEW PURCHASINGS_STATUS_MANAGEMENT;
+
 DROP VIEW TRANSACTIONS_LIST;
 
 DROP VIEW PRODUCT_LIST_MANAGEMENT;
@@ -477,6 +489,30 @@ SELECT PRODUCT_ID, USER_ID, NAME, PRICE, UNITS, CONTENT, STOCK, DESCRIPTION, IMA
 FROM products;
 
 CREATE OR REPLACE VIEW PRODUCT_LIST AS
+SELECT PRODUCT_ID, ACTIVE, NAME, PRICE, IMAGE
+FROM products;
+
+CREATE OR REPLACE VIEW PAYS_LIST_MANAGEMENT AS
+SELECT PAY_ID, ACTIVE, NAME
+FROM pays;
+
+CREATE OR REPLACE VIEW GENRES_LIST_MANAGEMENT AS
+SELECT GENRE_ID, ACTIVE, NAME
+FROM genres;
+
+CREATE OR REPLACE VIEW DIRECTIONS_LIST_MANAGEMENT AS
+SELECT DIRECTION_ID, ACTIVE, NAME
+FROM products;
+
+CREATE OR REPLACE VIEW BANKS_ENTITY_LIST_MANAGEMENT AS
+SELECT PRODUCT_ID, ACTIVE, NAME, PRICE, IMAGE
+FROM products;
+
+CREATE OR REPLACE VIEW DEPARTMENTS_MANAGEMENT AS
+SELECT PRODUCT_ID, ACTIVE, NAME, PRICE, IMAGE
+FROM products;
+
+CREATE OR REPLACE VIEW PURCHASINGS_STATUS_MANAGEMENT AS
 SELECT PRODUCT_ID, ACTIVE, NAME, PRICE, IMAGE
 FROM products;
 
@@ -1576,3 +1612,79 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END GET_USERS;
+
+create or replace FUNCTION DELETE_DEPARTMENT(d_department_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE departments
+    SET active = 0
+    WHERE department_id = d_department_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION DELETE_BANK_ENTITY(be_bank_entity_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE BANKING_ENTITIES
+    SET active = 0
+    WHERE BANKING_ENTITY_ID = be_bank_entity_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION DELETE_GENRE(g_genre_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE genres
+    SET active = 0
+    WHERE genre_id = g_genre_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
+
+create or replace FUNCTION DELETE_PURCHASING_STATUS(ps_purchasing_status_id IN NUMBER) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE PURCHASING_STATUS
+    SET active = 0
+    WHERE PURCHASING_STATUS_ID = ps_purchasing_status_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;
