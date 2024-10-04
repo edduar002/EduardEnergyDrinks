@@ -133,6 +133,11 @@
     define("windowManagementUsers", "&action=windowManagementUsers");
     define("registerProductA", "&action=registerProduct");
     define("windowManagementProducts", "&action=windowManagementProducts");
+    define("windowManagementDepartments", "&action=windowManagementDepartments");
+    define("windowManagementPurchasingStatus", "&action=windowManagementPurchasingStatus");
+    define("windowManagementBankEntities", "&action=windowManagementBankEntities");
+    define("windowManagementNews", "&action=windowManagementNews");
+    define("windowManagementGenres", "&action=windowManagementGenres");
     define("windowAddUserAdmin", "&action=windowAddUser");
     define("addUserAdmin", "&action=addUser"); 
 

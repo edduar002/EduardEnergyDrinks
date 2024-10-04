@@ -23,6 +23,12 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowRegister(){
+            /*Instancia modelo*/
+            $model = new Model();
+            /*Llamar la funcion que obtiene los generos guardados*/
+            $listGenres = $model -> getGenres();
+            var_dump($listGenres);
+            die();
             /*Incluir la vista*/
             require_once "views/user/Register.html";
         }
