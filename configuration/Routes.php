@@ -71,7 +71,7 @@
 
     /*Rutas para entidad bancaria*/
 
-    define("bankEntity", "/?controller=payController");
+    define("bankEntity", "/?controller=bankingEntityController");
 
     define("windowRegisterBankEntity", "&action=windowRegister");
     define("registerBankEntity", "&action=register");
@@ -81,7 +81,7 @@
 
     /*Rutas para estado de la compra*/
 
-    define("purchasingStatus", "/?controller=payController");
+    define("purchasingStatus", "/?controller=purchasingStatusController");
 
     define("windowRegisterPurchasingStatus", "&action=windowRegister");
     define("registerPurchasingStatus", "&action=register");

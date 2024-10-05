@@ -1,6 +1,6 @@
 <div class="col-10 m-5">
     <?php if(sizeof($list) == 0) : ?>
-        <h1 class="text-center mt-5 mb-5">No hay estados de la compra creados</h1>
+        <h1 class="text-center mt-5 mb-5">No hay estados de compra creados</h1>
     <?php else : ?>
         <h2 class="text-center">Lista de estados de compra</h2>
         <br>
@@ -16,19 +16,19 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($listProducts as $list) : ?>
+                <?php foreach($list as $listPurchasingStatus) : ?>
                     <tr>
                         <td>
-                            <div class="text-center"><?=$list['NAME']?></div>
+                            <div class="text-center"><?=$listPurchasingStatus['NAME']?></div>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a href="<?=init?><?=purchasingStatus?><?=windowUpdatePurchasingStatus?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-warning">Actualizar</a>
+                                <a href="<?=init?><?=department?><?=windowUpdatePurchasingStatus?>&id=<?=$listPurchasingStatus['PURCHASING_STATUS_ID']?>" class="btn btn-warning">Actualizar</a>
                             </div>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-danger" data-id="<?=$list['PRODUCT_ID']?>" href="#">Eliminar</a>
+                                <a data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-danger" data-id="<?=$listPurchasingStatus['PURCHASING_STATUS_ID']?>" href="#">Eliminar</a>
                             </div>
                         </td>
                     </tr>
@@ -42,17 +42,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title fs-5" id="exampleModalLabel2">Eliminar Producto</h4>
+                    <h4 class="modal-title fs-5" id="exampleModalLabel2">Eliminar Estado De La Compra</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ¿Estas seguro que deseas eliminar este producto?
+                    ¿Estas seguro que deseas eliminar este estado de la compra?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteProduct">Sí, eliminar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteGenre">Sí, eliminar</button>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <a class="btn btn-primary" href="<?=init?><?=purchasingStatus?><?=windowRegisterPurchasingStatus?>">Crear estado de la compra</a>
     </div>
 </div>

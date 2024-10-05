@@ -45,21 +45,20 @@
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if(isset($_POST)){
-                /*Asignar los datos si llegan*/
-                $user_id = $_SESSION['loginsucces']['USER_ID'];
+                /*Asignar el dato si llega*/
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
-                /*Comprobar si los datos llegan*/
-                if($user_id && $name){
+                /*Comprobar si el dato llega*/
+                if($name){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el departamento*/  
-                    $resultado = $model->registerDepartment($user_id, 1, $name, $created_at2);
+                    $resultado = $model->registerDepartment(1, $name, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el departamento", "?controller=userController&action=managementDepartments");
+                        Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente el departamento", "?controller=administratorController&action=windowManagementDepartments");
                     /*De lo contrario*/  
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/

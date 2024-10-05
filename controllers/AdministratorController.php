@@ -90,7 +90,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Obtener lista de usuarios*/
-            $list = $model -> getUsers();
+            $list = $model -> getDepartments();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementDepartments.html";
         }
@@ -100,7 +100,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Obtener lista de usuarios*/
-            $list = $model -> getUsers();
+            $list = $model -> getPurchasingStatues();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementPurchasingStatues.html";
         }
@@ -110,7 +110,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Obtener lista de usuarios*/
-            $list = $model -> getUsers();
+            $list = $model -> getSNews();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementNews.html";
         }
@@ -120,7 +120,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Obtener lista de usuarios*/
-            $list = $model -> getUsers();
+            $list = $model -> getBankEntities();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementBankEntities.html";
         }

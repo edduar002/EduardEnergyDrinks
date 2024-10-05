@@ -117,7 +117,39 @@
             oci_close($this->conn);
             /*Retornar el resultado*/
             return $respuesta;
-        }      
+        } 
+        
+        /*Funcion para registrar el producto en la base de datos*/
+        function registerNews($active, $title, $content, $link, $image, $created_at) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $sql = 'BEGIN :resultado := REGISTER_NEWS(:active, :title, :content, :link, :image, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada y salida*/
+            oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':title', $title);
+            oci_bind_by_name($stmt, ':content', $content);
+            oci_bind_by_name($stmt, ':link', $link);
+            oci_bind_by_name($stmt, ':image', $image);
+            oci_bind_by_name($stmt, ':created_at', $created_at);
+            /*Variable bandera para asignar el resultado*/
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/
+            $success = oci_execute($stmt);
+            /* Manejar errores si la ejecución falla */
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado*/
+            return $resultado;
+        }  
+
         
         /*Funcion para registrar el producto en la base de datos*/
         function registerProduct($user_id, $active, $name, $price, $units, $content, $stock, $description, $image, $created_at) {
@@ -1448,12 +1480,11 @@
         }
 
         /*Funcion para registrar el pago*/
-        function registerDepartment($user_id, $active, $name, $created_at) {
+        function registerDepartment($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_DEPARTMENT(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_DEPARTMENT(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
-            oci_bind_by_name($stmt, ':user_id', $user_id);
             oci_bind_by_name($stmt, ':active', $active);
             oci_bind_by_name($stmt, ':name', $name);      
             oci_bind_by_name($stmt, ':created_at', $created_at);
@@ -1632,6 +1663,52 @@
             return $productData;
         }
 
+        /*Funcion para obtener un pago en concreto*/
+        public function getDepartment($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_DEPARTMENT(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/ 
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
+        /*Funcion para obtener un pago en concreto*/
+        public function getNews($id) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := GET_NEWS(:id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el valor de entrada y salida*/ 
+            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT); // Especifica el tipo de datos
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Obtener el resultado como un arreglo asociativo*/ 
+            $productData = oci_fetch_assoc($resultado);
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $productData;
+        }
+
         /*Funcion para actualizar un pago*/
         function updateBankEntity($id, $name) {
             // Preparar la consulta que llama a la función de Oracle
@@ -1661,12 +1738,11 @@
         }
 
         /*Funcion para registrar el pago*/
-        function registerBankEntity($user_id, $active, $name, $created_at) {
+        function registerBankEntity($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_BANK_ENTITY(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_BANK_ENTITY(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
-            oci_bind_by_name($stmt, ':user_id', $user_id);
             oci_bind_by_name($stmt, ':active', $active);
             oci_bind_by_name($stmt, ':name', $name);         
             oci_bind_by_name($stmt, ':created_at', $created_at);
@@ -1768,12 +1844,11 @@
         }
 
         /*Funcion para registrar el pago*/
-        function registerPurchasingStatus($user_id, $active, $name, $created_at) {
+        function registerPurchasingStatus($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_PURCHASING_STATUS(:user_id, :active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_PURCHASING_STATUS(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
-            oci_bind_by_name($stmt, ':user_id', $user_id);
             oci_bind_by_name($stmt, ':active', $active);
             oci_bind_by_name($stmt, ':name', $name);         
             oci_bind_by_name($stmt, ':created_at', $created_at);
@@ -1849,6 +1924,31 @@
         public function getDepartments(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_DEPARTMENTS; END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }
+
+        public function getsNews(){
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := GETS_NEWS; END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);

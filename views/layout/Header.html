@@ -67,7 +67,8 @@
                                     </li>
                                     <li><a class="dropdown-item" href="<?=init?><?=user?><?=mySales?>">Mis ventas</a>
                                     </li>
-                                    <?php if($information['USER_LEVEL'] != -1) : ?>
+                        
+                                    <?php if($information['HIGHER_USER_ID'] != NULL) : ?>
                                         <li><a class="dropdown-item" href="<?=init?><?=network?><?=windowAddUser?>">Agregar Usuario</a>
                                         </li>
                                     <?php endif;?>
