@@ -32,12 +32,12 @@
                 /*De lo contrario*/     
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error al cargar la ventana", "?controller=userController&action=managementDepartments");
+                    Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error al cargar la ventana", "?controller=administratorController&action=managementDepartments");
                 }
             /*De lo contrario*/      
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error inesperado", "controller=userController&action=managementDepartments");
+                Helps::createSessionAndRedirect("erroreditar", "Ha ocurrido un error inesperado", "controller=administratorController&action=managementDepartments");
             }
         }
 

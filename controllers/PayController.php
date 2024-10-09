@@ -11,6 +11,10 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowRegister(){
+            /*Instancia modelo*/
+            $model = new Model();
+            /*Llamar la funcion que obtiene los generos guardados*/
+            $listBankEntities = $model -> getBankEntities();
             /*Incluir la vista*/
             require_once "views/pay/Create.html";
         }
@@ -47,16 +51,16 @@
             if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
-                $election = isset($_POST['election']) ? $_POST['election'] : false;
+                $entity = isset($_POST['entity']) ? $_POST['entity'] : false;
                 $electionNumber = isset($_POST['electionNumber']) ? $_POST['electionNumber'] : false;
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Comprobar si los datos llegan*/
-                if($user_id && $election && $electionNumber){
+                if($user_id && $entity && $electionNumber){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el pago*/  
-                    $resultado = $model->registerPay($user_id, 1, $election, $electionNumber, $created_at2);
+                    $resultado = $model->registerPay($user_id, $entity, 1, $electionNumber, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

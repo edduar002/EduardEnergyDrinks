@@ -99,6 +99,16 @@
     define("deleteDirection", "&action=delete");
     define("updateDirection", "&action=update");
 
+    /*Rutas para noticia*/
+
+    define("news", "/?controller=newsController");
+
+    define("windowRegisterNews", "&action=windowRegister");
+    define("registerNews", "&action=register");
+    define("windowUpdateNews", "&action=windowUpdate");
+    define("deleteNews", "&action=delete");
+    define("updateNews", "&action=update");
+
     /*Rutas para transaccion*/
 
     define("transaction", "/?controller=transactionController");

@@ -28,6 +28,8 @@
             }
             /*Obtener la lista de productos*/        
             $listProducts = $model->productsList($user_id);
+            /*Obtener la lista de noticias*/        
+            $listNews = $model->getsNews();
             /*Incluir la vista*/
             require_once "views/layout/Products.html";
         }

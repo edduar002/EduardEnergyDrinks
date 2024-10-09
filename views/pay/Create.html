@@ -18,8 +18,12 @@
         <br>
         <form action="<?=init?><?=pay?><?=registerPay?>" method="post">
             <div class="form-group">
-                <label for="election">Eleccion</label>
-                <input type="text" name="election" class="form-control" required>
+                <label for="entity">Entidad Bancaria</label>
+                <select name="entity" name="entity" class="form-control" required>
+                    <?php foreach($listBankEntities as $banksEntities) : ?>
+                        <option value="<?=$banksEntities['BANKING_ENTITY_ID']?>"><?=$banksEntitiesgenres['NAME']?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <br>
             <div class="form-group">

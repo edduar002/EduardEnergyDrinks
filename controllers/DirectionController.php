@@ -11,6 +11,10 @@
 
         /*Funcion para abrir ventana de registro*/
         public function windowRegister(){
+            /*Instancia modelo*/
+            $model = new Model();
+            /*Llamar la funcion que obtiene los generos guardados*/
+            $listDepartments = $model -> getDepartments();
             /*Incluir la vista*/
             require_once "views/direction/Create.html";
         }
@@ -47,6 +51,7 @@
             if (isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
+                $department = isset($_POST['department']) ? $_POST['department'] : false;
                 $carrer = isset($_POST['carrer']) ? $_POST['carrer'] : false;
                 $street = isset($_POST['street']) ? $_POST['street'] : false;
                 $postal_code = isset($_POST['postalCode']) ? $_POST['postalCode'] : false;
@@ -54,11 +59,11 @@
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Comprobar si los datos llegan*/
-                if($user_id && $carrer && $street && $postal_code && $direction){
+                if($user_id && $department && $carrer && $street && $postal_code && $direction){
                     /*Instanciar modelo*/                    
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra la direccion*/  
-                    $resultado = $model->registerDirection($user_id, 1, $carrer, $street, $postal_code, $direction, $created_at2);
+                    $resultado = $model->registerDirection($user_id, $department, 1, $carrer, $street, $postal_code, $direction, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
