@@ -74,11 +74,11 @@
                         /*Instanciar modelo*/
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
-                        $resultado = $model->registerNews(1, $title, $content, $link, $content, $image, $created_at2);
+                        $resultado = $model->registerNews(1, $title, $content, $link, $image, $created_at2);
                         /*Comprobar si el registrado ha sido exitoso*/
                         if($resultado != -1){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente la noticia", "?controller=administratorController&action=managementProducts");
+                            Helps::createSessionAndRedirect("aciertoregistro", "Se ha registrado exitosamente la noticia", "?controller=administratorController&action=windowManagementNews");
                         /*De lo contrario*/
                         }else{
                             /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -163,7 +163,7 @@
                         /*Comprobar si el estado ha sido editado*/
                         if($resultado){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
-                            Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion de la noticia se ha realizado con exito", "?controller=newsController&action=windowUpdate&id=$news_id");
+                            Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion de la noticia se ha realizado con exito", "?controller=administratorController&action=windowManagementNews");
                         /*De lo contrario*/    
                         }else{
                             /*Crear la sesion y redirigir a la ruta pertinente*/

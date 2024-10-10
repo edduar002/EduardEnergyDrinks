@@ -29,7 +29,7 @@
     <br>
     <br>
     <br>
-    <form action="<?=init?><?=product?><?=updateProduct?>&id=<?=$product['PRODUCT_ID']?>" method="post" enctype="multipart/form-data">
+    <form action="<?=init?><?=news?><?=updateNews?>&id=<?=$news['NEWS_ID']?>" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-7">
                 <br>
@@ -38,34 +38,10 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0">
-                                Nombre
+                                Titulo
                             </span>
                         </div>
-                        <input type="text" name="name" value="<?=$product['NAME']?>" class="form-control" required>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text rounded-0">
-                                Precio
-                            </span>
-                        </div>
-                        <input type="number" name="price" value="<?=$product['PRICE']?>" class="form-control" required>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text rounded-0">
-                                Unidades
-                            </span>
-                        </div>
-                        <input type="number" name="units" value="<?=$product['UNITS']?>" class="form-control" required>
+                        <input type="text" name="title" value="<?=$news['TITLE']?>" class="form-control" required>
                     </div>
                 </div>
                 <br>
@@ -77,7 +53,7 @@
                                 Contenido
                             </span>
                         </div>
-                        <input type="text" name="content" value="<?=$product['CONTENT']?>" class="form-control" required>
+                        <input type="text" name="content" value="<?=$news['CONTENT']?>" class="form-control" required>
                     </div>
                 </div>
                 <br>
@@ -86,22 +62,10 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0">
-                                Stock
+                                Contenido
                             </span>
                         </div>
-                        <input type="number" name="stock" value="<?=$product['STOCK']?>" class="form-control" required>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text rounded-0">
-                                Descripcion
-                            </span>
-                        </div>
-                        <input type="text" name="description" value="<?=$product['DESCRIPTION']?>" class="form-control" required>
+                        <input type="text" name="link" value="<?=$news['LINK']?>" class="form-control" required>
                     </div>
                 </div>
                 <br>
@@ -116,8 +80,8 @@
             </div>
             <div class="col-3">
                 <div class="col-3"></div>
-                <img id="imgRegister" class="img-fluid rounded-circle"
-                    src="resources/imagesProducts/<?=$product['IMAGE']?>" alt="">
+                <img id="imgRegister" class="img-fluid"
+                    src="resources/imagesNews/<?=$news['IMAGE']?>" alt="">
                 <br>
                 <label for="formFile" class="form-label">Actualizar foto de perfil</label>
                 <input class="form-control" id="formFile" type="file" name="image" accept="image/*">

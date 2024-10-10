@@ -28,15 +28,14 @@
                     <div class="p-4 bg-light rounded-3 h-100">
                         <div class="row">
                             <div class="col-md-4">
-                                <img src="https://via.placeholder.com/300" class="img-fluid rounded"
+                                <img src="resources/imagesNews/<?=$list['IMAGE']?>" class="img-fluid rounded"
                                     alt="Imagen de la noticia 1">
                             </div>
                             <div class="col-md-8">
                                 <div class="container-fluid py-3">
-                                    <h2 class="fw-bold">Título de la Noticia 1</h2>
-                                    <p class="fs-5">Este es un breve resumen de la noticia 1, que ofrece un pequeño adelanto
-                                        para atraer al lector.</p>
-                                    <a href="#" class="btn btn-primary">Leer más</a>
+                                    <h2 class="fw-bold"><?=$list['TITLE']?></h2>
+                                    <p class="fs-5"><?=$list['CONTENT']?></p>
+                                    <a href="<?=$list['LINK']?>" target="_blank" class="btn btn-primary">Leer más</a>
                                 </div>
                             </div>
                         </div>

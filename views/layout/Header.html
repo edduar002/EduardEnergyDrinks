@@ -25,9 +25,9 @@
             <!--MENU-->
             <nav id="navbar" class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    <form class="d-flex" role="search">
-                        <input class="form-control ms-5 mt-2 w-150" type="search" placeholder="Buscar Un Producto" aria-label="Search">
-                        <a href="<?=init?><?=product?><?=searchProduct?>"></a>
+                    <form action="<?=init?><?=product?><?=searchProduct?>" method="post" class="d-flex" role="search">
+                        <input name="namebu" class="form-control ms-5 mt-2 w-150" type="search" placeholder="Buscar Un Producto" aria-label="Search" required>
+                        <input type="submit" value="ENVIAR">
                     </form>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

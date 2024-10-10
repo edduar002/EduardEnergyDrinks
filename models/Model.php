@@ -787,7 +787,7 @@
         /*Funcion para actualizar un producto*/
         function updateNews($id, $title, $content, $link, $image = null) {
             // Preparar la consulta que llama a la función de Oracle
-            $sql = 'BEGIN :resultado := UPDATE_PRODUCT(:id, :title, :price, :content, :image); END;';
+            $sql = 'BEGIN :resultado := UPDATE_NEW(:id, :title, :content, :link, :image); END;';
             // Parsear la consulta
             $stmt = oci_parse($this->conn, $sql);
             // Asignar los valores de entrada y salida
@@ -821,7 +821,7 @@
             $query = 'BEGIN :resultado := SEARCH_PRODUCTS(:name); END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
-            $cursor = oci_new_cursor($this->conn);
+            $resultado = oci_new_cursor($this->conn);
             /* Asignar los valores de entrada y el cursor de salida */
             oci_bind_by_name($stid, ':name', $name);
             /*Asignar el cursor como el valor de salida*/ 

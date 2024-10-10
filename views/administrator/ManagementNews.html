@@ -11,6 +11,19 @@
 <?php endif; ?>
 <?php helps::deleteSession('erroractualizar'); ?>
 
+<?php if(isset($_SESSION['aciertoactualizar'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertoactualizar']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertoactualizar'); ?>
+
 <?php if(isset($_SESSION['erroreliminar'])) : ?>
     <div id="alerta2" class="position-absolute col-6">
         <div>
@@ -87,25 +100,25 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($listProducts as $list) : ?>
+                <?php foreach($list as $listNews) : ?>
                     <tr>
                         <td>
-                            <div class="text-center"><?=$list['NAME']?></div>
+                            <div class="text-center"><?=$listNews['TITLE']?></div>
                         </td>
                         <td>
-                            <div class="text-center"><?=$list['NAME']?></div>
+                            <div class="text-center"><?=$listNews['CONTENT']?></div>
                         </td>
                         <td>
-                            <div class="text-center"><?=$list['NAME']?></div>
+                            <div class="text-center"><?=$listNews['LINK']?></div>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a href="<?=init?><?=product?><?=windowUpdateProduct?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-warning">Actualizar</a>
+                                <a href="<?=init?><?=news?><?=windowUpdateNews?>&id=<?=$listNews['NEWS_ID']?>" class="btn btn-warning">Actualizar</a>
                             </div>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-danger" data-id="<?=$list['PRODUCT_ID']?>" href="#">Eliminar</a>
+                                <a data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-danger" data-id="<?=$listNews['NEWS_ID']?>" href="#">Eliminar</a>
                             </div>
                         </td>
                     </tr>
@@ -119,15 +132,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title fs-5" id="exampleModalLabel2">Eliminar Producto</h4>
+                    <h4 class="modal-title fs-5" id="exampleModalLabel2">Eliminar Noticia</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ¿Estas seguro que deseas eliminar este producto?
+                    ¿Estas seguro que deseas eliminar esta noticia?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteProduct">Sí, eliminar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteNews">Sí, eliminar</button>
                 </div>
             </div>
         </div>

@@ -28,9 +28,9 @@
         /*Funcion para la busqueda de producto*/
         public function search(){
             /*Comprobar si llega el id enviado por get*/
-            if(isset($_GET)){
+            if(isset($_POST)){
                 /*Asignar el dato si llega*/  
-                $name = isset($_POST['name']) ? $_POST['name'] : false;
+                $name = isset($_POST['namebu']) ? $_POST['namebu'] : false;
                 /*Asignar el dato si llega*/                
                 if($name){
                     /*Instanciar modelo*/ 
@@ -44,8 +44,6 @@
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "controller=userController&action=managementProducts");
             }
-            /*Incluir la vista*/
-            require_once "views/product/Create.html";
         }
 
         /*Funcion para abrir ventana de catalogo*/

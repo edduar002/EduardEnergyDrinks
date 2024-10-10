@@ -111,13 +111,13 @@
 
         /*Funcion para actualizar*/
         public function update(){
-            /*Comprobar si llega el id enviado por get*/  
-            if(isset($_GET)){
+            /*Comprobar si llega el id enviado por get y el nombre por post*/  
+            if(isset($_GET) && isset($_POST)){
                 /*Comprobar si el dato existe*/
                 $genre_id = isset($_GET['id']) ? $_GET['id'] : false;
                 $name = isset($_POST['name']) ? $_POST['name'] : false;
                 /*Si el dato existe*/
-                if($genre_id){
+                if($genre_id && $name){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza el genero*/  
@@ -125,7 +125,7 @@
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del genero se ha realizado con exito", "?controller=userController&action=managementGenres");
+                        Helps::createSessionAndRedirect("aciertoactualizar", "La actualizacion del genero se ha realizado con exito", "?controller=administratorController&action=windowManagementGenres");
                     /*De lo contrario*/    
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/

@@ -2164,20 +2164,20 @@ BEGIN
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
 
-create or replace FUNCTION SEARCH_PRODUCTS (p_product_name IN VARCHAR2) RETURN SYS_REFCURSOR
+CREATE OR REPLACE FUNCTION SEARCH_PRODUCTS (p_product_name IN VARCHAR2) 
+RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
 BEGIN
-    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
-    -- y el USER_ID sea el dueño del pago
+    -- Abrir un cursor para seleccionar todos los productos donde el nombre coincida
     OPEN v_cursor FOR
     SELECT *
     FROM PRODUCTS p
-    WHERE name LIKE '%p_product_name%';  -- Compara si el ID que llega es del dueño del pago
+    WHERE p.name LIKE '%' || p_product_name || '%';  -- Concatenar los comodines correctamente
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
-        -- Manejo de otras excepciones
+        -- Manejo de excepciones
         RAISE;
 END SEARCH_PRODUCTS;
 

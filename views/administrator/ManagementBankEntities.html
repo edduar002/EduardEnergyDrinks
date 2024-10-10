@@ -11,6 +11,19 @@
 <?php endif; ?>
 <?php helps::deleteSession('erroractualizar'); ?>
 
+<?php if(isset($_SESSION['aciertoactualizar'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertoactualizar']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertoactualizar'); ?>
+
 <?php if(isset($_SESSION['erroreliminar'])) : ?>
     <div id="alerta2" class="position-absolute col-6">
         <div>
@@ -88,7 +101,7 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a href="<?=init?><?=department?><?=windowUpdateBankEntity?>&id=<?=$listBankEntities['BANKING_ENTITY_ID']?>" class="btn btn-warning">Actualizar</a>
+                                <a href="<?=init?><?=bankEntity?><?=windowUpdateBankEntity?>&id=<?=$listBankEntities['BANKING_ENTITY_ID']?>" class="btn btn-warning">Actualizar</a>
                             </div>
                         </td>
                         <td>

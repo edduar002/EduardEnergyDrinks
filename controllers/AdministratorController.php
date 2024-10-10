@@ -110,7 +110,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Obtener lista de usuarios*/
-            $list = $model -> getSNews();
+            $list = $model -> getsNews();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementNews.html";
         }
