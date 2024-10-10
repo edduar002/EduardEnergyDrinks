@@ -719,6 +719,35 @@
             return $resultado;
         }
 
+        function changePassword($idUser, $newPassword) {
+            /*Encriptar la clave*/
+            $password = password_hash($newPassword, PASSWORD_BCRYPT, ['cost'=>4]);
+            // Preparar la consulta que llama a la función de Oracle
+            $sql = 'BEGIN :resultado := CHANGE_PASSWORD(:idUser, :password); END;';
+            // Parsear la consulta
+            $stmt = oci_parse($this->conn, $sql);
+            // Asignar los valores de entrada y salida
+            oci_bind_by_name($stmt, ':idUser', $idUser);
+            oci_bind_by_name($stmt, ':password', $password);
+            // Variable bandera para asignar el resultado
+            $resultado = '';
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            // Ejecutar la consulta
+            $success = oci_execute($stmt);
+            // Manejar errores si la ejecución falla
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            // Liberar recursos
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            // Retornar el resultado
+            return $resultado;
+        }
+
         /*Funcion para actualizar una direccion*/
         function updateDirection($id, $carrer, $street, $postal_code, $direction) {
             // Preparar la consulta que llama a la función de Oracle

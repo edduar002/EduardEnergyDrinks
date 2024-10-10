@@ -26,6 +26,7 @@
     define("managementPays", "&action=managementPays");
     define("deleteUser", "&action=delete");
     define("updateUser", "&action=update");
+    define("changePassword", "&action=changePassword");
 
     /*Ruta para producto*/
 

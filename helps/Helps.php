@@ -86,6 +86,22 @@
             return $codigo;
         }
 
+        public static function checkKeys($password){
+            /*instanciar el modelo*/
+            $model = new Model();
+            /*Capturar el correo del usuario ingresado*/
+            $email = $_SESSION['loginsucces']['EMAIL'];
+            /*Obtener clave actual del usuario logueado*/
+            $passwordUser = $model -> getPassword($email);
+            /*Verificar clave actual y nueva*/
+            $passwordVerified = password_verify($password, $passwordUser);
+            /*Comprobar si la clave actual y nueva coinciden*/
+            if($passwordVerified){
+                /*Retornar el resultado*/
+                return true;
+            }
+        }
+
         /*
         Funcion para listar los datos del usuario
         */

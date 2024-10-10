@@ -2228,3 +2228,22 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END GET_ALL_PRODUCTS;
+
+create or replace FUNCTION CHANGE_PASSWORD(u_user_id IN NUMBER, u_new_password IN VARCHAR2) 
+RETURN VARCHAR2 AS
+BEGIN
+    -- Actualizar el campo activo a 0 para el producto con el ID especificado
+    UPDATE users
+    SET user_password = u_new_password
+    WHERE user_id = u_user_id;
+    
+    -- Confirmar la transacción
+    COMMIT;
+    
+    -- Retornar un mensaje de éxito
+    RETURN 1;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- En caso de error, devolver un mensaje
+        RETURN 'Error al eliminar el pago';
+END;

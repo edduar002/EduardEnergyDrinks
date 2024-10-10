@@ -132,6 +132,52 @@
             }
         }
 
+        public function changePassword(){
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_POST)) {
+                /*Obtener usuario logueado*/
+                $user = $_SESSION['loginsucces'];
+                /*Comprobar si el dato existe*/
+                $user_id = isset($user['USER_ID']) ? $user['USER_ID'] : false;
+                $newPassword = isset($_POST['passwordn']) ? $_POST['passwordn'] : false;
+                $oldPassword = isset($_POST['passwordo']) ? $_POST['passwordo'] : false;
+                /*Comprobar si los datos llegan*/
+                if($user_id && $newPassword && $oldPassword){
+                    /*Comprobar si la clave cumple los parametros de seguridad*/
+                    if(Helps::validatePassword($newPassword)){
+                        /*Comprobar si la clave antigua coincide*/
+                        if(Helps::checkKeys($oldPassword)){
+                            /*Instanciar modelo*/
+                            $model = new Model();
+                            /*Llamar la funcion que actualizas la clave*/
+                            $change = $model -> changePassword($user_id, $newPassword);
+                            /*Comprobar si el cambio ha sido exitoso*/
+                            if($change){
+                                /*Crear la sesion y redirigir a la ruta pertinente*/
+                                Helps::createSessionAndRedirect("aciertoactualizacion", "Clave actualizada con exito", "?controller=userController&action=windowChangePassword");
+                            }
+                        /*De lo contrario*/    
+                        }else{
+                            /*Crear la sesion y redirigir a la ruta pertinente*/
+                            Helps::createSessionAndRedirect("erroractualizacion", "Clave actual incorrecta", "?controller=userController&action=windowChangePassword");
+                        }
+                    /*De lo contrario*/    
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("erroractualizacion", "La clave no cumple los parametros de seguridad", "?controller=userController&action=windowChangePassword");
+                    }
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("erroractualizacion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowChangePassword");
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("erroractualizacion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowChangePassword");
+            }
+        }
+
         /*Funcion para que un usuario se registre*/
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
