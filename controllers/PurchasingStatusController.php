@@ -46,7 +46,7 @@
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if(isset($_POST)){
                 /*Asignar el dato si llega*/
-                $name = isset($_POST['name']) ? $_POST['name'] : false;
+                $name = isset($_POST['psname']) ? $_POST['psname'] : false;
                 $created_at = date('Y-m-d');
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Comprobar si los datos llegan*/

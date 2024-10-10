@@ -15,6 +15,16 @@
             require_once "views/news/Create.html";
         }
 
+        /*Funcion para abrir ventana de registro*/
+        public function all(){
+            /*Instanciar modelo*/ 
+            $model = new Model();
+            /*Llamar la funcion del modelo*/ 
+            $listNews = $model -> getAllNews();
+            /*Incluir la vista*/
+            require_once "views/news/All.html";
+        }
+
         /*Funcion para abrir ventana de editar*/
         public function windowUpdate(){
             /*Comprobar si llega el id enviado por get*/            

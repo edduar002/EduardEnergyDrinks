@@ -38,6 +38,8 @@
     define("detailProduct", "&action=detail");
     define("deleteProduct", "&action=delete");
     define("updateProduct", "&action=update");
+    define("searchProduct", "&action=search");
+    define("allProducts", "&action=all");
 
     /*Rutas para pago*/
 
@@ -108,6 +110,7 @@
     define("windowUpdateNews", "&action=windowUpdate");
     define("deleteNews", "&action=delete");
     define("updateNews", "&action=update");
+    define("allNews", "&action=all");
 
     /*Rutas para transaccion*/
 

@@ -2163,3 +2163,68 @@ BEGIN
         RETURN 0;
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
+
+create or replace FUNCTION SEARCH_PRODUCTS (p_product_name IN VARCHAR2) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT *
+    FROM PRODUCTS p
+    WHERE name LIKE '%p_product_name%';  -- Compara si el ID que llega es del dueño del pago
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END SEARCH_PRODUCTS;
+
+create or replace FUNCTION GET_ALL_NEWS RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT * FROM (
+    SELECT N.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
+    FROM news N
+    WHERE N.active = 1
+    ORDER BY N.CREATED_AT DESC
+) 
+ORDER BY RANDOM_ORDER;
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_ALL_NEWS;
+
+create or replace FUNCTION GET_ALL_PRODUCTS(
+    p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar productos activos, con stock disponible y del superior
+    OPEN v_cursor FOR
+    SELECT * FROM (
+    SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
+    FROM PRODUCTS P
+    JOIN USERS U ON P.USER_ID = U.USER_ID
+    WHERE P.ACTIVE = 1 
+    AND P.STOCK > 0
+    AND (p_user_id IS NULL OR U.HIGHER_USER_ID = p_user_id)
+    ORDER BY P.CREATED_AT DESC
+) 
+ORDER BY RANDOM_ORDER;
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END GET_ALL_PRODUCTS;

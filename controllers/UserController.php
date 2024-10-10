@@ -139,8 +139,7 @@
                 /*Llamar la funcion que genera codigo aleatorio*/
                 $code = helps::generateRandomCode();
                 /*Asignar los datos si llegan*/
-                $name = isset($_POST['name']) ? $_POST['name'] : false;
-                $name = isset($_POST['name']) ? $_POST['name'] : false;
+                $name = isset($_POST['nameu']) ? $_POST['nameu'] : false;
                 $surname = isset($_POST['surname']) ? $_POST['surname'] : false;
                 $genre_id = isset($_POST['genre']) ? $_POST['genre'] : false;
                 $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : false;

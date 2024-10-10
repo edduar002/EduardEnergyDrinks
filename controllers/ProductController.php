@@ -15,6 +15,39 @@
             require_once "views/product/Create.html";
         }
 
+        /*Funcion para abrir ventana de registro*/
+        public function all(){
+            /*Instanciar modelo*/ 
+            $model = new Model();
+            /*Llamar la funcion del modelo*/ 
+            $listProducts = $model -> getAllProducts();
+            /*Incluir la vista*/
+            require_once "views/product/All.html";
+        }
+
+        /*Funcion para la busqueda de producto*/
+        public function search(){
+            /*Comprobar si llega el id enviado por get*/
+            if(isset($_GET)){
+                /*Asignar el dato si llega*/  
+                $name = isset($_POST['name']) ? $_POST['name'] : false;
+                /*Asignar el dato si llega*/                
+                if($name){
+                    /*Instanciar modelo*/ 
+                    $model = new Model();
+                    /*Llamar la funcion del modelo*/ 
+                    $listProducts = $model -> searchProducts($name);
+                    /*Incluir la vista*/
+                    require_once "views/product/Search.html";
+                }
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "controller=userController&action=managementProducts");
+            }
+            /*Incluir la vista*/
+            require_once "views/product/Create.html";
+        }
+
         /*Funcion para abrir ventana de catalogo*/
         public function windowProducts(){
             /*Instanciar modelo*/
@@ -66,10 +99,10 @@
             if(isset($_POST)){
                 /*Asignar los datos si llegan*/
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
-                $name = isset($_POST['name']) ? $_POST['name'] : false;
+                $name = isset($_POST['namep']) ? $_POST['namep'] : false;
                 $price = isset($_POST['price']) ? $_POST['price'] : false;
                 $units = isset($_POST['units']) ? $_POST['units'] : false;
-                $content = isset($_POST['content']) ? $_POST['content'] : false;
+                $content = isset($_POST['contentp']) ? $_POST['contentp'] : false;
                 $stock = isset($_POST['stock']) ? $_POST['stock'] : false;
                 $description = isset($_POST['description']) ? $_POST['description'] : false;
                 $created_at = date('Y-m-d');

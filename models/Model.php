@@ -816,6 +816,34 @@
         }
 
         /*Funcion para obtener un usuario en concreto*/
+        function searchProducts($name){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := SEARCH_PRODUCTS(:name); END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $cursor = oci_new_cursor($this->conn);
+            /* Asignar los valores de entrada y el cursor de salida */
+            oci_bind_by_name($stid, ':name', $name);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }
+
+        /*Funcion para obtener un usuario en concreto*/
         function getUser($id){
             /* Preparar la consulta que llama a la función de Oracle */
             $query = 'BEGIN :resultado := GET_USER(:id); END;';
@@ -2082,6 +2110,56 @@
         public function getBankEntities(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_BANK_ENTITIES; END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }
+
+        public function getAllProducts(){
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := GET_ALL_PRODUCTS; END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }
+
+        public function getAllNews(){
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := GET_ALL_NEWS; END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
