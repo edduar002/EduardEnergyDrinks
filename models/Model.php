@@ -70,15 +70,16 @@
         }        
 
         /*Funcion para registrar el usuario en la base de datos*/
-        function registerUser($genre_id, $active, $code, $name, $surname, $birthdate, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at) {
+        function registerUser($genre_id, $active, $founder, $code, $name, $surname, $birthdate, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at) {
             /*Encriptar la clave*/
             $password = password_hash($password1, PASSWORD_BCRYPT, ['cost'=>4]);
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_USER(:u_genre_id, :active, :code, :name, :surname, TO_DATE(:birthdate, \'DD/MM/YY\'), :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_USER(:u_genre_id, :active, :founder, :code, :name, :surname, TO_DATE(:birthdate, \'DD/MM/YY\'), :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /* Asignar los valores de entrada y salida */
             oci_bind_by_name($stmt, ':u_genre_id', $genre_id);
             oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':founder', $founder);
             oci_bind_by_name($stmt, ':code', $code);
             oci_bind_by_name($stmt, ':name', $name);
             oci_bind_by_name($stmt, ':surname', $surname);
@@ -1443,14 +1444,40 @@
         }
 
         /*Funcion para agregar usuario a la red*/
-        public function addUser($userId, $level, $code){
+        public function addUser($userId, $userCode){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := ADD_USER(:userId, :userLevel, :userCode); END;'; 
+            $sql = 'BEGIN :resultado := ADD_USER(:userId, :userCode); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
             oci_bind_by_name($stmt, ':userId', $userId);
-            oci_bind_by_name($stmt, ':userLevel', $level);
-            oci_bind_by_name($stmt, ':userCode', $code);
+            oci_bind_by_name($stmt, ':userCode', $userCode);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
+        /*Funcion para agregar usuario a la red*/
+        public function assignFounder($userCode){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := ASSIGN_FOUNDER(:userCode); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':userCode', $userCode);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
             /*Asignar el valor de salida si estás usando la función*/ 

@@ -142,7 +142,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que asigna los usuarios fundadores*/  
-                    $resultado = $model->addUser(NULL, 1, $code);
+                    $resultado = $model->assignFounder($code);
                     /*Comprobar si la asignacion ha sido exitosa*/                  
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

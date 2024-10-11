@@ -214,7 +214,7 @@
                             /*Comprobar si la foto ha sido guardada*/
                             if ($fotoGuardada){
                                 /*Llamar la funcion del modelo que registra el usuario*/  
-                                $resultado = $model->registerUser($genre_id, 1, $code, $name, $surname, $birthdate2, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
+                                $resultado = $model->registerUser($genre_id, 1, 0, $code, $name, $surname, $birthdate2, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
                                 if($resultado != false){
                                     /*Crear sesion de inicio de sesion exitoso*/
