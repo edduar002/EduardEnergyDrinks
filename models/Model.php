@@ -46,26 +46,21 @@
             }
         }  
         
-        /*Funcion para que el usuario se loguee, comprobando desde la base de datos si los datos son validos*/
+        /*Funcion para que el administrador se loguee, comprobando desde la base de datos si los datos son validos*/
         public function logina($email, $password) {
             /* Preparar la consulta que llama a la función de Oracle */
             $query = 'BEGIN :resultado := LOGINA(:email, :password); END;';
             $stid = oci_parse($this->conn, $query);
-            
             /* Variable para almacenar el resultado numérico (1 o 0) */
             $resultado = 0;
-            
             /* Asignar los valores de entrada y el resultado de salida */
             oci_bind_by_name($stid, ':email', $email);
             oci_bind_by_name($stid, ':password', $password);
             oci_bind_by_name($stid, ':resultado', $resultado, -1, SQLT_INT);
-            
             /* Ejecutar la consulta */
             oci_execute($stid);
-            
             /* Liberar recursos */
             oci_free_statement($stid);
-            
             /* Verificar si el resultado es 1 (usuario existe) */
             if ($resultado == 1) {
                 return 1; // Usuario encontrado
@@ -119,7 +114,7 @@
             return $respuesta;
         } 
         
-        /*Funcion para registrar el producto en la base de datos*/
+        /*Funcion para registrar la noticia en la base de datos*/
         function registerNews($active, $title, $content, $link, $image, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_NEWS(:active, :title, :content, :link, :image, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
@@ -150,7 +145,6 @@
             return $resultado;
         }  
 
-        
         /*Funcion para registrar el producto en la base de datos*/
         function registerProduct($user_id, $active, $name, $price, $units, $content, $stock, $description, $image, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
@@ -209,7 +203,7 @@
             return $productData;
         }
         
-        /*Funcion para obtener la lista de todos los productos*/
+        /*Funcion para obtener la lista de todos los productos del usuario*/
         public function myProductsList($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := MY_PRODUCTS_LIST(:user_id); END;';
@@ -240,34 +234,25 @@
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := PRODUCTS_LIST(:user_id); END;';
             $stid = oci_parse($this->conn, $query);
-        
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
-        
             /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
-        
             /*Enlazar el parámetro user_id*/
             oci_bind_by_name($stid, ':user_id', $user_id);
-        
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
-        
             /*Ejecutar el cursor para obtener los datos*/ 
             oci_execute($resultado);
-        
             /*Crear un array para almacenar todos los productos*/ 
             $products = [];
-        
             /*Obtener todos los registros como un arreglo asociativo*/ 
             while (($row = oci_fetch_assoc($resultado)) != false) {
                 $products[] = $row;
             }
-        
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-        
             /*Retornar el resultado*/ 
             return $products;
         }        
@@ -532,7 +517,7 @@
             return $resultado;
         }
 
-        /*Funcion para eliminar un producto*/
+        /*Funcion para eliminar una noticia*/
         public function deleteNews($news_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_NEWS(:news_id); END;'; 
@@ -719,6 +704,7 @@
             return $resultado;
         }
 
+        /*Funcion para cambiar la clave de un usuario*/
         function changePassword($idUser, $newPassword) {
             /*Encriptar la clave*/
             $password = password_hash($newPassword, PASSWORD_BCRYPT, ['cost'=>4]);
@@ -813,7 +799,7 @@
             return $resultado;
         }
 
-        /*Funcion para actualizar un producto*/
+        /*Funcion para actualizar una noticia*/
         function updateNews($id, $title, $content, $link, $image = null) {
             // Preparar la consulta que llama a la función de Oracle
             $sql = 'BEGIN :resultado := UPDATE_NEW(:id, :title, :content, :link, :image); END;';
@@ -844,7 +830,7 @@
             return $resultado;
         }
 
-        /*Funcion para obtener un usuario en concreto*/
+        /*Funcion para buscar productos en base a su nombre*/
         function searchProducts($name){
             /* Preparar la consulta que llama a la función de Oracle */
             $query = 'BEGIN :resultado := SEARCH_PRODUCTS(:name); END;';
@@ -1002,7 +988,7 @@
             return $row['ID'];
         }
 
-        /*Funcion para obtener la lista de todos los pagos en el apartado de gestion*/
+        /*Funcion para obtener la lista de compras realizadas*/
         public function shoppingList($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := SHOPPING_LIST(:user_id); END;';
@@ -1030,7 +1016,7 @@
             return $products;
         }  
 
-        /*Funcion para obtener la lista de todos los pagos en el apartado de gestion*/
+        /*Funcion para obtener la lista de ventas realizadas*/
         public function salesList($user_id) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := SALES_LIST(:user_id); END;';
@@ -1189,7 +1175,7 @@
             return $resultado;
         }
 
-        /*Funcion para registrar la transaccion en la base de datos*/
+        /*Funcion para registrar el carrito*/
         function registerCar($user_id, $active, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_CAR(:user_id, :active, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
@@ -1217,7 +1203,7 @@
             return $resultado;
         } 
 
-        /*Funcion para registrar la transaccion del producto en la base de datos*/
+        /*Funcion para registrar el carrito del producto*/
         function registerCarProduct($car_id, $product_id, $active, $units, $price, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_CP(:car_id, :product_id, :active, :units, :price, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
@@ -1248,7 +1234,7 @@
             return $resultado;
         } 
         
-        /*Funcion para obtener la ultima transacion registrada*/
+        /*Funcion para obtener el ultimo carrito registrado*/
         public function getLastCar() {
             // Preparar la consulta para ejecutar la función de Oracle
             $query = "BEGIN :cursor := GET_LAST_CAR; END;";
@@ -1301,24 +1287,18 @@
         /*Funcion para comprobar si el producto ya ha sido previamente agregado al carrito*/
         function uniqueCp($idUsuario, $idProducto) {
             $sql = "BEGIN :result := UNIQUE_CP(:c_id_user, :cp_id_product); END;";
-            
             // Preparar la consulta SQL
             $stmt = oci_parse($this->conn, $sql);
-        
             // Variable para almacenar el resultado
             $result = 0;
-        
             // Asignar parámetros
             oci_bind_by_name($stmt, ":c_id_user", $idUsuario);
             oci_bind_by_name($stmt, ":cp_id_product", $idProducto);
             oci_bind_by_name($stmt, ":result", $result, -1, SQLT_INT);
-        
             // Ejecutar la consulta
             oci_execute($stmt);
-        
             // Cerrar el recurso
             oci_free_statement($stmt);
-        
             // Retornar el resultado (1 o 0)
             return $result;
         }        
@@ -1491,6 +1471,7 @@
             return $resultado;
         }
 
+        /*Funcion para listar todos los usuarios registrados*/
         public function getUsers(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_USERS; END;';
@@ -1516,6 +1497,7 @@
             return $products;
         }
 
+        /*Funcion para listar todos los productos registrados por los usuarios*/
         public function getProducts(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_PRODUCTS; END;';
@@ -1541,6 +1523,7 @@
             return $products;
         }
 
+        /*Funcion para listar todos los usuarios registrados por el administrador*/
         public function getProductsAdmin(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_PRODUCTS_ADMIN; END;';
@@ -1566,7 +1549,7 @@
             return $products;
         }
 
-        /*Funcion para actualizar un pago*/
+        /*Funcion para actualizar un departamento*/
         function updateDepartment($id, $name) {
             // Preparar la consulta que llama a la función de Oracle
             $sql = 'BEGIN :resultado := UPDATE_DEPARTMENT(:id, :name); END;';
@@ -1594,7 +1577,7 @@
             return $resultado;
         }
 
-        /*Funcion para registrar el pago*/
+        /*Funcion para registrar el departamento*/
         function registerDepartment($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_DEPARTMENT(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
@@ -1622,7 +1605,7 @@
             return $resultado;
         }   
 
-        /*Funcion para eliminar un pago*/
+        /*Funcion para eliminar un departamento*/
         public function deleteDepartment($department_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_DEPARTMENT(:department_id); END;'; 
@@ -1649,7 +1632,7 @@
             return $resultado;
         }
 
-        /*Funcion para obtener un pago en concreto*/
+        /*Funcion para obtener un departamento en concreto*/
         public function getDeparment($id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := GET_DEPARTMENT(:id); END;';
@@ -1672,7 +1655,7 @@
             return $productData;
         }
 
-        /*Funcion para actualizar un pago*/
+        /*Funcion para actualizar un genero*/
         function updateGenre($id, $name) {
             // Preparar la consulta que llama a la función de Oracle
             $sql = 'BEGIN :resultado := UPDATE_GENRE(:id, :name); END;';
@@ -1700,7 +1683,7 @@
             return $resultado;
         }
 
-        /*Funcion para registrar el pago*/
+        /*Funcion para registrar el genero*/
         function registerGenre($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_GENRE(:g_active, :g_name, TO_DATE(:g_created_at, \'DD/MM/YY\')); END;';
@@ -1728,7 +1711,7 @@
             return $resultado;
         }   
 
-        /*Funcion para eliminar un pago*/
+        /*Funcion para eliminar un genero*/
         public function deleteGenre($genre_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_GENRE(:genre_id); END;'; 
@@ -1755,7 +1738,7 @@
             return $resultado;
         }
 
-        /*Funcion para obtener un pago en concreto*/
+        /*Funcion para obtener un genero en concreto*/
         public function getGenre($id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := GET_GENRE(:id); END;';
@@ -1778,7 +1761,7 @@
             return $productData;
         }
 
-        /*Funcion para obtener un pago en concreto*/
+        /*Funcion para obtener un departamento en concreto*/
         public function getDepartment($id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := GET_DEPARTMENT(:id); END;';
@@ -1801,7 +1784,7 @@
             return $productData;
         }
 
-        /*Funcion para obtener un pago en concreto*/
+        /*Funcion para obtener una noticia en concreto*/
         public function getNews($id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := GET_NEWS(:id); END;';
@@ -1824,7 +1807,7 @@
             return $productData;
         }
 
-        /*Funcion para actualizar un pago*/
+        /*Funcion para actualizar una entidad bancaria*/
         function updateBankEntity($id, $name) {
             // Preparar la consulta que llama a la función de Oracle
             $sql = 'BEGIN :resultado := UPDATE_BANK_ENTITY(:id, :name); END;';
@@ -1852,7 +1835,7 @@
             return $resultado;
         }
 
-        /*Funcion para registrar el pago*/
+        /*Funcion para registrar la entidad bancaria*/
         function registerBankEntity($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_BANK_ENTITY(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
@@ -1880,7 +1863,7 @@
             return $resultado;
         }   
 
-        /*Funcion para eliminar un pago*/
+        /*Funcion para eliminar una entidad bancaria*/
         public function deleteBankEntity($bank_entity_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_BANK_ENTITY(:bank_entity_id); END;'; 
@@ -1907,7 +1890,7 @@
             return $resultado;
         }
 
-        /*Funcion para obtener un pago en concreto*/
+        /*Funcion para obtener una entidad bancaria en concreto*/
         public function getBankEntity($id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := GET_BANK_ENTITY(:id); END;';
@@ -1930,7 +1913,7 @@
             return $productData;
         }
 
-        /*Funcion para actualizar un pago*/
+        /*Funcion para actualizar un estado de la compra*/
         function updatePurchasingStatus($id, $name) {
             // Preparar la consulta que llama a la función de Oracle
             $sql = 'BEGIN :resultado := UPDATE_PURCHASING_STATUS(:id, :name); END;';
@@ -1958,7 +1941,7 @@
             return $resultado;
         }
 
-        /*Funcion para registrar el pago*/
+        /*Funcion para registrar el estado de la compra*/
         function registerPurchasingStatus($active, $name, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_PURCHASING_STATUS(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
@@ -1986,7 +1969,7 @@
             return $resultado;
         }   
 
-        /*Funcion para eliminar un pago*/
+        /*Funcion para eliminar un estado de la compra*/
         public function deletePurchasingStatus($purchasing_status_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DELETE_PURCHASING_STATUS(:purchasing_status_id); END;'; 
@@ -2013,7 +1996,7 @@
             return $resultado;
         }
 
-        /*Funcion para obtener un pago en concreto*/
+        /*Funcion para obtener un estado de la compra en concreto*/
         public function getPurchasingStatus($id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $query = 'BEGIN :resultado := GET_PURCHASING_STATUS(:id); END;';
@@ -2036,6 +2019,7 @@
             return $productData;
         }
 
+        /*Funcion para obtener todos los departamentos registrados*/
         public function getDepartments(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_DEPARTMENTS; END;';
@@ -2061,6 +2045,7 @@
             return $products;
         }
 
+        /*Funcion para obtener todas las noticias registradas*/
         public function getsNews(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GETS_NEWS; END;';
@@ -2086,6 +2071,7 @@
             return $products;
         }
 
+        /*Funcion para obtener todos los generos registrados*/
         public function getGenres(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_GENRES; END;';
@@ -2111,6 +2097,7 @@
             return $products;
         }
 
+        /*Funcion para obtener todos los estados de la compra registrados*/
         public function getPurchasingStatues(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_PURCHASING_STATUES; END;';
@@ -2136,6 +2123,7 @@
             return $products;
         }
 
+        /*Funcion para obtener todas las entidades bancarias registradas*/
         public function getBankEntities(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_BANK_ENTITIES; END;';
@@ -2161,6 +2149,7 @@
             return $products;
         }
 
+        /*Funcion para obtener la lista de todos los productos registrados en el apartado de ver todos*/
         public function getAllProducts(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_ALL_PRODUCTS; END;';
@@ -2186,6 +2175,7 @@
             return $products;
         }
 
+        /*Funcion para obtener la lista de todas las noticias registradas en el apartado de ver todas*/
         public function getAllNews(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_ALL_NEWS; END;';

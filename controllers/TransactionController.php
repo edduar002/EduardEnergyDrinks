@@ -260,7 +260,7 @@
             }
         }
 
-        /*Funcion para abrir ventana de registro*/
+        /*Funcion para abrir ventana de compra*/
         public function windowPurchase(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if(isset($_GET)){
@@ -308,7 +308,7 @@
             require_once "views/transaction/DetailSale.html";
         }
 
-        /*Funcion para abrir ventana de editar*/
+        /*Funcion para abrir ventana de confirmar la compra*/
         public function windowConfirm(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if(isset($_POST)){

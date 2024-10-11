@@ -75,7 +75,7 @@
             require_once "views/administrator/ManagementUsers.html";
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de gestion de los generos*/
         public function windowManagementGenres(){
             /*Instanciar modelo*/  
             $model = new Model();
@@ -85,7 +85,7 @@
             require_once "views/administrator/ManagementGenres.html";
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de gestion de los departamentos*/
         public function windowManagementDepartments(){
             /*Instanciar modelo*/  
             $model = new Model();
@@ -95,7 +95,7 @@
             require_once "views/administrator/ManagementDepartments.html";
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de gestion de los estados de la compra*/
         public function windowManagementPurchasingStatues(){
             /*Instanciar modelo*/  
             $model = new Model();
@@ -105,7 +105,7 @@
             require_once "views/administrator/ManagementPurchasingStatues.html";
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de gestion de las noticias*/
         public function windowManagementNews(){
             /*Instanciar modelo*/  
             $model = new Model();
@@ -115,7 +115,7 @@
             require_once "views/administrator/ManagementNews.html";
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de gestion de las entidades bancarias*/
         public function windowManagementBankEntities(){
             /*Instanciar modelo*/  
             $model = new Model();

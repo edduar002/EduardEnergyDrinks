@@ -132,6 +132,7 @@
             }
         }
 
+        /*Funcion para cambiar la contraseña*/
         public function changePassword(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {

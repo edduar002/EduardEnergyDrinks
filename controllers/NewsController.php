@@ -15,7 +15,7 @@
             require_once "views/news/Create.html";
         }
 
-        /*Funcion para abrir ventana de registro*/
+        /*Funcion para abrir ventana de todas las noticias*/
         public function all(){
             /*Instanciar modelo*/ 
             $model = new Model();

@@ -15,7 +15,7 @@
             require_once "views/product/Create.html";
         }
 
-        /*Funcion para abrir ventana de registro*/
+        /*Funcion para abrir ventana de todos los productos*/
         public function all(){
             /*Instanciar modelo*/ 
             $model = new Model();
@@ -25,7 +25,7 @@
             require_once "views/product/All.html";
         }
 
-        /*Funcion para la busqueda de producto*/
+        /*Funcion para la busqueda de productos*/
         public function search(){
             /*Comprobar si llega el id enviado por get*/
             if(isset($_POST)){
