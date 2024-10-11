@@ -249,7 +249,7 @@ CREATE TABLE TRANSACTIONPRODUCT (
     TP_ID                  NUMBER NOT NULL,
     TRANSACTION_ID      NUMBER NOT NULL,
     PRODUCT_ID       NUMBER NOT NULL,
-    SELLER_ID        NUMBER NOT NULL,
+    SELLER_ID        NUMBER NULL,
     PURCHASING_STATUS_ID      NUMBER NOT NULL,
     UNITS            NUMBER NOT NULL,
     CREATED_AT      DATE NOT NULL,
@@ -1778,16 +1778,17 @@ END;
 create or replace FUNCTION REGISTER_TP(
     tp_id_transaction IN NUMBER,
     tp_id_product IN NUMBER,
+    tp_id_seller IN NUMBER,
+    tp_id_purchasing_status IN NUMBER,
     tp_units IN NUMBER,
-    tp_price IN NUMBER,
     tp_created_at IN DATE
 ) RETURN VARCHAR2
 AS
     v_resultado VARCHAR2(100);
 BEGIN
     BEGIN
-        INSERT INTO TRANSACTIONPRODUCT (transaction_id, product_id, seller_id, units, created_at)
-        VALUES (tp_id_transaction, tp_id_product, tp_units, tp_price, tp_created_at);
+        INSERT INTO TRANSACTIONPRODUCT (transaction_id, product_id, seller_id, purchasing_status_id, units, created_at)
+        VALUES (tp_id_transaction, tp_id_product, tp_id_seller, tp_id_purchasing_status, tp_units, tp_created_at);
         COMMIT;
         v_resultado := 1;
     EXCEPTION

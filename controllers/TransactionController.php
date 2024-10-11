@@ -374,9 +374,9 @@
                             /*Obtener el id del vendedor del producto*/
                             $id_seller = $model -> getProductDataPu($listCar['PRODUCT_ID'])['USER_ID'];
                             /*Comprobar si los datos llegan*/
-                            if($id_transaction && $id_seller && $created_at2){
+                            if($id_transaction && $created_at2){
                                 /*Llamar la funcion del modelo que registra la transaccion del producto*/  
-                                $resultado2 = $model->registerTransactionProduct($id_transaction, $listCar['PRODUCT_ID'], $id_seller, $listCar['AMOUNT'], $created_at2);
+                                $resultado2 = $model->registerTransactionProduct($id_transaction, $listCar['PRODUCT_ID'], $id_seller, 1, $listCar['AMOUNT'], $created_at2);
                                 /*Comprobar si el registrado ha sido exitoso*/   
                                 if($resultado2 != false){
                                     /*Obtener producto en concreto*/
@@ -385,8 +385,10 @@
                                     $model -> registerProduct($_SESSION['loginsucces']['USER_ID'], 1, $product['NAME'], $product['PRICE'], $product['UNITS'], $product['CONTENT'], $listCar['AMOUNT'], $product['DESCRIPTION'], $product['IMAGE'], $created_at2);
                                     /*Llamar la funcion del modelo que decrementa el inventario*/ 
                                     $model -> decreaseInventory($listCar['PRODUCT_ID'], $listCar['AMOUNT']);
-                                    /*Llamar la funcion que aumenta las ganancias del vendedor*/
-                                    $model -> increaseProfits($id_seller, $total);
+                                    if($id_seller != null){
+                                        /*Llamar la funcion que aumenta las ganancias del vendedor*/
+                                        $model -> increaseProfits($id_seller, $total);
+                                    }
                                     /*Eliminar carrito*/
                                     $model -> deleteCar($_SESSION['loginsucces']['USER_ID']);
                                     /*Redirigir*/

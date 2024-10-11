@@ -917,14 +917,15 @@
         } 
 
         /*Funcion para registrar la transaccion del producto en la base de datos*/
-        function registerTransactionProduct($id_transaction, $id_product, $id_seller, $units, $created_at) {
+        function registerTransactionProduct($id_transaction, $id_product, $id_seller, $id_purchasing_status, $units, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_TP(:id_transaction, :id_product, :id_seller, :units, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_TP(:id_transaction, :id_product, :id_seller, :id_purchasing_status, :units, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
             oci_bind_by_name($stmt, ':id_transaction', $id_transaction);
             oci_bind_by_name($stmt, ':id_product', $id_product);
             oci_bind_by_name($stmt, ':id_seller', $id_seller);
+            oci_bind_by_name($stmt, ':id_purchasing_status', $id_purchasing_status);
             oci_bind_by_name($stmt, ':units', $units);          
             oci_bind_by_name($stmt, ':created_at', $created_at);
             /*Variable bandera para asignar el resultado*/
