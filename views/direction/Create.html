@@ -18,12 +18,17 @@
         <br>
         <form action="<?=init?><?=direction?><?=registerDirection?>" method="post">
             <div class="form-group">
-                <label for="genre">Departamento</label>
-                <select name="genre" name="genre" class="form-control" required>
+                <label for="department">Departamento</label>
+                <select name="department" name="department" class="form-control" required>
                     <?php foreach($listDepartments as $departments) : ?>
                         <option value="<?=$departments['DEPARTMENT_ID']?>"><?=$departments['NAME']?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="city">Ciudad</label>
+                <input type="text" name="city" class="form-control" required>
             </div>
             <br>
             <div class="form-group">

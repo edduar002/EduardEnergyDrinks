@@ -86,6 +86,7 @@
             return $codigo;
         }
 
+        /*Funcion para comprobar la clave*/
         public static function checkKeys($password){
             /*instanciar el modelo*/
             $model = new Model();
@@ -102,10 +103,7 @@
             }
         }
 
-        /*
-        Funcion para listar los datos del usuario
-        */
-
+        /*Funcion para listar los datos del usuario*/
         public static function showUserInformation(){
             /*Comprobar si hay un inicio de sesion de usuario*/
             if(isset($_SESSION['loginsucces'])){
@@ -118,6 +116,21 @@
                 /*Retornar el resultado*/
                 return $datos;
             }
+        }
+
+        /*Funcion para remover los caracteres especiales*/
+        public static function removeSpecialCharacters($text){
+            $search = array(
+                'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 
+                'ñ', 'Ñ', 'ü', 'Ü'
+            );
+            $reeplace = array(
+                'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 
+                'n', 'N', 'u', 'U'
+            );
+            // Reemplaza los caracteres acentuados por sus equivalentes sin acento
+            $replacText = str_replace($search, $reeplace, $text);
+            return $replacText;
         }
 
     }

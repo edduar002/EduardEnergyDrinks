@@ -71,6 +71,9 @@
                     $fotoGuardada = Helps::saveImage($file, "imagesNews");
                     /*Comprobar si la foto ha sido guardada*/
                     if ($fotoGuardada) {
+                        /*Lamar funcion auxiliar que quita caracteres especiales*/
+                        $title = Helps::removeSpecialCharacters($title);
+                        $content = Helps::removeSpecialCharacters($content);
                         /*Instanciar modelo*/
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 

@@ -287,15 +287,15 @@
         } 
 
         /*Funcion para registrar el pago*/
-        function registerPay($user_id, $entity, $active, $numberElection, $created_at) {
+        function registerPay($user_id, $entity, $active, $number_election, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_PAY(:user_id, :active, :election, :number_election, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_PAY(:user_id, :entity, :active, :number_election, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
             oci_bind_by_name($stmt, ':user_id', $user_id);
             oci_bind_by_name($stmt, ':entity', $entity);
             oci_bind_by_name($stmt, ':active', $active);
-            oci_bind_by_name($stmt, ':number_election', $numberElection);         
+            oci_bind_by_name($stmt, ':number_election', $number_election);         
             oci_bind_by_name($stmt, ':created_at', $created_at);
             /*Variable bandera para asignar el resultado*/
             $resultado = '';
@@ -317,13 +317,15 @@
         }   
 
         /*Funcion para registrar la direccion*/
-        function registerDirection($user_id, $department, $active, $carrer, $street, $postal_code, $direction, $created_at) {
+        function registerDirection($user_id, $department, $active, $city, $carrer, $street, $postal_code, $direction, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_DIRECTION(:user_id, :active, :carrer, :street, :postal_code, :direction, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_DIRECTION(:user_id, :department, :active, :city, :carrer, :street, :postal_code, :direction, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
             oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':department', $department);
             oci_bind_by_name($stmt, ':active', $active);
+            oci_bind_by_name($stmt, ':city', $city);
             oci_bind_by_name($stmt, ':carrer', $carrer);
             oci_bind_by_name($stmt, ':street', $street);
             oci_bind_by_name($stmt, ':postal_code', $postal_code);

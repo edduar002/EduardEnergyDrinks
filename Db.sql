@@ -1162,8 +1162,9 @@ IS
     v_cursor SYS_REFCURSOR;
 BEGIN
     OPEN v_cursor FOR
-        SELECT * 
-        FROM pays 
+        SELECT P.PAY_ID, p.NUMBER_ELECTION, be.NAME
+        FROM pays p
+        INNER JOIN banking_entities be ON be.BANKING_ENTITY_ID = p.BANKING_ENTITY_ID
         WHERE pay_id = p_pay_id;
     RETURN v_cursor;
 EXCEPTION
@@ -1405,9 +1406,10 @@ BEGIN
     -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
     -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
-    SELECT *
-    FROM PAYS
-    WHERE ACTIVE = 1
+    SELECT P.PAY_ID, p.NUMBER_ELECTION, be.NAME
+    FROM PAYS p
+    INNER JOIN banking_entities be ON be.BANKING_ENTITY_ID = p.BANKING_ENTITY_ID
+    WHERE p.ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
@@ -1694,7 +1696,6 @@ create or replace FUNCTION REGISTER_PAY(
     p_user_id IN NUMBER,
     p_bank_entity_id IN NUMBER,
     p_active IN NUMBER,
-    p_election IN VARCHAR2,
     p_number_election IN NUMBER,
     p_created_at IN DATE
 ) RETURN VARCHAR2

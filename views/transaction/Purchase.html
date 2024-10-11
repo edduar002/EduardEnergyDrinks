@@ -59,7 +59,7 @@
                         <?php foreach($listPays as $list) : ?>
                             <div>
                                 <input type="radio" id="pay_direction" name="id_pay" value="<?=$list['PAY_ID']?>" checked>
-                                <label class="d-block" for="id_pay">Eleccion: <?=$list['ELECTION']?></label>
+                                <label class="d-block" for="id_pay">Eleccion: <?=$list['NAME']?></label>
                                 <label class="d-block" for="id_pay">Numero: <?=$list['NUMBER_ELECTION']?></label>
                             </div>
                         <?php endforeach; ?>

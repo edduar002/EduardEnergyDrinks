@@ -106,6 +106,86 @@
                 window.location.href = url;
             });
         }
+
+        const confirmDeleteDepartmentButton = document.getElementById('confirmDeleteDepartment');
+        const exampleModal6 = document.getElementById('exampleModal6');
+        let departmentId;
+        if (exampleModal6) {
+            exampleModal6.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                departmentId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteDepartmentButton) {
+            confirmDeleteDepartmentButton.addEventListener('click', function () {
+                const url = `<?=init?><?=department?><?=deleteDepartment?>&id=${departmentId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteBankingEntityButton = document.getElementById('confirmDeleteBankingEntity');
+        const exampleModal7 = document.getElementById('exampleModal7');
+        let bankingEntityId;
+        if (exampleModal7) {
+            exampleModal7.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                bankingEntityId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteBankingEntityButton) {
+            confirmDeleteBankingEntityButton.addEventListener('click', function () {
+                const url = `<?=init?><?=bankEntity?><?=deleteBankEntity?>&id=${bankingEntityId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteGenreButton = document.getElementById('confirmDeleteGenre');
+        const exampleModal8 = document.getElementById('exampleModal8');
+        let genreId;
+        if (exampleModal8) {
+            exampleModal8.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                genreId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteGenreButton) {
+            confirmDeleteGenreButton.addEventListener('click', function () {
+                const url = `<?=init?><?=genre?><?=deleteGenre?>&id=${genreId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteNewsButton = document.getElementById('confirmDeleteNewsButton');
+        const exampleModal9 = document.getElementById('exampleModal9');
+        let newsId;
+        if (exampleModal9) {
+            exampleModal9.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                newsId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteNewsButton) {
+            confirmDeleteNewsButton.addEventListener('click', function () {
+                const url = `<?=init?><?=news?><?=deleteNews?>&id=${newsId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeletePurchasingStatusButton = document.getElementById('confirmDeletePurchasingStatusButton');
+        const exampleModal10 = document.getElementById('exampleModal10');
+        let purchasingStatusId;
+        if (exampleModal10) {
+            exampleModal10.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                purchasingStatusId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeletePurchasingStatusButton) {
+            confirmDeletePurchasingStatusButton.addEventListener('click', function () {
+                const url = `<?=init?><?=purchasingStatus?><?=deletePurchasingStatus?>&id=${purchasingStatusId}`;
+                window.location.href = url;
+            });
+        }
         
         // Mostrar el modal al hacer clic en el botón
         document.getElementById('openModalBtn').addEventListener('click', function() {
