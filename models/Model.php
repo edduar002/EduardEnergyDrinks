@@ -2228,6 +2228,16 @@
             return $products;
         }
 
+        public function getLevel(){
+            /*
+            SELECT NAME, LEVEL AS hierarchy_level
+            FROM   users
+            START WITH higher_user_id IS NULL
+            CONNECT BY PRIOR user_id = higher_user_id  
+            ORDER BY LEVEL;
+            */
+        }
+
     }
 
 ?>

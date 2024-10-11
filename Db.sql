@@ -507,7 +507,7 @@ END;
 /*Crear o Reemplazar Vistas*/
 
 CREATE OR REPLACE VIEW SESSION_START AS
-SELECT USER_ID, ACTIVE, CODE, NAME, SURNAME, PHONE, EMAIL, USER_PASSWORD, IMAGE, HIGHER_USER_ID
+SELECT USER_ID, ACTIVE, CODE, NAME, SURNAME, PHONE, EMAIL, USER_PASSWORD, FOUNDER, IMAGE, HIGHER_USER_ID
 FROM users;
 
 CREATE OR REPLACE VIEW PRODUCT_DETAIL AS
@@ -1416,25 +1416,49 @@ EXCEPTION
         RAISE;
 END PAY_LIST_MANAGEMENT;
 
-create or replace FUNCTION PRODUCTS_LIST(
+CREATE OR REPLACE FUNCTION PRODUCTS_LIST(
     p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
 ) RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
 BEGIN
-    -- Abrir un cursor para seleccionar productos activos, con stock disponible y del superior
+    -- Abrir un cursor para seleccionar productos activos, con stock disponible
     OPEN v_cursor FOR
     SELECT * FROM (
-    SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
-    FROM PRODUCTS P
-    JOIN USERS U ON P.USER_ID = U.USER_ID
-    WHERE P.ACTIVE = 1 
-    AND P.STOCK > 0
-    AND (p_user_id IS NULL OR U.HIGHER_USER_ID = p_user_id)
-    ORDER BY P.CREATED_AT DESC
-) 
-WHERE ROWNUM <= 6
-ORDER BY RANDOM_ORDER;
+        SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
+        FROM PRODUCTS P
+        WHERE P.ACTIVE = 1 
+          AND P.STOCK > 0
+          AND (
+              -- Si p_user_id es NULL, solo permite productos con USER_ID nulo a usuarios de nivel 1
+              (p_user_id IS NULL AND P.USER_ID IS NULL AND EXISTS (
+                  SELECT 1
+                  FROM USERS U
+                  WHERE U.USER_ID = p_user_id AND U.HIGHER_USER_ID IS NULL -- Usuario de nivel 1
+              ))
+              OR
+              -- Si p_user_id tiene un valor
+              (p_user_id IS NOT NULL AND (
+                  -- Permitir productos sin USER_ID si el usuario es nivel 1
+                  (P.USER_ID IS NULL AND EXISTS (
+                      SELECT 1
+                      FROM USERS U
+                      WHERE U.USER_ID = p_user_id AND U.HIGHER_USER_ID IS NULL -- Usuario de nivel 1
+                  ))
+                  OR
+                  -- Mostrar productos que pertenecen a su nivel superior
+                  (P.USER_ID IS NOT NULL AND P.USER_ID IN (
+                      SELECT U.HIGHER_USER_ID
+                      FROM USERS U
+                      WHERE U.USER_ID = p_user_id -- Parámetro del usuario actual
+                  ))
+              ))
+          )
+        ORDER BY P.CREATED_AT DESC
+    ) 
+    WHERE ROWNUM <= 6
+    ORDER BY RANDOM_ORDER;
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN

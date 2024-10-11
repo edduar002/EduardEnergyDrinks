@@ -67,7 +67,7 @@
                                     <li><a class="dropdown-item" href="<?=init?><?=user?><?=myShops?>">Mis compras</a></li>
                                     <li><a class="dropdown-item" href="<?=init?><?=user?><?=mySales?>">Mis ventas</a></li>
             
-                                    <?php if($information['HIGHER_USER_ID'] != NULL) : ?>
+                                    <?php if($information['FOUNDER'] == 1 || $information['HIGHER_USER_ID'] != NULL) : ?>
                                         <li><a class="dropdown-item" href="<?=init?><?=network?><?=windowAddUser?>">Agregar Usuario</a></li>
                                     <?php endif;?>
                                     <li><hr class="dropdown-divider"></li>
