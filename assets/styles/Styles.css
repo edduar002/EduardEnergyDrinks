@@ -20,6 +20,13 @@
     height: 125px !important;
 }
 
+.lupa{
+    margin-top: 15px;
+    margin-left: 5px;
+    width: 25px;
+    height: 25px;
+}
+
 #alerta{
     margin-top: 340px; 
     margin-left: 40px;

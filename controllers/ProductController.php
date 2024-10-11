@@ -48,21 +48,26 @@
 
         /*Funcion para abrir ventana de catalogo*/
         public function windowProducts(){
-            /*Instanciar modelo*/
-            $model = new Model();
-            /*Establecer el id del usuario como nulo*/
-            $user_id = NULL;
-            /*Comprobar si el usuario esta logueado*/
-            if(isset($_SESSION['loginsucces'])){
-                /*Establecer el id del usuario con el id del usuario logueado*/
-                $user_id = $_SESSION['loginsucces']['USER_ID'];
+            if(isset($_SESSION['loginsuccesa'])){
+                /*Incluir la vista*/
+                require_once "views/administrator/Home.html";
+            }else{
+                /*Instanciar modelo*/
+                $model = new Model();
+                /*Establecer el id del usuario como nulo*/
+                $user_id = NULL;
+                /*Comprobar si el usuario esta logueado*/
+                if(isset($_SESSION['loginsucces'])){
+                    /*Establecer el id del usuario con el id del usuario logueado*/
+                    $user_id = $_SESSION['loginsucces']['USER_ID'];
+                }
+                /*Obtener la lista de productos*/        
+                $listProducts = $model->productsList($user_id);
+                /*Obtener la lista de noticias*/        
+                $listNews = $model->getsNews();
+                /*Incluir la vista*/
+                require_once "views/layout/Products.html";
             }
-            /*Obtener la lista de productos*/        
-            $listProducts = $model->productsList($user_id);
-            /*Obtener la lista de noticias*/        
-            $listNews = $model->getsNews();
-            /*Incluir la vista*/
-            require_once "views/layout/Products.html";
         }
 
         /*Funcion para abrir ventana de editar*/
