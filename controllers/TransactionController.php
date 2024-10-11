@@ -294,6 +294,8 @@
             $model = new Model();
             /*Obtener el detalle de la compra*/
             $detail = $model -> detailShop($_GET['id']);
+            /*Total de la compra*/
+            $total = 345345;
             /*Incluir la vista*/
             require_once "views/transaction/DetailShop.html";
         }
@@ -304,6 +306,8 @@
             $model = new Model();
             /*Obtener el detalle de la venta*/
             $detail = $model -> detailSale($_GET['id']);
+            /*Total de la compra*/
+            $total = 345345;
             /*Incluir la vista*/
             require_once "views/transaction/DetailSale.html";
         }

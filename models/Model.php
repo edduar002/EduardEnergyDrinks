@@ -1050,25 +1050,30 @@
 
         /*Funcion para obtener el detalle de la venta*/
         public function detailSale($t_transaction_id) {
-            /*Preparar la consulta que llama a la función de Oracle*/ 
+            /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := DETAIL_SALE(:t_transaction_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
-            /*Asignar el valor de entrada y salida*/ 
-            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id, -1, SQLT_INT); // Especifica el tipo de datos
+            /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
             oci_execute($resultado);
-            /*Obtener el resultado como un arreglo asociativo*/
-            $productData = oci_fetch_assoc($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
-            return $productData;
+            return $products;
         }
 
         /*Funcion para obtener el resumen de la transaccion*/
@@ -1102,25 +1107,30 @@
 
         /*Funcion para obtener el detalle de la compra*/
         public function detailShop($t_transaction_id) {
-            /*Preparar la consulta que llama a la función de Oracle*/ 
+            /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := DETAIL_SHOP(:t_transaction_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
-            /*Asignar el valor de entrada y salida*/ 
-            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id, -1, SQLT_INT); // Especifica el tipo de datos
+            /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
             oci_execute($resultado);
-            /*Obtener el resultado como un arreglo asociativo*/
-            $productData = oci_fetch_assoc($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
-            return $productData;
+            return $products;
         }
 
         /*Funcion para decrementar el inventario*/

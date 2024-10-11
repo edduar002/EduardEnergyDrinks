@@ -845,7 +845,7 @@ BEGIN
     OPEN v_cursor FOR
         SELECT u.name AS USER_NAME, u.surname, u.email, u.phone, d.carrer, d.street, d.postal_code, 
         d.city, de.name AS DEPARTMENT_NAME, pa.number_election, p.name AS PRODUCT_NAME, p.price, p.content, 
-        be.name AS BANK_ENTITY_NAME
+        be.name AS BANK_ENTITY_NAME, tp.units
         FROM TRANSACTIONS t
         INNER JOIN TRANSACTIONPRODUCT tp ON t.transaction_id = tp.transaction_id
         INNER JOIN products p ON p.product_id = tp.transaction_id
@@ -871,11 +871,11 @@ BEGIN
     OPEN v_cursor FOR
         SELECT u.name AS USER_NAME, u.surname, u.email, u.phone, d.carrer, d.street, d.postal_code, 
         d.city, de.name AS DEPARTMENT_NAME, pa.number_election, p.name AS PRODUCT_NAME, p.price, p.content, 
-        be.name AS BANK_ENTITY_NAME
+        be.name AS BANK_ENTITY_NAME, tp.units
         FROM TRANSACTIONS t
         INNER JOIN TRANSACTIONPRODUCT tp ON t.transaction_id = tp.transaction_id
         INNER JOIN products p ON p.product_id = tp.transaction_id
-        INNER JOIN users u ON u.user_id = tp.seller_id
+        LEFT JOIN users u ON u.user_id = tp.seller_id
         INNER JOIN pays pa ON pa.pay_id = t.pay_id
         INNER JOIN directions d ON d.direction_id = t.direction_id
         INNER JOIN departments de ON de.department_id = d.department_id
@@ -1490,7 +1490,7 @@ EXCEPTION
         RAISE;
 END PRODUCTS_LIST_CAR;
 
-create or replace FUNCTION PRODUCTS_LIST_CAR_P(
+CREATE OR REPLACE FUNCTION PRODUCTS_LIST_CAR_P(
     p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
 ) RETURN SYS_REFCURSOR
 IS
@@ -1499,13 +1499,26 @@ BEGIN
     -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
     -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
-    SELECT u.name AS NAME_SELLER, u.surname, u.surname, u.email, u.phone, cp.cp_id, p.image, p.name AS NAME_PRODUCT, p.price, p.units, p.content, cp.units AS AMOUNT
+    SELECT 
+        u.name AS NAME_SELLER, 
+        u.surname, 
+        u.email, 
+        u.phone, 
+        cp.cp_id, 
+        p.image, 
+        p.name AS NAME_PRODUCT, 
+        p.price, 
+        p.units, 
+        p.content, 
+        cp.units AS AMOUNT
     FROM CARS c
     INNER JOIN carproduct cp ON c.car_id = cp.car_id
     INNER JOIN products p ON p.product_id = cp.product_id
-    INNER JOIN users u ON u.user_id = p.user_id
+    LEFT JOIN users u ON u.user_id = p.user_id  -- LEFT JOIN para que sea opcional si user_id es nulo
     WHERE c.USER_ID = p_user_id
-    AND cp.active = 1 AND c.active = 1;  -- Compara si el ID que llega es del dueño del pago
+    AND cp.active = 1 
+    AND c.active = 1
+    AND (p.user_id IS NULL OR u.user_id IS NOT NULL);  -- Condición: si el product no tiene user_id, no hacer JOIN
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
