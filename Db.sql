@@ -260,10 +260,6 @@ CREATE TABLE TRANSACTIONPRODUCT (
     CONSTRAINT purchase_status_fk FOREIGN KEY (PURCHASING_STATUS_ID) REFERENCES PURCHASING_STATUS(PURCHASING_STATUS_ID)
 );
 
-/*Crear administrador*/
-
-INSERT INTO administrators values (1, 'admin@gmail.com', '123', SYSDATE);
-
 /*Crear table space*/
 
 CREATE TABLESPACE USER_DATA 
