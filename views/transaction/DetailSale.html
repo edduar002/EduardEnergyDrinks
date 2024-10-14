@@ -4,6 +4,7 @@
         <h2>Factura</h2>
         <p class="text-muted">Fecha: <?= date('d-m-Y') ?></p>
     </div>
+    
     <!-- Datos del envío -->
     <h4 class="mb-3">Datos del Envío</h4>
     <div class="row mb-4">
@@ -23,6 +24,7 @@
             <p><strong>Código Postal:</strong> <?= $detail[0]['POSTAL_CODE'] ?></p>
         </div>
     </div>
+    
     <!-- Datos del pago -->
     <h4 class="mb-3">Datos del Pago</h4>
     <div class="row mb-4">
@@ -33,6 +35,23 @@
             <p><strong>Número de elección:</strong> <?= $detail[0]['NUMBER_ELECTION'] ?></p>
         </div>
     </div>
+    <br>
+    <!-- Botón Cambiar Estado -->
+    <div class="row mt-3">
+        <div class="col text-start">
+            <form action="<?=init?><?=transaction?><?=changeStatus?>&id=3" method="POST" class="d-inline">
+                <select name="purchaseStatus" class="form-select d-inline" style="width: auto;" required>
+                    <?php foreach($listPurchasingStatus as $purchasingStatus) : ?>
+                        <option value="<?=$purchasingStatus['PURCHASING_STATUS_ID']?>"><?=$purchasingStatus['NAME']?></option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit" class="btn btn-primary">Cambiar estado</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
     <!-- Datos del producto -->
     <h4 class="mb-3">Datos del Producto</h4>
     <table class="table table-striped">
@@ -63,10 +82,11 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    
     <!-- Total -->
-    <br>
     <div class="text-end mt-4">
         <h3>Total: <?= $total ?></h3>
     </div>
+    <br>
     <br>
 </div>

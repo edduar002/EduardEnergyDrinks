@@ -129,6 +129,7 @@
     define("deleteCar", "&action=deleteCar");
     define("increaseQuantity", "&action=increaseQuantity");
     define("decreaseQuantity", "&action=decreaseQuantity");
+    define("changeStatus", "&action=changeStatus");
 
     /*Rutas para establecer la red*/
 
@@ -154,5 +155,6 @@
     define("windowManagementGenres", "&action=windowManagementGenres");
     define("windowAddUserAdmin", "&action=windowAddUser");
     define("addUserAdmin", "&action=addUser"); 
+    define("deleteProductA", "&action=deleteProduct");
 
 ?>

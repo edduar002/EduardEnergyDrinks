@@ -110,7 +110,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Obtener lista de usuarios*/
-            $list = $model -> getsNews();
+            $list = $model -> newsManagement();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementNews.html";
         }
@@ -161,6 +161,39 @@
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowAddUser");
+            }
+        }
+
+        /*Funcion para eliminar un product*/
+        public function deleteProduct(){
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET)){
+                /*Comprobar si el dato existe*/
+                $product_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($product_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que elimina el producto*/  
+                    $resultado = $model->deleteProduct($product_id);
+                    /*Comprobar si el producto ha sido eliminado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el producto", '?controller=administratorController&action=windowManagementProducts');
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del producto", '?controller=administratorController&action=windowManagementProducts');
+                    }
+                /*De lo contrario*/ 
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=administratorController&action=windowManagementProducts');
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementProducts");
             }
         }
 

@@ -20,11 +20,22 @@
     height: 125px !important;
 }
 
+#gestionAdmin{
+    width: 200px;
+    height: 200px;
+    margin-left: 150px;
+}
+
+#payImage{
+    width: 300px;
+    height: 300px;
+}
+
 .lupa{
     margin-top: 15px;
     margin-left: 5px;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
 }
 
 #alerta{

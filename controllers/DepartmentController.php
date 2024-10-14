@@ -91,21 +91,21 @@
                     /*Comprobar si el departamento ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el departamento", '?controller=userController&action=managementDepartments');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el departamento", '?controller=administratorController&action=windowManagementDepartments');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del departamento", '?controller=userController&action=managementDepartments');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del departamento", '?controller=administratorController&action=windowManagementDepartments');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=userController&action=managementDepartments');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=administratorController&action=windowManagementDepartments');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementDepartments");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementDepartments");
             }
         }
 

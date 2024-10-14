@@ -2185,3 +2185,7 @@ BEGIN
         RETURN 0;
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
+
+/*Agregar administrador*/
+
+INSERT INTO administrators values (1, 'admin@gmail.com', '123', SYSDATE);

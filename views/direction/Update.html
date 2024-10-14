@@ -25,6 +25,34 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0">
+                                Departamento
+                            </span>
+                        </div>
+                        <select name="department" name="department" class="form-control" required>
+                            <?php foreach($listDepartments as $departments) : ?>
+                                <option value="<?=$departments['DEPARTMENT_ID']?>"><?=$departments['NAME']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>                
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
+                                Ciudad
+                            </span>
+                        </div>
+                        <input type="text" name="city" value="<?=$direction['CITY']?>" class="form-control" required>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0">
                                 Carrera
                             </span>
                         </div>
@@ -79,7 +107,7 @@
             </div>
             <div class="col-3">
                 <div class="col-3"></div>
-                <img id="imgRegister" class="img-fluid rounded-circle"
+                <img id="imgRegister" class="img-fluid"
                     src="assets/images/logos/mapa.png" alt="">
                 <br>
             </div>

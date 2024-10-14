@@ -119,21 +119,21 @@
                     /*Comprobar si la noticia ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente la noticia", '?controller=administratorController&action=managementNews');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente la noticia", '?controller=administratorController&action=windowManagementNews');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion de la noticia", '?controller=administratorController&action=managementNews');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion de la noticia", '?controller=administratorController&action=windowManagementNews');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=administratorController&action=managementNews');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=administratorController&action=windowManagementNews');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=managementNews");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementNews");
             }
         }
 

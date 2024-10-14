@@ -12,19 +12,23 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0">
-                                Numero
+                                Entidad Bancaria
                             </span>
                         </div>
-                        <input type="text" name="election" value="<?=$pay['ELECTION']?>" class="form-control" required>
+                        <select name="bankingEntity" name="bankingEntity" class="form-control" required>
+                            <?php foreach($listBankEntity as $bankingEntity) : ?>
+                                <option value="<?=$bankingEntity['BANKING_ENTITY_ID']?>"><?=$bankingEntity['NAME']?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
-                </div>
+                </div>     
                 <br>
                 <br>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0">
-                                Eleccion Number
+                                Numero
                             </span>
                         </div>
                         <input type="number" name="number_election" value="<?=$pay['NUMBER_ELECTION']?>" class="form-control" required>
@@ -42,7 +46,7 @@
             </div>
             <div class="col-3">
                 <div class="col-3"></div>
-                <img id="imgRegister" class="img-fluid rounded-circle"
+                <img id="imgRegister" class="img-fluid"
                     src="assets/images/logos/pago.png" alt="">
                 <br>
             </div>

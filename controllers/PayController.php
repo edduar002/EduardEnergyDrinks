@@ -29,8 +29,9 @@
                 if ($pay_id){
                     /*Instanciar modelo*/                      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que obtiene el pago*/                    
+                    /*Llamar la funcion del modelo que obtiene el pago y la lista de entidades bancarias*/                     
                     $pay = $model -> getPay($pay_id);
+                    $listBankEntity = $model -> getBankEntities();
                     /*Incluir la vista*/
                     require_once "views/pay/Update.html";
                 /*De lo contrario*/     
@@ -121,14 +122,14 @@
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
                 $pay_id = isset($_GET['id']) ? $_GET['id'] : false;
-                $election = isset($_POST['election']) ? $_POST['election'] : false;
+                $bankEntity = isset($_POST['bankingEntity']) ? $_POST['bankingEntity'] : false;
                 $number_election = isset($_POST['number_election']) ? $_POST['number_election'] : false;
                 /*Si el dato existe*/
                 if($pay_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza el pago*/  
-                    $resultado = $model -> updatePay($pay_id, $election, $number_election);
+                    $resultado = $model -> updatePay($pay_id, $bankEntity, $number_election);
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

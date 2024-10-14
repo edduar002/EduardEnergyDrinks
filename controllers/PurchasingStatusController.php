@@ -91,21 +91,21 @@
                     /*Comprobar si el estado de la compra ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el estado de la compra", '?controller=userController&action=managementPurchasingStatus');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente el estado de la compra", '?controller=administratorController&action=windowManagementPurchasingStatues');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del estado de la compra", '?controller=userController&action=managementPurchasingStatus');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del estado de la compra", '?controller=administratorController&action=windowManagementPurchasingStatues');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=userController&action=managementPurchasingStatus');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=administratorController&action=windowManagementPurchasingStatues');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementPurchasingStatus");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementPurchasingStatues");
             }
         }
 

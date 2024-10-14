@@ -17,10 +17,17 @@
 
         /*Funcion para abrir ventana de todos los productos*/
         public function all(){
-            /*Instanciar modelo*/ 
+            /*Instanciar modelo*/
             $model = new Model();
-            /*Llamar la funcion del modelo*/ 
-            $listProducts = $model -> getAllProducts();
+            /*Establecer el id del usuario como nulo*/
+            $user_id = NULL;
+            /*Comprobar si el usuario esta logueado*/
+            if(isset($_SESSION['loginsucces'])){
+                /*Establecer el id del usuario con el id del usuario logueado*/
+                $user_id = $_SESSION['loginsucces']['USER_ID'];
+            }
+            /*Obtener la lista de productos*/        
+            $listProducts = $model->getAllProducts($user_id);
             /*Incluir la vista*/
             require_once "views/product/All.html";
         }

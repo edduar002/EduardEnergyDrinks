@@ -123,7 +123,7 @@
             });
         }
 
-        const confirmDeleteBankingEntityButton = document.getElementById('confirmDeleteBankingEntity');
+        const confirmDeleteBankingEntityButton = document.getElementById('confirmDeleteBankEntity');
         const exampleModal7 = document.getElementById('exampleModal7');
         let bankingEntityId;
         if (exampleModal7) {
@@ -155,7 +155,7 @@
             });
         }
 
-        const confirmDeleteNewsButton = document.getElementById('confirmDeleteNewsButton');
+        const confirmDeleteNewsButton = document.getElementById('confirmDeleteNews');
         const exampleModal9 = document.getElementById('exampleModal9');
         let newsId;
         if (exampleModal9) {
@@ -171,7 +171,7 @@
             });
         }
 
-        const confirmDeletePurchasingStatusButton = document.getElementById('confirmDeletePurchasingStatusButton');
+        const confirmDeletePurchasingStatusButton = document.getElementById('confirmDeletePurchasingStatue');
         const exampleModal10 = document.getElementById('exampleModal10');
         let purchasingStatusId;
         if (exampleModal10) {
@@ -183,6 +183,22 @@
         if (confirmDeletePurchasingStatusButton) {
             confirmDeletePurchasingStatusButton.addEventListener('click', function () {
                 const url = `<?=init?><?=purchasingStatus?><?=deletePurchasingStatus?>&id=${purchasingStatusId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteProductAButton = document.getElementById('confirmDeleteProductA');
+        const exampleModal11 = document.getElementById('exampleModal11');
+        let productIdA;
+        if (exampleModal11) {
+            exampleModal11.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                productId = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteProductAButton) {
+            confirmDeleteProductAButton.addEventListener('click', function () {
+                const url = `<?=init?><?=administrator?><?=deleteProductA?>&id=${productId}`;
                 window.location.href = url;
             });
         }

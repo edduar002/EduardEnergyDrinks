@@ -256,7 +256,7 @@
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
             return $products;
-        }        
+        }   
 
         /*Funcion para obtener la lista de todos los productos en el apartado de gestion*/
         public function productsListManagement($user_id) {
@@ -523,7 +523,7 @@
         /*Funcion para eliminar una noticia*/
         public function deleteNews($news_id) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := DELETE_NEWS(:news_id); END;'; 
+            $sql = 'BEGIN :resultado := DELETE_NEW(:news_id); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
             oci_bind_by_name($stmt, ':news_id', $news_id);
@@ -2085,6 +2085,32 @@
             return $products;
         }
 
+        /*Funcion para obtener la lista de gestion de las noticias*/
+        public function newsManagement(){
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := NEWS_MANAGEMENT; END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        }
+
         /*Funcion para obtener todas las noticias registradas*/
         public function getsNews(){
             /*Preparar la consulta que llama a la función de Oracle*/
@@ -2190,14 +2216,16 @@
         }
 
         /*Funcion para obtener la lista de todos los productos registrados en el apartado de ver todos*/
-        public function getAllProducts(){
-            /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := GET_ALL_PRODUCTS; END;';
+        public function getAllProducts($user_id){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $query = 'BEGIN :resultado := ALL_PRODUCTS(:user_id); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
             /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':user_id', $user_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
@@ -2211,14 +2239,14 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/ 
             return $products;
         }
 
         /*Funcion para obtener la lista de todas las noticias registradas en el apartado de ver todas*/
         public function getAllNews(){
             /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := GET_ALL_NEWS; END;';
+            $query = 'BEGIN :resultado := ALL_NEWS; END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);

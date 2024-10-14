@@ -91,21 +91,21 @@
                     /*Comprobar si la entidad bancaria ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente la entidad bancaria", '?controller=userController&action=managementBankEntities');
+                        Helps::createSessionAndRedirect('aciertoeliminar', "Se ha eliminado exitosamente la entidad bancaria", '?controller=administratorController&action=windowManagementBankEntities');
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion dla entidad bancaria", '?controller=userController&action=managementBankEntities');
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion dla entidad bancaria", '?controller=administratorController&action=windowManagementBankEntities');
                     }
                 /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=userController&action=managementBankEntities');
+                    Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error inesperado", '?controller=administratorController&action=windowManagementBankEntities');
                 }
             /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=managementBankEntities");
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementBankEntities");
             }
         }
 

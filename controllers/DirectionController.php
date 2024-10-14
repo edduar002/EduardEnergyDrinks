@@ -29,8 +29,9 @@
                 if ($direction_id){
                     /*Instanciar modelo*/                      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que obtiene la direccion*/                    
+                    /*Llamar la funcion del modelo que obtiene la direccion y la lista de departamentos*/                    
                     $direction = $model -> getDirection($direction_id);
+                    $listDepartments = $model -> getDepartments();
                     /*Incluir la vista*/
                     require_once "views/direction/Update.html";
                 /*De lo contrario*/     
@@ -125,6 +126,8 @@
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
                 $direction_id = isset($_GET['id']) ? $_GET['id'] : false;
+                $department = isset($_POST['city']) ? $_POST['city'] : false;
+                $city = isset($_POST['department']) ? $_POST['department'] : false;
                 $carrer = isset($_POST['carrer']) ? $_POST['carrer'] : false;
                 $street = isset($_POST['street']) ? $_POST['street'] : false;
                 $postal_code = isset($_POST['postal_code']) ? $_POST['postal_code'] : false;

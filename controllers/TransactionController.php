@@ -308,6 +308,8 @@
             $detail = $model -> detailSale($_GET['id']);
             /*Total de la compra*/
             $total = 345345;
+            /*Obtener la lista de estados de pago*/
+            $listPurchasingStatus = $model -> getPurchasingStatues();
             /*Incluir la vista*/
             require_once "views/transaction/DetailSale.html";
         }
@@ -423,6 +425,11 @@
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errortransaccion", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowPurchase");
             }
+        }
+
+        /*Funcion para cambiar el estado de la compra*/
+        public function changeStatus(){
+
         }
 
     }
