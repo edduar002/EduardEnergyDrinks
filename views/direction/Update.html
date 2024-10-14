@@ -30,7 +30,10 @@
                         </div>
                         <select name="department" name="department" class="form-control" required>
                             <?php foreach($listDepartments as $departments) : ?>
-                                <option value="<?=$departments['DEPARTMENT_ID']?>"><?=$departments['NAME']?></option>
+                                <option value="<?=$departments['DEPARTMENT_ID']?>"
+                                    <?=($direction['DEPARTMENT_NAME'] == $departments['NAME']) ? 'selected' : '' ?>>
+                                    <?=$departments['NAME']?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>

@@ -1,3 +1,29 @@
+<?php if(isset($_SESSION['aciertocambio'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertocambio']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertocambio'); ?>
+
+<?php if(isset($_SESSION['errorcambio'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['errorcambio']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('errorcambio'); ?>
+
 <div class="container mt-5 mx-2">
     <!-- Encabezado -->
     <div class="text-center mb-5">
@@ -39,14 +65,17 @@
     <!-- Botón Cambiar Estado -->
     <div class="row mt-3">
         <div class="col text-start">
-            <form action="<?=init?><?=transaction?><?=changeStatus?>&id=3" method="POST" class="d-inline">
+            <form action="<?=init?><?=transaction?><?=changeStatus?>&id=<?=$detail[0]['TRPR_ID']?>" method="POST" class="d-inline">
                 <select name="purchaseStatus" class="form-select d-inline" style="width: auto;" required>
                     <?php foreach($listPurchasingStatus as $purchasingStatus) : ?>
-                        <option value="<?=$purchasingStatus['PURCHASING_STATUS_ID']?>"><?=$purchasingStatus['NAME']?></option>
+                        <option value="<?=$purchasingStatus['PURCHASING_STATUS_ID']?>"
+                            <?=($detail[0]['NAME_PURCHASING_STATUS'] == $purchasingStatus['NAME']) ? 'selected' : '' ?>>
+                            <?=$purchasingStatus['NAME']?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
                 <button type="submit" class="btn btn-primary">Cambiar estado</button>
-            </form>
+            </form>            
         </div>
     </div>
     <br>

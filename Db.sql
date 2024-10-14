@@ -551,8 +551,10 @@ BEGIN
     UPDATE users
     SET HIGHER_USER_ID = userId
     WHERE code = userCode;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -561,6 +563,89 @@ EXCEPTION
         RETURN 'Error al eliminar el pago';
 END;
 
+create or replace FUNCTION ALL_NEWS RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT * FROM (
+    SELECT N.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
+    FROM news N
+    WHERE N.active = 1
+    ORDER BY N.CREATED_AT DESC
+) 
+ORDER BY RANDOM_ORDER;
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END ALL_NEWS;
+
+create or replace FUNCTION ALL_PRODUCTS(
+    p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
+) RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+    v_is_founder NUMBER;
+BEGIN
+    -- Comprobar si p_user_id es NULL
+    IF p_user_id IS NULL THEN
+        -- Mostrar productos donde el USER_ID no sea nulo
+        OPEN v_cursor FOR
+        SELECT * FROM (
+            SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
+            FROM PRODUCTS P
+            WHERE P.ACTIVE = 1 
+              AND P.STOCK > 0
+              AND P.USER_ID IS NOT NULL -- Mostrar solo productos con USER_ID
+            ORDER BY P.CREATED_AT DESC
+        )
+        ORDER BY RANDOM_ORDER;
+
+    ELSE
+        -- Verificar si el usuario es fundador
+        SELECT U.FOUNDER
+        INTO v_is_founder
+        FROM USERS U
+        WHERE U.USER_ID = p_user_id;
+
+        -- Abrir un cursor para seleccionar productos activos, con stock disponible
+        OPEN v_cursor FOR
+        SELECT * FROM (
+            SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
+            FROM PRODUCTS P
+            WHERE P.ACTIVE = 1 
+              AND P.STOCK > 0
+              AND (
+                  -- Si el usuario es fundador, permitir productos sin USER_ID
+                  (v_is_founder = 1 AND P.USER_ID IS NULL)
+                  OR
+                  -- Si no es fundador, mostrar productos del usuario superior en la jerarquía
+                  (v_is_founder = 0 AND P.USER_ID IN (
+                      -- Consulta jerárquica para encontrar el usuario superior
+                      SELECT U2.USER_ID
+                      FROM USERS U2
+                      START WITH U2.USER_ID = p_user_id
+                      CONNECT BY PRIOR U2.HIGHER_USER_ID = U2.USER_ID
+                  ))
+              )
+            ORDER BY P.CREATED_AT DESC
+        )
+        WHERE ROWNUM <= 6
+        ORDER BY RANDOM_ORDER;
+    END IF;
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END ALL_PRODUCTS;
+
 create or replace FUNCTION ASSIGN_FOUNDER(userCode IN VARCHAR2) 
 RETURN VARCHAR2 AS
 BEGIN
@@ -568,8 +653,10 @@ BEGIN
     UPDATE users
     SET FOUNDER = 1
     WHERE code = userCode;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -585,8 +672,10 @@ BEGIN
     UPDATE users
     SET user_password = u_new_password
     WHERE user_id = u_user_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -602,8 +691,10 @@ BEGIN
     UPDATE products
     SET stock = stock - t_cantidad
     WHERE product_id = p_product_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -619,8 +710,10 @@ BEGIN
     UPDATE carproduct
     SET units = units - 1 WHERE car_id IN (SELECT car_id FROM cars WHERE user_id = c_user_id)
     AND product_id = cp_product_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -636,8 +729,10 @@ BEGIN
     UPDATE BANKING_ENTITIES
     SET active = 0
     WHERE BANKING_ENTITY_ID = be_bank_entity_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -653,8 +748,10 @@ BEGIN
     UPDATE cars
     SET active = 0
     WHERE user_id = user_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -670,8 +767,10 @@ BEGIN
     UPDATE departments
     SET active = 0
     WHERE department_id = d_department_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -687,8 +786,10 @@ BEGIN
     UPDATE directions
     SET active = 0
     WHERE direction_id = d_direction_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -704,8 +805,10 @@ BEGIN
     UPDATE genres
     SET active = 0
     WHERE genre_id = g_genre_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -721,8 +824,10 @@ BEGIN
     UPDATE news
     SET active = 0
     WHERE news_id = n_new_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -738,8 +843,10 @@ BEGIN
     UPDATE pays
     SET active = 0
     WHERE pay_id = p_pay_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -755,8 +862,10 @@ BEGIN
     UPDATE products
     SET active = 0
     WHERE product_id = p_product_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -772,8 +881,10 @@ BEGIN
     UPDATE carproduct
     SET active = 0 WHERE car_id IN (SELECT car_id FROM cars WHERE user_id = c_user_id)
     AND product_id = cp_product_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -789,8 +900,10 @@ BEGIN
     UPDATE PURCHASING_STATUS
     SET active = 0
     WHERE PURCHASING_STATUS_ID = ps_purchasing_status_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -806,8 +919,10 @@ BEGIN
     UPDATE users
     SET active = 0
     WHERE user_id = u_user_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -825,6 +940,7 @@ BEGIN
         SELECT * 
         FROM PRODUCT_DETAIL 
         WHERE product_id = p_product_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -839,7 +955,7 @@ IS
     v_cursor SYS_REFCURSOR;
 BEGIN
     OPEN v_cursor FOR
-        SELECT u.name AS USER_NAME, u.surname, u.email, u.phone, d.carrer, d.street, d.postal_code, 
+        SELECT pu.name AS NAME_PURCHASING_STATUS, tp.TP_ID AS TRPR_ID, u.name AS USER_NAME, u.surname, u.email, u.phone, d.carrer, d.street, d.postal_code, 
         d.city, de.name AS DEPARTMENT_NAME, pa.number_election, p.name AS PRODUCT_NAME, p.price, p.content, 
         be.name AS BANK_ENTITY_NAME, tp.units
         FROM TRANSACTIONS t
@@ -850,7 +966,9 @@ BEGIN
         INNER JOIN directions d ON d.direction_id = t.direction_id
         INNER JOIN departments de ON de.department_id = d.department_id
         INNER JOIN banking_entities be ON be.banking_entity_id = pa.banking_entity_id
+        INNER JOIN purchasing_status pu ON pu.purchasing_status_id = tp.purchasing_status_id
         WHERE t.transaction_id = t_transaction_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -877,6 +995,7 @@ BEGIN
         INNER JOIN departments de ON de.department_id = d.department_id
         INNER JOIN banking_entities be ON be.banking_entity_id = pa.banking_entity_id
         WHERE t.transaction_id = t_transaction_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -898,58 +1017,13 @@ BEGIN
     FROM DIRECTIONS
     WHERE ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
         -- Manejo de otras excepciones
         RAISE;
 END DIRECTION_LIST_MANAGEMENT;
-
-create or replace FUNCTION GET_ALL_NEWS RETURN SYS_REFCURSOR
-IS
-    v_cursor SYS_REFCURSOR;
-BEGIN
-    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
-    -- y el USER_ID sea el dueño del pago
-    OPEN v_cursor FOR
-    SELECT * FROM (
-    SELECT N.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
-    FROM news N
-    WHERE N.active = 1
-    ORDER BY N.CREATED_AT DESC
-) 
-ORDER BY RANDOM_ORDER;
-    RETURN v_cursor; -- Retornar el cursor con los registros
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Manejo de otras excepciones
-        RAISE;
-END GET_ALL_NEWS;
-
-create or replace FUNCTION GET_ALL_PRODUCTS(
-    p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
-) RETURN SYS_REFCURSOR
-IS
-    v_cursor SYS_REFCURSOR;
-BEGIN
-    -- Abrir un cursor para seleccionar productos activos, con stock disponible y del superior
-    OPEN v_cursor FOR
-    SELECT * FROM (
-    SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
-    FROM PRODUCTS P
-    JOIN USERS U ON P.USER_ID = U.USER_ID
-    WHERE P.ACTIVE = 1 
-    AND P.STOCK > 0
-    AND (p_user_id IS NULL OR U.HIGHER_USER_ID = p_user_id)
-    ORDER BY P.CREATED_AT DESC
-) 
-ORDER BY RANDOM_ORDER;
-    RETURN v_cursor; -- Retornar el cursor con los registros
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Manejo de otras excepciones
-        RAISE;
-END GET_ALL_PRODUCTS;
 
 create or replace FUNCTION GET_BANK_ENTITIES RETURN SYS_REFCURSOR
 IS
@@ -961,6 +1035,7 @@ BEGIN
     SELECT *
     FROM banking_entities
     WHERE ACTIVE = 1;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -996,6 +1071,7 @@ BEGIN
     SELECT *
     FROM PRODUCT_DATA_PU
     WHERE product_id = p_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1015,6 +1091,7 @@ BEGIN
         SELECT * 
         FROM DEPARTMENTS_MANAGEMENT
         WHERE DEPARTMENT_ID = d_department_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1033,6 +1110,7 @@ BEGIN
     SELECT *
     FROM DEPARTMENTS
     WHERE ACTIVE = 1;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1046,9 +1124,11 @@ IS
     v_cursor SYS_REFCURSOR;
 BEGIN
     OPEN v_cursor FOR
-        SELECT * 
-        FROM directions 
-        WHERE direction_id = d_direction_id;
+        SELECT di.*, de.name AS DEPARTMENT_NAME
+        FROM directions di
+        INNER JOIN departments de ON di.department_id = de.department_id
+        WHERE di.direction_id = d_direction_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1066,6 +1146,7 @@ BEGIN
         SELECT * 
         FROM GENRES_LIST_MANAGEMENT 
         WHERE genre_id = g_genre_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1084,6 +1165,7 @@ BEGIN
     SELECT *
     FROM GENRES
     WHERE ACTIVE = 1;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1099,6 +1181,7 @@ BEGIN
     OPEN cur FOR
     SELECT NVL(MAX(CAR_ID), 0) AS ID
     FROM CARS;
+    
     RETURN cur;
 END;
 
@@ -1110,6 +1193,7 @@ BEGIN
     OPEN cur FOR
     SELECT NVL(MAX(transaction_id), 0) AS ID
     FROM TRANSACTIONS_LIST;
+    
     RETURN cur;
 END;
 
@@ -1122,6 +1206,7 @@ BEGIN
         SELECT * 
         FROM news 
         WHERE news_id = n_news_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1141,7 +1226,9 @@ BEGIN
     FROM USERS
     WHERE email = p_email
     AND ROWNUM = 1;  -- Garantiza que solo se obtenga una fila
+
     RETURN v_password;
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RETURN NULL;
@@ -1158,7 +1245,7 @@ IS
     v_cursor SYS_REFCURSOR;
 BEGIN
     OPEN v_cursor FOR
-        SELECT P.PAY_ID, p.NUMBER_ELECTION, be.NAME
+        SELECT P.PAY_ID, p.NUMBER_ELECTION, be.NAME AS BANKING_ENTITY_NAME
         FROM pays p
         INNER JOIN banking_entities be ON be.BANKING_ENTITY_ID = p.BANKING_ENTITY_ID
         WHERE pay_id = p_pay_id;
@@ -1179,6 +1266,7 @@ BEGIN
         SELECT * 
         FROM PRODUCT_DETAIL 
         WHERE product_id = p_product_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1197,6 +1285,7 @@ BEGIN
     SELECT p.product_id, p.name, p.price, p.stock, p.units, p.content, u.name AS USER_NAME, u.user_id
     FROM PRODUCTS p
     INNER JOIN USERS u ON u.user_id = p.user_id;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1213,30 +1302,14 @@ BEGIN
     OPEN v_cursor FOR
     SELECT p.product_id, p.name, p.price, p.stock, p.units, p.content
     FROM PRODUCTS p
-    where user_id is null;  -- Compara si el ID que llega es del dueño del pago
+    where user_id is null and p.active = 1;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
         -- Manejo de otras excepciones
         RAISE;
 END GET_PRODUCTS_ADMIN;
-
-create or replace FUNCTION GET_PURCHASING_STATUES RETURN SYS_REFCURSOR
-IS
-    v_cursor SYS_REFCURSOR;
-BEGIN
-    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
-    -- y el USER_ID sea el dueño del pago
-    OPEN v_cursor FOR
-    SELECT *
-    FROM purchasing_status
-    WHERE ACTIVE = 1; -- Compara si el ID que llega es del dueño del pago
-    RETURN v_cursor; -- Retornar el cursor con los registros
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Manejo de otras excepciones
-        RAISE;
-END GET_PURCHASING_STATUES;
 
 create or replace FUNCTION GET_PURCHASING_STATUS(ps_purchasing_status_id IN NUMBER)
 RETURN SYS_REFCURSOR
@@ -1247,6 +1320,7 @@ BEGIN
         SELECT * 
         FROM PURCHASINGS_STATUS_MANAGEMENT 
         WHERE PURCHASING_STATUS_ID = ps_purchasing_status_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1265,6 +1339,7 @@ BEGIN
     SELECT *
     FROM SESSION_START
     WHERE user_id = u_id;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1284,6 +1359,7 @@ BEGIN
     OPEN v_cursor FOR
     SELECT *
     FROM USERS;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1306,6 +1382,7 @@ BEGIN
 ) 
 WHERE ROWNUM <= 2
 ORDER BY RANDOM_ORDER;
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1320,8 +1397,10 @@ BEGIN
     UPDATE users
     SET earnings = earnings + t_total
     WHERE user_id = t_id_seller;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -1337,8 +1416,10 @@ BEGIN
     UPDATE carproduct
     SET units = units + 1 WHERE car_id IN (SELECT car_id FROM cars WHERE user_id = c_user_id)
     AND product_id = cp_product_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -1358,6 +1439,7 @@ BEGIN
     FROM SESSION_START
     WHERE email = u_email
     AND ACTIVE = 1;
+
     RETURN v_cursor;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -1379,6 +1461,7 @@ BEGIN
     FROM ADMINISTRATORS
     WHERE email = a_email
     AND administrator_password = a_password;
+
     -- Retornar 1 si el usuario existe, 0 si no
     IF v_count > 0 THEN
         RETURN 1;
@@ -1392,6 +1475,28 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END LOGINA;
+
+create or replace FUNCTION NEWS_MANAGEMENT RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
+    -- y el USER_ID sea el dueño del pago
+    OPEN v_cursor FOR
+    SELECT * FROM (
+    SELECT N.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
+    FROM news N
+    WHERE N.active = 1
+    ORDER BY N.CREATED_AT DESC
+) 
+ORDER BY RANDOM_ORDER;
+
+    RETURN v_cursor; -- Retornar el cursor con los registros
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejo de otras excepciones
+        RAISE;
+END NEWS_MANAGEMENT;
 
 create or replace FUNCTION PAY_LIST_MANAGEMENT(
     p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
@@ -1407,6 +1512,7 @@ BEGIN
     INNER JOIN banking_entities be ON be.BANKING_ENTITY_ID = p.BANKING_ENTITY_ID
     WHERE p.ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1414,48 +1520,77 @@ EXCEPTION
         RAISE;
 END PAY_LIST_MANAGEMENT;
 
-CREATE OR REPLACE FUNCTION PRODUCTS_LIST(
+create or replace FUNCTION PRODUCTS_LIST(
     p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
 ) RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
+    v_is_founder NUMBER;
 BEGIN
-    -- Abrir un cursor para seleccionar productos activos, con stock disponible
-    OPEN v_cursor FOR
-    SELECT * FROM (
-        SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
-        FROM PRODUCTS P
-        WHERE P.ACTIVE = 1 
-          AND P.STOCK > 0
-          AND (
-              -- Si p_user_id es NULL, solo permite productos con USER_ID nulo a usuarios de nivel 1
-              (p_user_id IS NULL AND P.USER_ID IS NULL AND EXISTS (
-                  SELECT 1
-                  FROM USERS U
-                  WHERE U.USER_ID = p_user_id AND U.HIGHER_USER_ID IS NULL -- Usuario de nivel 1
-              ))
-              OR
-              -- Si p_user_id tiene un valor
-              (p_user_id IS NOT NULL AND (
-                  -- Permitir productos sin USER_ID si el usuario es nivel 1
-                  (P.USER_ID IS NULL AND EXISTS (
-                      SELECT 1
-                      FROM USERS U
-                      WHERE U.USER_ID = p_user_id AND U.HIGHER_USER_ID IS NULL -- Usuario de nivel 1
-                  ))
-                  OR
-                  -- Mostrar productos que pertenecen a su nivel superior
-                  (P.USER_ID IS NOT NULL AND P.USER_ID IN (
-                      SELECT U.HIGHER_USER_ID
-                      FROM USERS U
-                      WHERE U.USER_ID = p_user_id -- Parámetro del usuario actual
-                  ))
-              ))
-          )
-        ORDER BY P.CREATED_AT DESC
-    ) 
-    WHERE ROWNUM <= 6
-    ORDER BY RANDOM_ORDER;
+    -- Comprobar si p_user_id es NULL
+    IF p_user_id IS NULL THEN
+        -- Mostrar productos donde el USER_ID no sea nulo
+        OPEN v_cursor FOR
+        SELECT * FROM (
+            SELECT P.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
+            FROM PRODUCTS P
+            WHERE P.ACTIVE = 1 
+              AND P.STOCK > 0
+              AND P.USER_ID IS NOT NULL -- Mostrar solo productos con USER_ID
+            ORDER BY P.CREATED_AT DESC
+        )
+        WHERE ROWNUM <= 6
+        ORDER BY RANDOM_ORDER;
+
+    ELSE
+        -- Verificar si el usuario es fundador
+        SELECT U.FOUNDER
+        INTO v_is_founder
+        FROM USERS U
+        WHERE U.USER_ID = p_user_id;
+
+        -- Si el usuario es de nivel 1 (es decir, no tiene un usuario superior)
+        IF v_is_founder = 1 THEN
+            -- Mostrar productos del administrador (USER_ID IS NULL)
+            OPEN v_cursor FOR
+            SELECT * FROM (
+                SELECT P.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
+                FROM PRODUCTS P
+                WHERE P.ACTIVE = 1 
+                  AND P.STOCK > 0
+                  AND P.USER_ID IS NULL -- Mostrar solo productos del administrador
+                ORDER BY P.CREATED_AT DESC
+            )
+            WHERE ROWNUM <= 6
+            ORDER BY RANDOM_ORDER;
+
+        ELSE
+            -- Abrir un cursor para seleccionar productos activos, con stock disponible
+            OPEN v_cursor FOR
+            SELECT * FROM (
+                SELECT P.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
+                FROM PRODUCTS P
+                WHERE P.ACTIVE = 1 
+                  AND P.STOCK > 0
+                  AND (
+                      -- Mostrar productos del administrador (si es el nivel 1)
+                      (P.USER_ID IS NULL AND p_user_id = 1) 
+                      OR
+                      -- Mostrar productos comprados por el nivel superior
+                      P.USER_ID IN (
+                          -- Consulta jerárquica para encontrar el usuario superior
+                          SELECT U2.USER_ID
+                          FROM USERS U2
+                          START WITH U2.USER_ID = p_user_id
+                          CONNECT BY PRIOR U2.USER_ID = U2.HIGHER_USER_ID
+                      )
+                  )
+                ORDER BY P.CREATED_AT DESC
+            )
+            WHERE ROWNUM <= 6
+            ORDER BY RANDOM_ORDER;
+        END IF;
+    END IF;
 
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
@@ -1473,12 +1608,13 @@ BEGIN
     -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
     -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
-    SELECT p.product_id AS PRODUCT_ID, cp.cp_id, p.image, p.name, p.price, p.units, cp.units AS AMOUNT, p.stock
+    SELECT p.product_id AS PRODUCT_ID, cp.cp_id, p.image, p.name, p.price, p.units, cp.units AS AMOUNT, p.stock, p.user_id
     FROM CARS c
     INNER JOIN carproduct cp ON c.car_id = cp.car_id
     INNER JOIN products p ON p.product_id = cp.product_id
     WHERE c.USER_ID = p_user_id
     AND cp.active = 1 AND c.active = 1;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1486,7 +1622,7 @@ EXCEPTION
         RAISE;
 END PRODUCTS_LIST_CAR;
 
-CREATE OR REPLACE FUNCTION PRODUCTS_LIST_CAR_P(
+create or replace FUNCTION PRODUCTS_LIST_CAR_P(
     p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre
 ) RETURN SYS_REFCURSOR
 IS
@@ -1515,6 +1651,7 @@ BEGIN
     AND cp.active = 1 
     AND c.active = 1
     AND (p.user_id IS NULL OR u.user_id IS NOT NULL);  -- Condición: si el product no tiene user_id, no hacer JOIN
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1535,6 +1672,7 @@ BEGIN
     FROM PRODUCTS
     WHERE ACTIVE = 1
     AND USER_ID = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1553,6 +1691,7 @@ BEGIN
     BEGIN
         INSERT INTO banking_entities (active, name, created_at)
         VALUES (d_active, d_name, d_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1560,6 +1699,7 @@ BEGIN
             v_resultado := 'Error al registrar direccion: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1574,6 +1714,7 @@ BEGIN
     BEGIN
         INSERT INTO CARS (user_id, active, created_at)
         VALUES (c_user_id, c_active, c_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1581,6 +1722,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1598,6 +1740,7 @@ BEGIN
     BEGIN
         INSERT INTO carproduct (car_id, product_id, active, units, price, created_at)
         VALUES (cp_id_car, cp_id_product, cp_active, cp_units, cp_price, cp_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1605,6 +1748,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1619,6 +1763,7 @@ BEGIN
     BEGIN
         INSERT INTO DEPARTMENTS (active, name, created_at)
         VALUES (d_active, d_name, d_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1626,6 +1771,7 @@ BEGIN
             v_resultado := 'Error al registrar direccion: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1646,6 +1792,7 @@ BEGIN
     BEGIN
         INSERT INTO DIRECTIONS (user_id, department_id, active, city, carrer, street, postal_code, direction, created_at)
         VALUES (d_user_id, d_department_id, d_active, d_city, d_carrer, d_street, d_postal_code, d_direction, d_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1653,6 +1800,7 @@ BEGIN
             v_resultado := 'Error al registrar direccion: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1667,6 +1815,7 @@ BEGIN
     BEGIN
         INSERT INTO GENRES (active, name, created_at)
         VALUES (g_active, g_name, g_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1674,6 +1823,7 @@ BEGIN
             v_resultado := 'Error al registrar direccion: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1691,6 +1841,7 @@ BEGIN
     BEGIN
         INSERT INTO news (active, title, content, link, image, created_at)
         VALUES (n_active, n_title, n_content, n_link, n_image, n_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1698,6 +1849,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1714,6 +1866,7 @@ BEGIN
     BEGIN
         INSERT INTO PAYS (user_id, banking_entity_id, active, number_election, created_at)
         VALUES (p_user_id, p_bank_entity_id, p_active, p_number_election, p_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1721,6 +1874,7 @@ BEGIN
             v_resultado := 'Error al registrar pago: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1774,6 +1928,7 @@ BEGIN
     BEGIN
         INSERT INTO purchasing_status (active, name, created_at)
         VALUES (ps_active, ps_name, ps_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1781,6 +1936,7 @@ BEGIN
             v_resultado := 'Error al registrar direccion: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1798,6 +1954,7 @@ BEGIN
     BEGIN
         INSERT INTO TRANSACTIONPRODUCT (transaction_id, product_id, seller_id, purchasing_status_id, units, created_at)
         VALUES (tp_id_transaction, tp_id_product, tp_id_seller, tp_id_purchasing_status, tp_units, tp_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1805,6 +1962,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1823,6 +1981,7 @@ BEGIN
     BEGIN
         INSERT INTO TRANSACTIONS (number_bill, buyer_id, direction_id, pay_id, total, date_time, created_at)
         VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, t_total, t_date_time, t_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1830,6 +1989,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1855,6 +2015,7 @@ BEGIN
     BEGIN
         INSERT INTO USERS (genre_id, active, founder, code, name, surname, birthdate, phone, email, user_password, image, earnings, higher_user_id, created_at)
         VALUES (u_genre_id, u_active, u_founder, u_code, u_name, u_surname, u_birthdate, u_phone, u_email, u_password, u_image, u_earnings, u_higuer_user_level, u_created_at);
+
         COMMIT;
         v_resultado := 1;
     EXCEPTION
@@ -1862,6 +2023,7 @@ BEGIN
             v_resultado := 'Error al registrar usuario: ' || SQLERRM;
             ROLLBACK;
     END;
+
     RETURN v_resultado;
 END;
 
@@ -1878,6 +2040,7 @@ BEGIN
     FROM TRANSACTIONS_LIST tl
     INNER JOIN TRANSACTIONPRODUCT tp ON tp.transaction_id = tl.transaction_id
     WHERE tp.seller_id = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1914,6 +2077,7 @@ BEGIN
     SELECT *
     FROM TRANSACTIONS_LIST
     WHERE buyer_id = p_user_id;  -- Compara si el ID que llega es del dueño del pago
+
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
     WHEN OTHERS THEN
@@ -1937,6 +2101,7 @@ BEGIN
     AND product_id = cp_id_product 
     AND active = 1
   );
+  
   IF v_count > 0 THEN
     RETURN 1;
   ELSE
@@ -1955,8 +2120,10 @@ BEGIN
     SET 
         name = NVL(be_name, name)
     WHERE banking_entity_id = be_bank_entity_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -1976,8 +2143,10 @@ BEGIN
     SET 
         name = NVL(d_name, name)
     WHERE department_id = d_direction_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -1989,6 +2158,7 @@ END;
 create or replace FUNCTION UPDATE_DIRECTION(
     d_direction_id IN NUMBER,
     d_department_id IN NUMBER,
+    d_city IN VARCHAR2 DEFAULT NULL,
     d_carrer IN VARCHAR2 DEFAULT NULL,
     d_street IN VARCHAR2 DEFAULT NULL,
     d_postal_code IN NUMBER DEFAULT NULL,
@@ -2000,13 +2170,16 @@ BEGIN
     UPDATE directions
     SET 
         department_id = NVL(d_department_id, department_id),
+        city = NVL(d_city, city),
         carrer = NVL(d_carrer, carrer),
         street = NVL(d_street, street),
         postal_code = NVL(d_postal_code, postal_code),
         direction = NVL(d_direction, direction)
     WHERE direction_id = d_direction_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2026,8 +2199,10 @@ BEGIN
     SET 
         name = NVL(g_name, name)
     WHERE genre_id = g_genre_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2053,8 +2228,10 @@ BEGIN
         link = NVL(n_link, link),      
         image = NVL(n_image, image)
     WHERE news_id = n_new_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2077,8 +2254,10 @@ BEGIN
         banking_entity_id = NVL(p_bank_entity_id, banking_entity_id),
         number_election = NVL(p_election_number, number_election)
     WHERE pay_id = p_pay_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2110,8 +2289,10 @@ BEGIN
         description = NVL(p_description, description),      
         image = NVL(p_image, image)
     WHERE product_id = p_product_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2131,8 +2312,10 @@ BEGIN
     SET 
         name = NVL(ps_name, name)
     WHERE purchasing_status_id = ps_purchasing_status_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2160,8 +2343,10 @@ BEGIN
         email = NVL(u_email, email),
         image = NVL(u_image, image)
     WHERE user_id = u_user_id;
+    
     -- Confirmar la transacción
     COMMIT;
+    
     -- Retornar un mensaje de éxito
     RETURN 'Actualización exitosa';
 EXCEPTION
@@ -2179,6 +2364,7 @@ BEGIN
     INTO email_existe
     FROM users
     WHERE email = u_email;
+
     IF email_existe > 0 THEN
         RETURN 1;
     ELSE

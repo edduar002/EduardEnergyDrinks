@@ -429,7 +429,36 @@
 
         /*Funcion para cambiar el estado de la compra*/
         public function changeStatus(){
-
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET) && isset($_POST)){
+                /*Comprobar si los datos existen*/
+                $transaction_product = isset($_GET['id']) ? $_GET['id'] : false;
+                $purchasingStatus = isset($_POST['purchaseStatus']) ? $_POST['purchaseStatus'] : false;
+                /*Si el dato existe*/
+                if($transaction_product && $purchasingStatus){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que actualiza el estado de la compra*/  
+                    $resultado = $model->changeStatus($transaction_product, $purchasingStatus);
+                    /*Comprobar si el estado de la compra se ha actualizado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('aciertocambio', "Se ha actualizado exitosamente el estado de la compra", "?controller=transactionController&action=detailSale&id=$transaction_product");
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('errorcambio', "Ha ocurrido un error al realizar la actualizacion de la compra", "?controller=transactionController&action=detailSale&id=$transaction_product");
+                    }
+                /*De lo contrario*/ 
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect('errorcambio', "Ha ocurrido un error inesperado", "?controller=transactionController&action=detailSale&id=$transaction_product");
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errorcambio", "Ha ocurrido un error inesperado", "?controller=userController&action=mySales");
+            }
         }
 
     }

@@ -17,7 +17,10 @@
                         </div>
                         <select name="bankingEntity" name="bankingEntity" class="form-control" required>
                             <?php foreach($listBankEntity as $bankingEntity) : ?>
-                                <option value="<?=$bankingEntity['BANKING_ENTITY_ID']?>"><?=$bankingEntity['NAME']?></option>
+                                <option value="<?=$bankingEntity['BANKING_ENTITY_ID']?>"
+                                    <?=($pay['BANKING_ENTITY_NAME'] == $bankingEntity['NAME']) ? 'selected' : '' ?>>
+                                    <?=$bankingEntity['NAME']?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
