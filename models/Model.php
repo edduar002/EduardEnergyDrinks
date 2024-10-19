@@ -231,9 +231,9 @@
         }   
         
         /*Funcion para obtener la lista de todos los productos*/
-        public function productsList($user_id) {
+        public function productsList($user_id, $founder, $higuer_user) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $query = 'BEGIN :resultado := PRODUCTS_LIST(:user_id); END;';
+            $query = 'BEGIN :resultado := PRODUCTS_LIST(:user_id, :founder, :higuer_user); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
@@ -241,6 +241,8 @@
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
             /*Enlazar el parámetro user_id*/
             oci_bind_by_name($stid, ':user_id', $user_id);
+            oci_bind_by_name($stid, ':founder', $founder);
+            oci_bind_by_name($stid, ':higuer_user', $higuer_user);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 

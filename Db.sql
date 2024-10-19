@@ -1521,74 +1521,38 @@ EXCEPTION
 END PAY_LIST_MANAGEMENT;
 
 create or replace FUNCTION PRODUCTS_LIST(
-    p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
+    p_user_id NUMBER := NULL,       -- Parámetro opcional, por defecto NULL
+    p_founder_user NUMBER := NULL,
+    p_higuer_user NUMBER := NULL
 ) RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
-    v_is_founder NUMBER;
 BEGIN
-    -- Comprobar si p_user_id es NULL
     IF p_user_id IS NULL THEN
-        -- Mostrar productos donde el USER_ID no sea nulo
+        -- Abrir el cursor para productos activos sin un usuario específico
         OPEN v_cursor FOR
-        SELECT * FROM (
-            SELECT P.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
-            FROM PRODUCTS P
-            WHERE P.ACTIVE = 1 
-              AND P.STOCK > 0
-              AND P.USER_ID IS NOT NULL -- Mostrar solo productos con USER_ID
-            ORDER BY P.CREATED_AT DESC
-        )
-        WHERE ROWNUM <= 6
-        ORDER BY RANDOM_ORDER;
-
+        SELECT p.*
+        FROM PRODUCTS p
+        WHERE p.ACTIVE = 1
+          AND p.USER_ID IS NOT NULL;  -- Uso correcto para verificar que USER_ID no sea NULL
     ELSE
-        -- Verificar si el usuario es fundador
-        SELECT U.FOUNDER
-        INTO v_is_founder
-        FROM USERS U
-        WHERE U.USER_ID = p_user_id;
-
-        -- Si el usuario es de nivel 1 (es decir, no tiene un usuario superior)
-        IF v_is_founder = 1 THEN
-            -- Mostrar productos del administrador (USER_ID IS NULL)
+        IF p_founder_user = 1 THEN
+            -- Abrir el cursor para productos activos
             OPEN v_cursor FOR
-            SELECT * FROM (
-                SELECT P.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
-                FROM PRODUCTS P
-                WHERE P.ACTIVE = 1 
-                  AND P.STOCK > 0
-                  AND P.USER_ID IS NULL -- Mostrar solo productos del administrador
-                ORDER BY P.CREATED_AT DESC
-            )
-            WHERE ROWNUM <= 6
-            ORDER BY RANDOM_ORDER;
-
+            SELECT p.*
+            FROM PRODUCTS p
+            WHERE p.ACTIVE = 1;
         ELSE
-            -- Abrir un cursor para seleccionar productos activos, con stock disponible
+            -- Abrir el cursor para productos del usuario superior
             OPEN v_cursor FOR
-            SELECT * FROM (
-                SELECT P.*, DBMS_RANDOM.VALUE AS RANDOM_ORDER
-                FROM PRODUCTS P
-                WHERE P.ACTIVE = 1 
-                  AND P.STOCK > 0
-                  AND (
-                      -- Mostrar productos del administrador (si es el nivel 1)
-                      (P.USER_ID IS NULL AND p_user_id = 1) 
-                      OR
-                      -- Mostrar productos comprados por el nivel superior
-                      P.USER_ID IN (
-                          -- Consulta jerárquica para encontrar el usuario superior
-                          SELECT U2.USER_ID
-                          FROM USERS U2
-                          START WITH U2.USER_ID = p_user_id
-                          CONNECT BY PRIOR U2.USER_ID = U2.HIGHER_USER_ID
-                      )
-                  )
-                ORDER BY P.CREATED_AT DESC
-            )
-            WHERE ROWNUM <= 6
-            ORDER BY RANDOM_ORDER;
+            SELECT p.*
+            FROM PRODUCTS p
+            WHERE p.ACTIVE = 1
+              AND p.USER_ID IN (
+                  SELECT u.USER_ID
+                  FROM USERS u
+                  WHERE u.HIGHER_USER_ID = p_higuer_user  -- Uso correcto de la variable
+              );
         END IF;
     END IF;
 

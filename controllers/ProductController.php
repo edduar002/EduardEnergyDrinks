@@ -61,15 +61,19 @@
             }else{
                 /*Instanciar modelo*/
                 $model = new Model();
-                /*Establecer el id del usuario como nulo*/
+                /*Establecer el id del usuario, fundador y superior como nulo*/
                 $user_id = NULL;
+                $founder = NULL;
+                $higuer_user = NULL;
                 /*Comprobar si el usuario esta logueado*/
                 if(isset($_SESSION['loginsucces'])){
-                    /*Establecer el id del usuario con el id del usuario logueado*/
+                    /*Establecer el id del usuario y si es funder con el id del usuario logueado*/
                     $user_id = $_SESSION['loginsucces']['USER_ID'];
+                    $founder = $_SESSION['loginsucces']['FOUNDER'];
+                    $higuer_user = $_SESSION['loginsucces']['HIGHER_USER_ID'];
                 }
                 /*Obtener la lista de productos*/        
-                $listProducts = $model->productsList($user_id);
+                $listProducts = $model->productsList($user_id, $founder, $higuer_user);
                 /*Obtener la lista de noticias*/        
                 $listNews = $model->getsNews();
                 /*Incluir la vista*/
