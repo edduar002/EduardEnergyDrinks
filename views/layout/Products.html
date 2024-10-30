@@ -54,6 +54,19 @@
     <br>
 </div>
 
+<?php if(isset($_SESSION['aciertodesvinculacion'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertodesvinculacion']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertodesvinculacion'); ?>
+
 <?php if(isset($_SESSION['errorcarrito'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -138,10 +151,14 @@
                 <?=$list['PRICE']?>
             </p>
             <div class="d-flex justify-content-center align-items-center gap-2">
-                <a href="<?=init?><?=transaction?><?=shop?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-success">Comprar
-                    Ahora</a>
-                <a href="<?=init?><?=product?><?=detailProduct?>&id=<?=$list['PRODUCT_ID']?>"
-                    class="btn btn-primary">Ver Detalle</a>
+                <?php if(isset($_SESSION['loginsuccess'])) : ?>
+                            <a href="<?=init?><?=transaction?><?=shop?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-success w-auto">
+                                Comprar Ahora
+                            </a>
+                        <?php endif; ?>
+                        <a href="<?=init?><?=product?><?=detailProduct?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-primary w-auto">
+                            Ver Detalle
+                        </a>
             </div>
         </div>
     </div>

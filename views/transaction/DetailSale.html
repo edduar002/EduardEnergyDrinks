@@ -1,16 +1,3 @@
-<?php if(isset($_SESSION['aciertocambio'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['aciertocambio']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-<?php helps::deleteSession('aciertocambio'); ?>
-
 <?php if(isset($_SESSION['errorcambio'])) : ?>
     <div id="alerta2" class="position-absolute col-6">
         <div>
@@ -108,6 +95,7 @@
                 <td><?= $listCar['CONTENT'] ?></td>
                 <td><?= $listCar['UNITS'] ?></td>
             </tr>
+            <?php $total += ($listCar['PRICE'] * $listCar['UNITS'])?>
             <?php endforeach; ?>
         </tbody>
     </table>

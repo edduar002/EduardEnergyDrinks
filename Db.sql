@@ -1528,12 +1528,12 @@ create or replace FUNCTION PRODUCTS_LIST(
 IS
     v_cursor SYS_REFCURSOR;
 BEGIN
-    IF p_user_id IS NULL THEN
+    IF p_user_id IS NULL OR (p_founder_user != 1 AND p_higuer_user IS NULL) THEN
         -- Abrir el cursor para productos activos sin un usuario específico
         OPEN v_cursor FOR
         SELECT p.*
         FROM PRODUCTS p
-        WHERE p.ACTIVE = 1
+        WHERE p.ACTIVE = 1 AND p.stock > 0
           AND p.USER_ID IS NOT NULL;  -- Uso correcto para verificar que USER_ID no sea NULL
     ELSE
         IF p_founder_user = 1 THEN
@@ -1541,18 +1541,15 @@ BEGIN
             OPEN v_cursor FOR
             SELECT p.*
             FROM PRODUCTS p
-            WHERE p.ACTIVE = 1;
+            WHERE p.ACTIVE = 1 AND p.stock > 0
+            AND (p.USER_ID IS NULL);
         ELSE
             -- Abrir el cursor para productos del usuario superior
             OPEN v_cursor FOR
             SELECT p.*
             FROM PRODUCTS p
-            WHERE p.ACTIVE = 1
-              AND p.USER_ID IN (
-                  SELECT u.USER_ID
-                  FROM USERS u
-                  WHERE u.HIGHER_USER_ID = p_higuer_user  -- Uso correcto de la variable
-              );
+            WHERE p.ACTIVE = 1 AND p.stock > 0
+            AND p.USER_ID = p_higuer_user;
         END IF;
     END IF;
 

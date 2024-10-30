@@ -295,7 +295,7 @@
             /*Obtener el detalle de la compra*/
             $detail = $model -> detailShop($_GET['id']);
             /*Total de la compra*/
-            $total = 345345;
+            $total = 0;
             /*Incluir la vista*/
             require_once "views/transaction/DetailShop.html";
         }
@@ -307,7 +307,7 @@
             /*Obtener el detalle de la venta*/
             $detail = $model -> detailSale($_GET['id']);
             /*Total de la compra*/
-            $total = 345345;
+            $total = 0;
             /*Obtener la lista de estados de pago*/
             $listPurchasingStatus = $model -> getPurchasingStatues();
             /*Incluir la vista*/
@@ -394,6 +394,8 @@
                                     if($id_seller != null){
                                         /*Llamar la funcion que aumenta las ganancias del vendedor*/
                                         $model -> increaseProfits($id_seller, $total);
+                                        /*Incrementar ganancias al usuario superior*/
+                                        $model -> distribuiteEarnings($_SESSION['loginsucces']['USER_ID'], $total);
                                     }
                                     /*Eliminar carrito*/
                                     $model -> deleteCar($_SESSION['loginsucces']['USER_ID']);
@@ -443,7 +445,7 @@
                     /*Comprobar si el estado de la compra se ha actualizado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
-                        Helps::createSessionAndRedirect('aciertocambio', "Se ha actualizado exitosamente el estado de la compra", "?controller=transactionController&action=detailSale&id=$transaction_product");
+                        Helps::createSessionAndRedirect('aciertocambio', "Se ha actualizado exitosamente el estado de la compra", "?controller=userController&action=mySales");
                     /*De lo contrario*/ 
                     }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/

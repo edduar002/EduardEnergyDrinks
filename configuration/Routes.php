@@ -27,6 +27,8 @@
     define("deleteUser", "&action=delete");
     define("updateUser", "&action=update");
     define("changePassword", "&action=changePassword");
+    define("windowDisasociate", "&action=windowDisasociate");
+    define("disasociate", "&action=disasociate");
 
     /*Ruta para producto*/
 

@@ -1191,6 +1191,34 @@
             return $resultado;
         }
 
+        /*Funcion para aumentar las ganancias del usuario superior*/
+        public function distribuiteEarnings($higuer, $total) {
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DISTRIBUTE_EARNINGS(:higuer, :t_total); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':higuer', $higuer);
+            oci_bind_by_name($stmt, ':t_total', $total);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
         /*Funcion para registrar el carrito*/
         function registerCar($user_id, $active, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
@@ -1485,6 +1513,34 @@
             /*Retornar el resultado si es una función*/ 
             return $resultado;
         }
+
+        /*Funcion para agregar usuario a la red*/
+        public function disasociate($userId){
+            /*Preparar la consulta que llama a la función de Oracle*/ 
+            $sql = 'BEGIN :resultado := DISASOCIATE(:userId); END;'; 
+            $stmt = oci_parse($this->conn, $sql);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stmt, ':userId', $userId);
+            /*Variable para almacenar el resultado*/ 
+            $resultado = '';
+            /*Asignar el valor de salida si estás usando la función*/ 
+            oci_bind_by_name($stmt, ':resultado', $resultado, 100);
+            /*Ejecutar la consulta*/ 
+            $success = oci_execute($stmt);
+            /*Manejar errores si la ejecución falla*/ 
+            if (!$success) {
+                $e = oci_error($stmt);
+                oci_free_statement($stmt);
+                oci_close($this->conn);
+                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stmt);
+            oci_close($this->conn);
+            /*Retornar el resultado si es una función*/ 
+            return $resultado;
+        }
+
 
         /*Funcion para agregar usuario a la red*/
         public function assignFounder($userCode){

@@ -1,3 +1,16 @@
+<?php if(isset($_SESSION['aciertocambio'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['aciertocambio']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('aciertocambio'); ?>
+
 <div class="col-12 m-5">
     <?php if(sizeof($list) == 0) : ?>
         <h1 class="text-center mt-5 mb-5">No se han realizado ventas</h1>

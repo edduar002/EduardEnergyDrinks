@@ -122,16 +122,16 @@
         public static function removeSpecialCharacters($text){
             $search = array(
                 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 
-                'ñ', 'Ñ', 'ü', 'Ü'
+                'ñ', 'Ñ', 'ü', 'Ü', '"'
             );
-            $reeplace = array(
+            $replace = array(
                 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 
-                'n', 'N', 'u', 'U'
+                'n', 'N', 'u', 'U', ''
             );
-            // Reemplaza los caracteres acentuados por sus equivalentes sin acento
-            $replacText = str_replace($search, $reeplace, $text);
-            return $replacText;
-        }
+            // Reemplaza los caracteres acentuados y elimina comillas dobles
+            $replaceText = str_replace($search, $replace, $text);
+            return $replaceText;
+        }        
 
     }
 

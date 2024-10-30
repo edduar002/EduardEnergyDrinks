@@ -21,6 +21,14 @@
             require_once "views/user/ChangePassword.html";
         }
 
+        /*Funcion para abrir la venta de motivo de desvinculacion del usuarios*/
+        public function windowDisasociate(){
+            /*Obtener id del usuario logueado*/
+            $idUser = $_SESSION['loginsucces']['USER_ID'];
+            /*Incluir la vista*/
+            require_once "views/user/Disasociate.html";
+        }
+
         /*Funcion para abrir ventana de registro*/
         public function windowRegister(){
             /*Instancia modelo*/
@@ -250,6 +258,39 @@
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("erroregistro", "Ha ocurrido un error inesperado", "?controller=userController&action=windowRegister");
+            }
+        }
+
+        /*Funcion para desvincularse de la red*/
+        public function disasociate(){
+            /*Comprobar si llega el dato del formulario enviado por post*/
+            if (isset($_GET)) {
+                /*Obtener id del usuario logueado*/
+                $userId = $_GET['id'];
+                /*Comprobar si el dato llega*/
+                if ($userId) {
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que agrega el usuario a la red*/  
+                    $resultado = $model->disasociate($userId);
+                    /*Comprobar si el registrado ha sido exitoso*/                  
+                    if ($resultado != false) {
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("aciertodesvinculacion", "Te has desvinculado exitosamente", "?controller=productController&action=windowProducts");
+                    /*De lo contrario*/  
+                    } else {
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("errordesvinculacion", "Ha ocurrido un error al realizar la desvinculacion", "?controller=userController&action=windowDisasociate");
+                    }
+                /*De lo contrario*/  
+                } else {
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("errordesvinculacion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowDisasociate");
+                }
+            /*De lo contrario*/  
+            } else {
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errordesvinculacion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowDisasociate");
             }
         }
 

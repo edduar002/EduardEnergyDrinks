@@ -60,6 +60,7 @@
                 <td><?= $listCar['CONTENT'] ?></td>
                 <td><?= $listCar['UNITS'] ?></td>
             </tr>
+            <?php $total += ($listCar['PRICE'] * $listCar['UNITS'])?>
             <?php endforeach; ?>
         </tbody>
     </table>

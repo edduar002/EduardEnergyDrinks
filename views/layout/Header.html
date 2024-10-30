@@ -72,6 +72,9 @@
                                     <?php if($information['FOUNDER'] == 1 || $information['HIGHER_USER_ID'] != NULL) : ?>
                                         <li><a class="dropdown-item" href="<?=init?><?=network?><?=windowAddUser?>">Agregar Usuario</a></li>
                                     <?php endif;?>
+                                    <?php if($information['HIGHER_USER_ID'] != NULL) : ?>
+                                        <li><a class="dropdown-item" href="<?=init?><?=user?><?=windowDisasociate?>">Desvincularse</a></li>
+                                    <?php endif; ?>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal">Cerrar sesion</a></li>
