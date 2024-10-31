@@ -1,3 +1,32 @@
+<?php
+if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE'])) {
+    // Convertir la fecha de cumpleaños de la sesión a un objeto DateTime
+    $birthdate = new DateTime($_SESSION['loginsucces']['BIRTHDATE']);
+    // Obtener la fecha de hoy
+    $today = new DateTime();
+
+    // Comparar si el mes y el día son iguales (ignorar el año)
+    if ($birthdate->format('m-d') === $today->format('m-d')) :
+?>
+<div class="container my-5 d-flex justify-content-center">
+    <div class="card text-center shadow-lg" style="max-width: 400px;">
+        <div class="card-header custom-header">
+            🎉 ¡Feliz Cumpleaños! 🎉
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Celebra con un <strong>10% de descuento</strong> en tu compra</h5>
+            <p class="card-text">Aprovecha esta oferta especial solo por tu cumpleaños. ¡No te lo pierdas!</p>
+        </div>
+        <div class="card-footer text-muted">
+            * Válido solo hoy
+        </div>
+    </div>
+</div>
+<?php
+    endif;
+}
+?>
+
 <!--SLIDER-->
 <div id="slider" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner p-5 border mt-5 mb-5">
@@ -19,51 +48,54 @@
 <div class="container mt-5">
     <div class="row g-4">
         <?php if(sizeof($listNews) == 0) : ?>
-            <h1 class="text-center mt-5 mb-5">No hay noticias disponibles</h1>
+        <h1 class="text-center mt-5 mb-5">No hay noticias disponibles</h1>
         <?php else : ?>
-            <h1 class="text-center mt-5 mb-5">Nuestras Noticias Mas Recientes</h1>
-            <?php foreach($listNews as $list) : ?>
-                <!-- Noticias -->
-                <div class="col-md-6">
-                    <div class="p-4 bg-light rounded-3 h-100">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <img src="resources/imagesNews/<?=$list['IMAGE']?>" class="img-fluid rounded"
-                                    alt="Imagen de la noticia 1">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="container-fluid py-3">
-                                    <h2 class="fw-bold"><?=$list['TITLE']?></h2>
-                                    <p class="fs-5"><?=$list['CONTENT']?></p>
-                                    <a href="<?=$list['LINK']?>" target="_blank" class="btn btn-primary">Leer más</a>
-                                </div>
-                            </div>
+        <h1 class="text-center mt-5 mb-5">Nuestras Noticias Mas Recientes</h1>
+        <?php foreach($listNews as $list) : ?>
+        <!-- Noticias -->
+        <div class="col-md-6">
+            <div class="p-4 bg-light rounded-3 h-100">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="resources/imagesNews/<?=$list['IMAGE']?>" class="img-fluid rounded"
+                            alt="Imagen de la noticia 1">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="container-fluid py-3">
+                            <h2 class="fw-bold">
+                                <?=$list['TITLE']?>
+                            </h2>
+                            <p class="fs-5">
+                                <?=$list['CONTENT']?>
+                            </p>
+                            <a href="<?=$list['LINK']?>" target="_blank" class="btn btn-primary">Leer más</a>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-            <?php if(sizeof($listNews) == 2) : ?>
-            <div class="text-center">
-                <a href="<?=init?><?=news?><?=allNews?>"
-                    class="btn btn-primary">Ver Todas Las Noticias</a>
             </div>
-            <?php endif; ?>           
+        </div>
+        <?php endforeach; ?>
+        <?php if(sizeof($listNews) == 2) : ?>
+        <div class="text-center">
+            <a href="<?=init?><?=news?><?=allNews?>" class="btn btn-primary">Ver Todas Las Noticias</a>
+        </div>
+        <?php endif; ?>
         <?php endif; ?>
     </div>
-    <br> 
+    <br>
     <br>
 </div>
 
 <?php if(isset($_SESSION['aciertodesvinculacion'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['aciertodesvinculacion']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['aciertodesvinculacion']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertodesvinculacion'); ?>
 
@@ -151,23 +183,23 @@
                 <?=$list['PRICE']?>
             </p>
             <div class="d-flex justify-content-center align-items-center gap-2">
-                <?php if(isset($_SESSION['loginsuccess'])) : ?>
-                            <a href="<?=init?><?=transaction?><?=shop?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-success w-auto">
-                                Comprar Ahora
-                            </a>
-                        <?php endif; ?>
-                        <a href="<?=init?><?=product?><?=detailProduct?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-primary w-auto">
-                            Ver Detalle
-                        </a>
+                <?php if(isset($_SESSION['loginsucces'])) : ?>
+                <a href="<?=init?><?=transaction?><?=shop?>&id=<?=$list['PRODUCT_ID']?>" class="btn btn-success w-auto">
+                    Comprar Ahora
+                </a>
+                <?php endif; ?>
+                <a href="<?=init?><?=product?><?=detailProduct?>&id=<?=$list['PRODUCT_ID']?>"
+                    class="btn btn-primary w-auto">
+                    Ver Detalle
+                </a>
             </div>
         </div>
     </div>
     <?php endforeach; ?>
     <?php if(sizeof($listProducts) == 6) : ?>
-            <div class="text-center">
-                <a href="<?=init?><?=product?><?=allProducts?>"
-                    class="btn btn-primary">Ver Todos Los Productos</a>
-            </div>
-            <?php endif; ?> 
+    <div class="text-center">
+        <a href="<?=init?><?=product?><?=allProducts?>" class="btn btn-primary">Ver Todos Los Productos</a>
+    </div>
+    <?php endif; ?>
     <?php endif; ?>
 </section>

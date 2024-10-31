@@ -73,6 +73,11 @@
     background-color: black;
 }
 
+.custom-header {
+    background-color: #33ffe9;
+    color: black;
+  }
+
 #tituloPrincipal{
     color: #33ffe9;
     margin-top: 20px;

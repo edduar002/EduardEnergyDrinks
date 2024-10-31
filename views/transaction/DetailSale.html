@@ -97,12 +97,16 @@
             </tr>
             <?php $total += ($listCar['PRICE'] * $listCar['UNITS'])?>
             <?php endforeach; ?>
+            <?php $discount = $listCar['DISCOUNT']?>
         </tbody>
     </table>
     
     <!-- Total -->
     <div class="text-end mt-4">
-        <h3>Total: <?= $total ?></h3>
+        <br>
+        <h3>Subtotal: <?= $total?></h3>
+        <h3 class="text-danger">Descuento: <?= $discount?></h3>
+        <h3 class="text-success">Total: <?= $total - $discount?></h3>
     </div>
     <br>
     <br>

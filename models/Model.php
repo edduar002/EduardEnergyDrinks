@@ -887,15 +887,16 @@
         }
 
         /*Funcion para registrar la transaccion en la base de datos*/
-        function registerTransaction($number_bill, $id_buyer, $id_direction, $id_pay, $total, $date_time, $created_at) {
+        function registerTransaction($number_bill, $id_buyer, $id_direction, $id_pay, $total, $descuento, $date_time, $created_at) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_TRANSACTION(:number_bill, :id_buyer, :id_direction, :id_pay, :total, TO_DATE(:date_time, \'DD/MM/YY\'), TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_TRANSACTION(:number_bill, :id_buyer, :id_direction, :id_pay, :total, :descuento, TO_DATE(:date_time, \'DD/MM/YY\'), TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
             oci_bind_by_name($stmt, ':number_bill', $number_bill);
             oci_bind_by_name($stmt, ':id_buyer', $id_buyer);
             oci_bind_by_name($stmt, ':id_direction', $id_direction);
             oci_bind_by_name($stmt, ':id_pay', $id_pay);
+            oci_bind_by_name($stmt, ':descuento', $descuento);
             oci_bind_by_name($stmt, ':total', $total);
             oci_bind_by_name($stmt, ':date_time', $date_time);          
             oci_bind_by_name($stmt, ':created_at', $created_at);
@@ -1051,9 +1052,9 @@
         } 
 
         /*Funcion para obtener el detalle de la venta*/
-        public function detailSale($t_transaction_id) {
+        public function detailSale($t_transaction_id, $seller) {
             /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := DETAIL_SALE(:t_transaction_id); END;';
+            $query = 'BEGIN :resultado := DETAIL_SALE(:t_transaction_id, :p_seller); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
@@ -1061,6 +1062,7 @@
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
             /*Enlazar el parámetro user_id*/
             oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id);
+            oci_bind_by_name($stid, ':p_seller', $seller);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 

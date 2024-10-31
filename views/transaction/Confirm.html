@@ -70,13 +70,44 @@
     </table>
 
     <!-- Total -->
-    <h3 class="text-end mt-4">Total: <?= $total ?></h3>
+    <br>
+    <h3 class="text-end mt-4">Subtotal: <?= $total ?></h3>
+    <?php
+    // Asegurarte de que $today se inicialice antes de su uso
+    $today = new DateTime();
+    
+    ?>
+    <h3 class="text-end mt-4 text-danger">Descuento: 
+        <?php 
+        // Verificar si la sesión y la fecha de cumpleaños están disponibles
+        if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE'])) {
+            // Convertir la fecha de cumpleaños de la sesión a un objeto DateTime
+            $birthdate = new DateTime($_SESSION['loginsucces']['BIRTHDATE']);
+            
+            // Comparar si el mes y el día son iguales (ignorar el año)
+            if ($birthdate->format('m-d') === $today->format('m-d')) : 
+                // Si es su cumpleaños, mostrar el descuento
+                $descuento = $total * 0.10;
+                echo $total * 0.10; 
+            else: 
+                // Si no es su cumpleaños, mostrar solo el total
+                echo 0; 
+            endif; 
+        } else {
+            // Si no hay fecha de cumpleaños, mostrar solo el total
+            echo $total; 
+        }
+        ?>
+    </h3>    
+    <h3 class="text-end mt-4 text-success">Total: <?= $total - $descuento?></h3>    
+    </h3>
     <br>
     <div class="text-center">
         <form id="purchaseForm" action="<?= init ?><?= transaction ?><?= purchase ?>" method="post">
             <input type="hidden" name="id_direction" value="<?= $idDirection ?>">
             <input type="hidden" name="id_pay" value="<?= $idPay ?>">
-            <input type="hidden" name="total" value="<?= $total ?>">
+            <input type="hidden" name="total" value="<?= ($total - $descuento)?>">
+            <input type="hidden" name="descuento" value="<?= $descuento?>">
             <button type="button" class="btn btn-primary" id="openModalBtn">Realizar compra</button>
         </form>
         <br>

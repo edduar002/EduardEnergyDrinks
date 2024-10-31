@@ -266,6 +266,7 @@
             if(isset($_GET)){
                 /*Asignar los datos si llegan*/
                 $total = isset($_GET['total']) ? $_GET['total'] : false;
+                $descuento = 0;
                 /*Comprobar si el dato ha llegado*/
                 if($total){
                     /*Instanciar modelo*/
@@ -305,7 +306,7 @@
             /*Instanciar modelo*/      
             $model = new Model();
             /*Obtener el detalle de la venta*/
-            $detail = $model -> detailSale($_GET['id']);
+            $detail = $model -> detailSale($_GET['id'], $_SESSION['loginsucces']['USER_ID']);
             /*Total de la compra*/
             $total = 0;
             /*Obtener la lista de estados de pago*/
@@ -322,6 +323,7 @@
                 $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
                 $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
                 $total = isset($_POST['total']) ? $_POST['total'] : false;
+                $descuento = 0;
                 /*Comprobar si todos los datos llegaron*/
                 if($idPay && $idDirection && $total){
                     /*Instanciar modelo*/  
@@ -360,6 +362,7 @@
                 $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
                 $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
                 $total = isset($_POST['total']) ? $_POST['total'] : false;
+                $descuento = isset($_POST['descuento']) ? $_POST['descuento'] : false;
                 /*Comprobar si los datos llegan*/
                 if($idDirection && $idPay && $total){
                     /*Obtener datos restantes*/
@@ -368,7 +371,7 @@
                     $created_at = date('Y-m-d');
                     $created_at2 = (new DateTime($created_at))->format('d/m/y');
                     /*Llamar la funcion del modelo que registra la transaccion*/  
-                    $resultado = $model->registerTransaction($number_bill, $idBuyer, $idDirection, $idPay, $total, $date_time2, $created_at2);
+                    $resultado = $model->registerTransaction($number_bill, $idBuyer, $idDirection, $idPay, $total, $descuento, $date_time2, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Obtener la ultima transaccion registrada*/
@@ -420,7 +423,7 @@
                 /*De lo contrario*/  
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                    Helps::createSessionAndRedirect("errortransaccion", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowPurchase");
+                    Helps::createSessionAndRedirect("errortransaccion", "Ha ocurdrido un error inesperado", "?controller=transactionController&action=windowPurchase");
                 }
             /*De lo contrario*/  
             }else{

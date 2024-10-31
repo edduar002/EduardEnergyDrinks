@@ -156,6 +156,7 @@
     define("windowManagementNews", "&action=windowManagementNews");
     define("windowManagementGenres", "&action=windowManagementGenres");
     define("windowAddUserAdmin", "&action=windowAddUser");
+    define("windowReports", "&action=windowReports");
     define("addUserAdmin", "&action=addUser"); 
     define("deleteProductA", "&action=deleteProduct");
 

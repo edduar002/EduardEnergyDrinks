@@ -95,6 +95,12 @@
             require_once "views/administrator/ManagementDepartments.html";
         }
 
+        /*Funcion para abrir la ventana de reportes*/
+        public function windowReports(){
+            /*Incluir la vista*/
+            require_once "views/administrator/Reports.html";
+        }
+
         /*Funcion para abrir la ventana de gestion de los estados de la compra*/
         public function windowManagementPurchasingStatues(){
             /*Instanciar modelo*/  
