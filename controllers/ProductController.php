@@ -42,8 +42,19 @@
                 if($name){
                     /*Instanciar modelo*/ 
                     $model = new Model();
+                    /*Establecer el id del usuario, fundador y superior como nulo*/
+                    $user_id = NULL;
+                    $founder = NULL;
+                    $higuer_user = NULL;
+                    /*Comprobar si el usuario esta logueado*/
+                    if(isset($_SESSION['loginsucces'])){
+                        /*Establecer el id del usuario y si es funder con el id del usuario logueado*/
+                        $user_id = $_SESSION['loginsucces']['USER_ID'];
+                        $founder = $_SESSION['loginsucces']['FOUNDER'];
+                        $higuer_user = $_SESSION['loginsucces']['HIGHER_USER_ID'];
+                    }
                     /*Llamar la funcion del modelo*/ 
-                    $listProducts = $model -> searchProducts($name);
+                    $listProducts = $model -> searchProducts($user_id, $founder, $higuer_user, $name);
                     /*Incluir la vista*/
                     require_once "views/product/Search.html";
                 }

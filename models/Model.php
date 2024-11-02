@@ -836,13 +836,16 @@
         }
 
         /*Funcion para buscar productos en base a su nombre*/
-        function searchProducts($name){
+        function searchProducts($user_id, $founder, $higuer_user, $name){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := SEARCH_PRODUCTS(:name); END;';
+            $query = 'BEGIN :resultado := SEARCH_PRODUCTS(:user_id, :founder, :higuer_user, :name); END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
             /* Asignar los valores de entrada y el cursor de salida */
+            oci_bind_by_name($stid, ':user_id', $user_id);
+            oci_bind_by_name($stid, ':founder', $founder);
+            oci_bind_by_name($stid, ':higuer_user', $higuer_user);
             oci_bind_by_name($stid, ':name', $name);
             /*Asignar el cursor como el valor de salida*/ 
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
@@ -1194,12 +1197,13 @@
         }
 
         /*Funcion para aumentar las ganancias del usuario superior*/
-        public function distribuiteEarnings($higuer, $total) {
+        public function distribuiteEarnings($higuer, $seller, $total) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := DISTRIBUTE_EARNINGS(:higuer, :t_total); END;'; 
+            $sql = 'BEGIN :resultado := DISTRIBUTE_EARNINGS(:higuer, :seller, :t_total); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
             oci_bind_by_name($stmt, ':higuer', $higuer);
+            oci_bind_by_name($stmt, ':seller', $seller);
             oci_bind_by_name($stmt, ':t_total', $total);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
@@ -2361,6 +2365,7 @@
             /*
             SELECT NAME, LEVEL AS hierarchy_level
             FROM   users
+            where (higher_user_id is not null OR FOUNDER = 1)
             START WITH higher_user_id IS NULL
             CONNECT BY PRIOR user_id = higher_user_id  
             ORDER BY LEVEL;

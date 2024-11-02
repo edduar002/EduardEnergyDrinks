@@ -394,12 +394,6 @@
                                     $model -> registerProduct($_SESSION['loginsucces']['USER_ID'], 1, $product['NAME'], $product['PRICE'], $product['UNITS'], $product['CONTENT'], $listCar['AMOUNT'], $product['DESCRIPTION'], $product['IMAGE'], $created_at2);
                                     /*Llamar la funcion del modelo que decrementa el inventario*/ 
                                     $model -> decreaseInventory($listCar['PRODUCT_ID'], $listCar['AMOUNT']);
-                                    if($id_seller != null){
-                                        /*Llamar la funcion que aumenta las ganancias del vendedor*/
-                                        $model -> increaseProfits($id_seller, $total);
-                                        /*Incrementar ganancias al usuario superior*/
-                                        $model -> distribuiteEarnings($_SESSION['loginsucces']['USER_ID'], $total);
-                                    }
                                     /*Eliminar carrito*/
                                     $model -> deleteCar($_SESSION['loginsucces']['USER_ID']);
                                     /*Redirigir*/
@@ -414,6 +408,13 @@
                                 /*Crear la sesion y redirigir a la ruta pertinente*/
                                 Helps::createSessionAndRedirect("errortransaccion", "Ha ocurrido un error inesperado", "?controller=transactionController&action=windowPurchase");
                             }
+                        }
+                        /*Comprobar si el producto tiene vendedor*/
+                        if($id_seller != null){
+                            /*Llamar la funcion que aumenta las ganancias del vendedor*/
+                            $model -> increaseProfits($id_seller, $total);
+                            /*Incrementar ganancias al usuario superior*/
+                            $model -> distribuiteEarnings($_SESSION['loginsucces']['USER_ID'], $id_seller, $total);
                         }
                     /*De lo contrario*/  
                     }else{
