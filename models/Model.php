@@ -44,7 +44,7 @@
                 /*Retornar el resultado*/
                 return null;
             }
-        }  
+        }
         
         /*Funcion para que el administrador se loguee, comprobando desde la base de datos si los datos son validos*/
         public function logina($email, $password) {

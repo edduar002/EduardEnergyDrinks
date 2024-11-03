@@ -15,10 +15,10 @@
             <tbody>
                 <?php foreach ($report as $compra): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($compra['COMPRA_ID']); ?></td>
-                        <td><?php echo htmlspecialchars($compra['NOMBRE']); ?></td>
-                        <td><?php echo number_format($compra['MONTO'], 2, '.', ','); ?></td>
-                        <td><?php echo htmlspecialchars($compra['FECHA']); ?></td>
+                        <td><?=$compra['COMPRA_ID']?></td>
+                        <td><?=$compra['NOMBRE']?></td>
+                        <td><?=number_format($compra['MONTO'], 2, '.', ','); ?></td>
+                        <td><?=$compra['FECHA']?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

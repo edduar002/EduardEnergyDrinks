@@ -13,8 +13,8 @@
             <tbody>
                 <?php foreach ($report as $registro): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($registro['NIVEL'] !== null ? $registro['NIVEL'] : 'Sin Nivel'); ?></td>
-                        <td><?php echo htmlspecialchars(number_format($registro['TOTAL_VENTAS'], 0, ',', '.')); ?></td>
+                        <td><?=$registro['NIVEL']?></td>
+                        <td><?=number_format($registro['TOTAL_VENTAS'])?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

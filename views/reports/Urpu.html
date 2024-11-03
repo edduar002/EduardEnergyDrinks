@@ -15,10 +15,10 @@
             <tbody>
                 <?php foreach ($report as $usuario): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($usuario['USER_ID']); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['HIGHER_USER_ID'] ?? 'N/A'); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['NAME']); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['NUM_REFERIDOS']); ?></td>
+                        <td><?=$usuario['USER_ID']?></td>
+                        <td><?=$usuario['HIGHER_USER_ID']?></td>
+                        <td><?=$usuario['NAME']?></td>
+                        <td><?=$usuario['NUM_REFERIDOS']?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

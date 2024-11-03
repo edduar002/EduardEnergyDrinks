@@ -15,10 +15,10 @@
             <tbody>
                 <?php foreach ($report as $usuario): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($usuario['NIVEL']); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['NUM_USUARIOS']); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['HIGHER_USER_ID'] ?? 'N/A'); ?></td>
-                        <td><?php echo $usuario['FOUNDER'] == '1' ? 'Sí' : 'No'; ?></td>
+                        <td><?=$usuario['NIVEL']?></td>
+                        <td><?=$usuario['NUM_USUARIOS']?></td>
+                        <td><?=$usuario['HIGHER_USER_ID']?></td>
+                        <td><?=$usuario['FOUNDER']?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

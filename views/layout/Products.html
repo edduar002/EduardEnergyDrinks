@@ -180,7 +180,7 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
                 <?=$list['NAME']?>
             </h3>
             <p class="card-text text-center text-success">
-                <?=$list['PRICE']?>
+                <?='$'.number_format($list['PRICE'], 0, ','); ?>
             </p>
             <div class="d-flex justify-content-center align-items-center gap-2">
                 <?php if(isset($_SESSION['loginsucces'])) : ?>

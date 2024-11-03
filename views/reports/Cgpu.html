@@ -14,9 +14,9 @@
             <tbody>
                 <?php foreach ($report as $comision): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($comision['USER_ID']); ?></td>
-                        <td><?php echo htmlspecialchars($comision['NAME']); ?></td>
-                        <td><?php echo '$' . number_format($comision['TOTAL_COMISIONES'], 2, '.', ','); ?></td>
+                        <td><?=$comision['USER_ID']?></td>
+                        <td><?=$comision['NAME']?></td>
+                        <td><?='$'.number_format($comision['TOTAL_COMISIONES'], 2, '.', ','); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

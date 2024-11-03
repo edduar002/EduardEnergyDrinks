@@ -14,9 +14,9 @@
             <tbody>
                 <?php foreach ($report as $referido): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($referido['REFERIDO_POR']); ?></td>
-                        <td><?php echo htmlspecialchars($referido['REFERIDOS_ACTIVOS']); ?></td>
-                        <td><?php echo htmlspecialchars($referido['REFERIDOS_INACTIVOS']); ?></td>
+                        <td><?=$referido['REFERIDO_POR']?></td>
+                        <td><?=$referido['REFERIDOS_ACTIVOS']?></td>
+                        <td><?=$referido['REFERIDOS_INACTIVOS']?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

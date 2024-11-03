@@ -14,9 +14,9 @@
             <tbody>
                 <?php foreach ($report as $usuario): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($usuario['USER_ID']); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['NAME']); ?></td>
-                        <td><?php echo htmlspecialchars(number_format($usuario['TOTAL_GANANCIAS'], 2, ',', '.')); ?></td>
+                        <td><?=$usuario['USER_ID']?></td>
+                        <td><?=$usuario['NAME']?></td>
+                        <td><?=number_format($usuario['TOTAL_GANANCIAS'], 2, ',', '.'); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -15,10 +15,10 @@
             <tbody>
                 <?php foreach ($report as $venta): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($venta['TRANSACTION_ID']); ?></td>
-                        <td><?php echo htmlspecialchars($venta['NAME']); ?></td>
-                        <td><?php echo htmlspecialchars(number_format($venta['TOTAL'], 0, ',', '.')); ?></td>
-                        <td><?php echo htmlspecialchars($venta['DATE_TIME']); ?></td>
+                        <td><?=$venta['TRANSACTION_ID']?></td>
+                        <td><?=$venta['NAME']?></td>
+                        <td><?number_format($venta['TOTAL'])?></td>
+                        <td><?=$venta['DATE_TIME']?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
