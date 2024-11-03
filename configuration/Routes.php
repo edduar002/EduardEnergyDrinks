@@ -161,4 +161,14 @@
     define("deleteProductA", "&action=deleteProduct");
     define("pyramid", "&action=pyramid");
 
+    define("reports", "/?controller=reportController");
+    define("cgpu", "&action=cgpu");
+    define("cpu", "&action=cpu");
+    define("gpu", "&action=gpu");
+    define("rai", "&action=rai");
+    define("upn", "&action=upn");
+    define("urpu", "&action=urpu");
+    define("vcn", "&action=vcn");
+    define("vr", "&action=vr");
+
 ?>

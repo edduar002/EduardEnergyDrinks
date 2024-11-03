@@ -2381,7 +2381,199 @@
             oci_free_statement($resultado);
             /* Retornar el resultado */
             return $productData;
-        }        
+        }   
+        
+        public function cgpu(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := CGPU; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function cpu(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := CPU; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function gpu(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := GPU; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function rai(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := RAI; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function upn(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := UPN; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function urpu(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := URPU; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function vcn(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := VCN; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
+
+        public function vr(){
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := VR; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }
 
     }
 
