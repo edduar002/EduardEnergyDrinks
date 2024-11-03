@@ -13,6 +13,28 @@
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     No
                 </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteUserA">
+                    Sí, eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal13" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fs-5" id="exampleModalLabel3">Eliminar Cuenta</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estas seguro que deseas eliminar la cuenta de este usuario?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    No
+                </button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteUser">
                     Sí, eliminar
                 </button>
@@ -20,6 +42,29 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal12" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fs-5" id="exampleModalLabel3">Recuperar Cuenta</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estas seguro que deseas recuperar la cuenta?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    No
+                </button>
+                <button type="button" class="btn btn-secondary" id="confirmRecoveryUser">
+                    Sí, recuperar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer id="footer" class="col-lg-12 h-25 text-white">
     <p>Eduardo Cortes Pineda, Ingeniería De Sistemas Y Computación 2024 - 2 &copy;</p>
 </footer>
@@ -205,6 +250,38 @@
         if (confirmDeleteProductAButton) {
             confirmDeleteProductAButton.addEventListener('click', function () {
                 const url = `<?=init?><?=administrator?><?=deleteProductA?>&id=${productId}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmRecoveryUserButton = document.getElementById('confirmRecoveryUser');
+        const exampleModal12 = document.getElementById('exampleModal12');
+        let userIdR;
+        if (exampleModal12) {
+            exampleModal12.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                userIdR = button.getAttribute('data-id');
+            });
+        }
+        if (confirmRecoveryUserButton) {
+            confirmRecoveryUserButton.addEventListener('click', function () {
+                const url = `<?=init?><?=user?><?=recoveryUser?>&id=${userIdR}`;
+                window.location.href = url;
+            });
+        }
+
+        const confirmDeleteUserAButton = document.getElementById('confirmDeleteUserA');
+        const exampleModal13 = document.getElementById('exampleModal13');
+        let userIdA;
+        if (exampleModal13) {
+            exampleModal13.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                userIdA = button.getAttribute('data-id');
+            });
+        }
+        if (confirmDeleteUserAButton) {
+            confirmDeleteUserAButton.addEventListener('click', function () {
+                const url = `<?=init?><?=administrator?><?=deleteUser?>&id=${userIdA}`;
                 window.location.href = url;
             });
         }

@@ -1,3 +1,55 @@
+<?php if(isset($_SESSION['recuperaracierto'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['recuperaracierto']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('recuperaracierto'); ?>
+
+<?php if(isset($_SESSION['recuperarerror'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['recuperarerror']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('recuperarerror'); ?>
+
+<?php if(isset($_SESSION['eliminaracierto'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['eliminaracierto']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('eliminaracierto'); ?>
+
+<?php if(isset($_SESSION['erroreliminar'])) : ?>
+    <div id="alerta2" class="position-absolute col-6">
+        <div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Informacion: </strong>
+                <?=$_SESSION['erroreliminar']?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php helps::deleteSession('erroreliminar'); ?>
+
 <div class="m-5">
     <?php if(sizeof($list) == 0) : ?>
         <h1 class="text-center mt-5 mb-5">No hay usuarios registrados</h1>
@@ -31,10 +83,11 @@
                         
                         <!-- Botón de eliminar -->
                         <?php if($listUsers['ACTIVE'] == 1) : ?>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3" type="submit"
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal13" type="submit"
                             data-id="<?=$listUsers['USER_ID']?>" class="btn btn-danger">Eliminar Cuenta</a>
                         <?php else : ?>
-                            <h6>Cuenta Eliminada</h6>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal12" type="submit"
+                            data-id="<?=$listUsers['USER_ID']?>" class="btn btn-secondary">Recuperar Cuenta</a>
                         <?php endif;?>
                     </div>
                 <?php endforeach; ?>

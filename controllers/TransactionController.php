@@ -334,6 +334,8 @@
                     $direction = $model -> getDirection($_POST['id_direction']);
                     /*Obtener el carrito del usuario que va a comprar*/
                     $list = $model -> productsListCarP($_SESSION['loginsucces']['USER_ID']);
+                    /*Llamar la funcion que verifica el descuento del cumpleaños*/
+                    $descuento = Helps::birthday($total);
                     /*Incluir la vista*/
                     require_once "views/transaction/Confirm.html";
                 /*De lo contrario*/    

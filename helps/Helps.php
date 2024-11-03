@@ -118,6 +118,22 @@
             }
         }
 
+        /*Función para determinar el descuento si es su cumpleaños*/
+        public static function birthday($total){
+            /*Variable bandera del descuento*/
+            $descuento = 0;
+            /* Obtener la fecha de hoy */
+            $today = new DateTime();
+            /* Convertir la fecha de cumpleaños de la sesión a un objeto DateTime */
+            $birthdate = new DateTime($_SESSION['loginsucces']['BIRTHDATE']);
+            /* Comparar si el mes y el día son iguales (ignorar el año) */
+            if($birthdate->format('m-d') === $today->format('m-d')){
+                /* Si es su cumpleaños, calcular el descuento */
+                $descuento = $total * 0.10;
+            }
+            return $descuento;
+        }
+
         /*Funcion para remover los caracteres especiales*/
         public static function removeSpecialCharacters($text){
             $search = array(

@@ -147,6 +147,70 @@
             require_once "views/administrator/AddUser.html";
         }
 
+        /*Funcion para eliminar el usuario*/
+        public function deleteUser(){
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $user_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($user_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que elimina el usuario*/  
+                    $resultado = $model->deleteUser($user_id);
+                    /*Comprobar si el usuario ha sido eliminado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('eliminaracierto', "Se ha eliminado exitosamente el usuario", '?controller=administratorController&action=windowManagementUsers');
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('erroreliminar', "Ha ocurrido un error al realizar la eliminacion del usuario", '?controller=administratorController&action=windowManagementUsers');
+                    }
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
+                }
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
+            }
+        }
+
+        /*Funcion para recuperar el usuario*/
+        public function recovery(){
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_GET)) {
+                /*Asignar los datos si llegan*/
+                $user_id = isset($_GET['id']) ? $_GET['id'] : false;
+                /*Si el dato existe*/
+                if($user_id){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que elimina el usuario*/  
+                    $resultado = $model->recoveryUser($user_id);
+                    /*Comprobar si el usuario ha sido eliminado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('recuperaracierto', "Se ha recuperado exitosamente el usuario", '?controller=administratorController&action=windowManagementUsers');
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('recuperarerror', "Ha ocurrido un error al realizar la recuperacion del usuario", '?controller=administratorController&action=windowManagementUsers');
+                    }
+                /*De lo contrario*/    
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("recuperarerror", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
+                }
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("recuperarerror", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
+            }
+        }
+
         /*Funcion para agregar usuarios fundadores*/
         public function addUser(){
             /*Comprobar si llegan los datos del formulario enviados por post*/

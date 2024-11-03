@@ -29,6 +29,7 @@
     define("changePassword", "&action=changePassword");
     define("windowDisasociate", "&action=windowDisasociate");
     define("disasociate", "&action=disasociate");
+    define("recoveryUser", "&action=recovery");
 
     /*Ruta para producto*/
 
@@ -159,6 +160,7 @@
     define("windowReports", "&action=windowReports");
     define("addUserAdmin", "&action=addUser"); 
     define("deleteProductA", "&action=deleteProduct");
+    define("deleteUserA", "&action=deleteUser");
     define("pyramid", "&action=pyramid");
 
     define("reports", "/?controller=reportController");

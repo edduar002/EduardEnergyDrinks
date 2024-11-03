@@ -48,7 +48,7 @@
                 <tr>
                     <td><?= $listCar['NAME_SELLER'] ?> <?= $listCar['SURNAME'] ?></td>
                     <td><?= $listCar['NAME_PRODUCT'] ?></td>
-                    <td><?= $listCar['PRICE'] ?></td>
+                    <td><?='$'.number_format($listCar['PRICE'], 0, ','); ?></td>
                     <td><?= $listCar['CONTENT'] ?></td>
                     <td><?= $listCar['AMOUNT'] ?></td>
                 </tr>
@@ -58,35 +58,14 @@
 
     <!-- Total -->
     <br>
-    <h3 class="text-end mt-4">Subtotal: <?= $total ?></h3>
+    <h3 class="text-end mt-4">Subtotal: <?='$'.number_format($total, 0, ','); ?></h3>
     <?php
     // Asegurarte de que $today se inicialice antes de su uso
     $today = new DateTime();
     
     ?>
-    <h3 class="text-end mt-4 text-danger">Descuento: 
-        <?php 
-        // Verificar si la sesión y la fecha de cumpleaños están disponibles
-        if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE'])) {
-            // Convertir la fecha de cumpleaños de la sesión a un objeto DateTime
-            $birthdate = new DateTime($_SESSION['loginsucces']['BIRTHDATE']);
-            
-            // Comparar si el mes y el día son iguales (ignorar el año)
-            if ($birthdate->format('m-d') === $today->format('m-d')) : 
-                // Si es su cumpleaños, mostrar el descuento
-                $descuento = $total * 0.10;
-                echo $total * 0.10; 
-            else: 
-                // Si no es su cumpleaños, mostrar solo el total
-                echo 0; 
-            endif; 
-        } else {
-            // Si no hay fecha de cumpleaños, mostrar solo el total
-            echo $total; 
-        }
-        ?>
-    </h3>    
-    <h3 class="text-end mt-4 text-success">Total: <?= $total - $descuento?></h3>    
+    <h3 class="text-end mt-4 text-danger">Descuento: <?='$'.number_format($descuento, 0, ','); ?></h3>    
+    <h3 class="text-end mt-4 text-success">Total: <?='$'.number_format(($total - $descuento), 0, ','); ?></h3>    
     </h3>
     <br>
     <div class="text-center">
