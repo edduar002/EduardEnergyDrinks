@@ -2385,7 +2385,7 @@
         
         public function cgpu(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := CGPU; END;';
+            $query = 'BEGIN :resultado := REPORT_CGPU; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2409,7 +2409,7 @@
 
         public function cpu(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := CPU; END;';
+            $query = 'BEGIN :resultado := REPORT_CPU; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2433,7 +2433,7 @@
 
         public function gpu(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := GPU; END;';
+            $query = 'BEGIN :resultado := REPORT_GPU; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2457,7 +2457,7 @@
 
         public function rai(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := RAI; END;';
+            $query = 'BEGIN :resultado := REPORT_RAI; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2481,7 +2481,7 @@
 
         public function upn(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := UPN; END;';
+            $query = 'BEGIN :resultado := REPORT_UPN; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2505,7 +2505,7 @@
 
         public function urpu(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := URPU; END;';
+            $query = 'BEGIN :resultado := REPORT_URPU; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2529,7 +2529,7 @@
 
         public function vcn(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := VCN; END;';
+            $query = 'BEGIN :resultado := REPORT_VCN; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
@@ -2553,7 +2553,7 @@
 
         public function vr(){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := VR; END;';
+            $query = 'BEGIN :resultado := REPORT_VR; END;';
             $stid = oci_parse($this->conn, $query);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
