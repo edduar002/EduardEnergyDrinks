@@ -72,7 +72,7 @@
                                     <?php if($information['FOUNDER'] == 1 || $information['HIGHER_USER_ID'] != NULL) : ?>
                                         <li><a class="dropdown-item" href="<?=init?><?=network?><?=windowAddUser?>">Agregar Usuario</a></li>
                                     <?php endif;?>
-                                    <?php if($information['HIGHER_USER_ID'] != NULL) : ?>
+                                    <?php if($information['HIGHER_USER_ID'] != NULL && $information['FOUNDER'] != 1) : ?>
                                         <li><a class="dropdown-item" href="<?=init?><?=user?><?=windowDisasociate?>">Desvincularse</a></li>
                                     <?php endif; ?>
                                     <li><hr class="dropdown-divider"></li>

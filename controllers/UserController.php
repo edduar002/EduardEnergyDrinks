@@ -232,7 +232,7 @@
                                 /*De lo contrario*/
                                 }else{
                                     /*Crear la sesion y redirigir a la ruta pertinente*/
-                                    Helps::createSessionAndRedirect("erroregistro", "Ha ocurrido un error al realizar el registro", "?controller=userController&action=windowRegister");
+                                    Helps::createSessionAndRedirect("erroregistro", "Debes ser mayor de 18 años para poder registrarte", "?controller=userController&action=windowRegister");
                                 }
                             /*De lo contrario*/    
                             }else{

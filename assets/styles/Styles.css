@@ -76,7 +76,26 @@
 .custom-header {
     background-color: #33ffe9;
     color: black;
-  }
+}
+
+.pyramid-level {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.pyramid-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 150px;
+}
+.pyramid-level-1 .pyramid-item { width: 200px; font-weight: bold; }
+.pyramid-level-2 .pyramid-item { width: 180px; }
+.pyramid-level-3 .pyramid-item { width: 160px; }
+.pyramid-level-4 .pyramid-item { width: 140px; }
 
 #tituloPrincipal{
     color: #33ffe9;

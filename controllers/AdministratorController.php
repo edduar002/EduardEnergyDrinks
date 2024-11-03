@@ -75,6 +75,16 @@
             require_once "views/administrator/ManagementUsers.html";
         }
 
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function pyramid(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Obtener lista de usuarios*/
+            $pyramid = $model -> piramyd();
+            /*Incluir la vista*/
+            require_once "views/administrator/Pyramid.html";
+        }
+
         /*Funcion para abrir la ventana de gestion de los generos*/
         public function windowManagementGenres(){
             /*Instanciar modelo*/  

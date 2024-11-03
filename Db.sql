@@ -528,6 +528,21 @@ BEGIN
     END IF;
 END;
 
+CREATE OR REPLACE TRIGGER CHECK_AGE
+BEFORE INSERT ON USERS
+FOR EACH ROW
+DECLARE
+    v_age NUMBER;
+BEGIN
+    -- Calcular la edad del usuario
+    v_age := TRUNC(MONTHS_BETWEEN(SYSDATE, :NEW.BIRTHDATE) / 12);
+    
+    -- Comprobar si es menor de 18 años
+    IF v_age < 18 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'El usuario debe ser mayor de edad.');
+    END IF;
+END;
+
 /*Crear o Reemplazar Vistas*/
 
 CREATE OR REPLACE VIEW SESSION_START AS
@@ -614,57 +629,36 @@ EXCEPTION
 END ALL_NEWS;
 
 create or replace FUNCTION ALL_PRODUCTS(
-    p_user_id NUMBER := NULL  -- Parámetro opcional, por defecto NULL
+    p_user_id NUMBER := NULL,       -- Parámetro opcional, por defecto NULL
+    p_founder_user NUMBER := NULL,
+    p_higuer_user NUMBER := NULL
 ) RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
-    v_is_founder NUMBER;
 BEGIN
-    -- Comprobar si p_user_id es NULL
-    IF p_user_id IS NULL THEN
-        -- Mostrar productos donde el USER_ID no sea nulo
+    IF p_user_id IS NULL OR (p_founder_user != 1 AND p_higuer_user IS NULL) THEN
+        -- Abrir el cursor para productos activos sin un usuario específico
         OPEN v_cursor FOR
-        SELECT * FROM (
-            SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
-            FROM PRODUCTS P
-            WHERE P.ACTIVE = 1 
-              AND P.STOCK > 0
-              AND P.USER_ID IS NOT NULL -- Mostrar solo productos con USER_ID
-            ORDER BY P.CREATED_AT DESC
-        )
-        ORDER BY RANDOM_ORDER;
-
+        SELECT p.*
+        FROM PRODUCTS p
+        WHERE p.ACTIVE = 1 AND p.stock > 0
+          AND p.USER_ID IS NULL;  -- Uso correcto para verificar que USER_ID no sea NULL
     ELSE
-        -- Verificar si el usuario es fundador
-        SELECT U.FOUNDER
-        INTO v_is_founder
-        FROM USERS U
-        WHERE U.USER_ID = p_user_id;
-
-        -- Abrir un cursor para seleccionar productos activos, con stock disponible
-        OPEN v_cursor FOR
-        SELECT * FROM (
-            SELECT P.*, DBMS_RANDOM.VALUE as RANDOM_ORDER
-            FROM PRODUCTS P
-            WHERE P.ACTIVE = 1 
-              AND P.STOCK > 0
-              AND (
-                  -- Si el usuario es fundador, permitir productos sin USER_ID
-                  (v_is_founder = 1 AND P.USER_ID IS NULL)
-                  OR
-                  -- Si no es fundador, mostrar productos del usuario superior en la jerarquía
-                  (v_is_founder = 0 AND P.USER_ID IN (
-                      -- Consulta jerárquica para encontrar el usuario superior
-                      SELECT U2.USER_ID
-                      FROM USERS U2
-                      START WITH U2.USER_ID = p_user_id
-                      CONNECT BY PRIOR U2.HIGHER_USER_ID = U2.USER_ID
-                  ))
-              )
-            ORDER BY P.CREATED_AT DESC
-        )
-        WHERE ROWNUM <= 6
-        ORDER BY RANDOM_ORDER;
+        IF p_founder_user = 1 THEN
+            -- Abrir el cursor para productos activos
+            OPEN v_cursor FOR
+            SELECT p.*
+            FROM PRODUCTS p
+            WHERE p.ACTIVE = 1 AND p.stock > 0
+            AND (p.USER_ID IS NULL);
+        ELSE
+            -- Abrir el cursor para productos del usuario superior
+            OPEN v_cursor FOR
+            SELECT p.*
+            FROM PRODUCTS p
+            WHERE p.ACTIVE = 1 AND p.stock > 0
+            AND p.USER_ID = p_higuer_user;
+        END IF;
     END IF;
 
     RETURN v_cursor; -- Retornar el cursor con los registros
@@ -1508,8 +1502,12 @@ BEGIN
     -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
     -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
-    SELECT *
-    FROM USERS;  -- Compara si el ID que llega es del dueño del pago
+            SELECT u.NAME, u.FOUNDER, u.USER_ID, u.ACTIVE, u.IMAGE, u.SURNAME, u.CREATED_AT, LEVEL AS LEVEL_USER, h.name AS HIGHER_NAME, h.surname AS HIGUER_SURNAME
+            FROM   users u
+            LEFT JOIN users h ON h.user_id = u.higher_user_id   
+            START WITH u.higher_user_id IS NULL
+            CONNECT BY PRIOR u.user_id = u.higher_user_id  
+            ORDER BY LEVEL; -- Compara si el ID que llega es del dueño del pago
 
     RETURN v_cursor; -- Retornar el cursor con los registros
 EXCEPTION
@@ -1682,25 +1680,34 @@ BEGIN
     IF p_user_id IS NULL OR (p_founder_user != 1 AND p_higuer_user IS NULL) THEN
         -- Abrir el cursor para productos activos sin un usuario específico
         OPEN v_cursor FOR
-        SELECT p.*
-        FROM PRODUCTS p
-        WHERE p.ACTIVE = 1 AND p.stock > 0
-          AND p.USER_ID IS NULL;  -- Uso correcto para verificar que USER_ID no sea NULL
+        SELECT * FROM (
+            SELECT p.*
+            FROM PRODUCTS p
+            WHERE p.ACTIVE = 1 AND p.stock > 0
+              AND p.USER_ID IS NULL  -- Uso correcto para verificar que USER_ID no sea NULL
+        )
+        WHERE ROWNUM <= 6;
     ELSE
         IF p_founder_user = 1 THEN
             -- Abrir el cursor para productos activos
             OPEN v_cursor FOR
-            SELECT p.*
-            FROM PRODUCTS p
-            WHERE p.ACTIVE = 1 AND p.stock > 0
-            AND (p.USER_ID IS NULL);
+            SELECT * FROM (
+                SELECT p.*
+                FROM PRODUCTS p
+                WHERE p.ACTIVE = 1 AND p.stock > 0
+                AND (p.USER_ID IS NULL)
+            )
+            WHERE ROWNUM <= 6;
         ELSE
             -- Abrir el cursor para productos del usuario superior
             OPEN v_cursor FOR
-            SELECT p.*
-            FROM PRODUCTS p
-            WHERE p.ACTIVE = 1 AND p.stock > 0
-            AND p.USER_ID = p_higuer_user;
+            SELECT * FROM (
+                SELECT p.*
+                FROM PRODUCTS p
+                WHERE p.ACTIVE = 1 AND p.stock > 0
+                AND p.USER_ID = p_higuer_user
+            )
+            WHERE ROWNUM <= 6;
         END IF;
     END IF;
 
@@ -1710,6 +1717,26 @@ EXCEPTION
         -- Manejo de otras excepciones
         RAISE;
 END PRODUCTS_LIST;
+
+create or replace FUNCTION PYRAMID
+RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+            SELECT NAME, LEVEL AS hierarchy_level
+            FROM   users
+            where (higher_user_id is not null OR FOUNDER = 1)
+            START WITH higher_user_id IS NULL
+            CONNECT BY PRIOR user_id = higher_user_id  
+            ORDER BY LEVEL;
+    RETURN v_cursor;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END PYRAMID;
 
 create or replace FUNCTION PRODUCTS_LIST_CAR(
     p_user_id NUMBER  -- El ID del usuario, que se recibirá siempre

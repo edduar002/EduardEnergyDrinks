@@ -159,5 +159,6 @@
     define("windowReports", "&action=windowReports");
     define("addUserAdmin", "&action=addUser"); 
     define("deleteProductA", "&action=deleteProduct");
+    define("pyramid", "&action=pyramid");
 
 ?>

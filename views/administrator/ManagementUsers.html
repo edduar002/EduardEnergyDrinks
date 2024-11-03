@@ -14,7 +14,18 @@
                         <!-- Nombre y apellidos del usuario -->
                         <div class="p-5">
                             <h4 class=""><?=$listUsers['NAME']?></h4>
-                            <h5 class=""><?=$listUsers['SURNAME']?></h5>
+                            <h4 class=""><?=$listUsers['SURNAME']?></h4>
+                            <?php if($listUsers['HIGUER_SURNAME'] == NULL) : ?>
+                                <?php if($listUsers['FOUNDER'] == 1) : ?>
+                                    <h5>Usuario fundador Nivel 1</h5>
+                                <?php else : ?>
+                                    <h5>Usuario externo</h5>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                <h5>Nivel: <?=$listUsers['LEVEL_USER']?></h5>
+                                <h5>Usuario Superior:</h5>
+                                <h5><?=$listUsers['HIGHER_NAME']?> <?=$listUsers['HIGUER_SURNAME']?></h5>    
+                            <?php endif; ?>
                             <p class="">Fecha De Union: <?=$listUsers['CREATED_AT']?></p>
                         </div>
                         

@@ -98,10 +98,7 @@
             $success = oci_execute($stmt);
             /* Manejar errores si la ejecución falla */
             if (!$success) {
-                $e = oci_error($stmt);
-                oci_free_statement($stmt);
                 oci_close($this->conn);
-                throw new Exception('Error al ejecutar la consulta: ' . $e['message']);
             }
             /*Retornar el resultado*/
             $respuesta = false;
@@ -109,7 +106,6 @@
                 $respuesta = $this->login($email, $password1);
             }
             /*Liberar recursos*/
-            oci_free_statement($stmt);
             oci_close($this->conn);
             /*Retornar el resultado*/
             return $respuesta;
@@ -2308,9 +2304,9 @@
         }
 
         /*Funcion para obtener la lista de todos los productos registrados en el apartado de ver todos*/
-        public function getAllProducts($user_id){
+        public function getAllProducts($user_id, $founder, $higuer_user){
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $query = 'BEGIN :resultado := ALL_PRODUCTS(:user_id); END;';
+            $query = 'BEGIN :resultado := ALL_PRODUCTS(:user_id, :founder, :higuer_user); END;';
             $stid = oci_parse($this->conn, $query);
             /*Crear un cursor para obtener el resultado*/ 
             $resultado = oci_new_cursor($this->conn);
@@ -2318,6 +2314,8 @@
             oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
             /*Enlazar el parámetro user_id*/
             oci_bind_by_name($stid, ':user_id', $user_id);
+            oci_bind_by_name($stid, ':founder', $founder);
+            oci_bind_by_name($stid, ':higuer_user', $higuer_user);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 
@@ -2361,16 +2359,29 @@
             return $products;
         }
 
-        public function getLevel(){
-            /*
-            SELECT NAME, LEVEL AS hierarchy_level
-            FROM   users
-            where (higher_user_id is not null OR FOUNDER = 1)
-            START WITH higher_user_id IS NULL
-            CONNECT BY PRIOR user_id = higher_user_id  
-            ORDER BY LEVEL;
-            */
-        }
+        public function piramyd() {
+            /* Preparar la consulta que llama a la función de Oracle */
+            $query = 'BEGIN :resultado := PYRAMID; END;';
+            $stid = oci_parse($this->conn, $query);
+            /* Crear un cursor para obtener el resultado */
+            $resultado = oci_new_cursor($this->conn);
+            /* Asignar el valor de entrada y salida */
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /* Ejecutar la consulta */
+            oci_execute($stid);
+            /* Ejecutar el cursor para obtener los datos */
+            oci_execute($resultado);
+            /* Obtener todos los resultados en un arreglo */
+            $productData = [];
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $productData[] = $row;
+            }
+            /* Liberar recursos */
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /* Retornar el resultado */
+            return $productData;
+        }        
 
     }
 

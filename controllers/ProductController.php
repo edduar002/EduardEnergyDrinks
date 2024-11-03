@@ -85,6 +85,8 @@
                 }
                 /*Obtener la lista de productos*/        
                 $listProducts = $model->productsList($user_id, $founder, $higuer_user);
+                /*Obtener la lista de todos productos*/        
+                $listAllProducts = $model->getAllProducts($user_id, $founder, $higuer_user);
                 /*Obtener la lista de noticias*/        
                 $listNews = $model->getsNews();
                 /*Incluir la vista*/

@@ -8,7 +8,7 @@
     <div class="row mb-4">
         <?php foreach($list as $listCar) : ?>
             <div class="col-md-6">
-                <p><strong>Nombre:</strong> <?= $listCar['NAME_SELLER'] ?? 'Administrador' ?></p>
+                <p><strong>Nombre:</strong> <?= $listCar['NAME_SELLER'] ?? 'Tienda' ?></p>
                 <?php if($listCar['NAME_SELLER'] != NULL) : ?>
                     <p><strong>Apellidos:</strong> <?= $listCar['SURNAME'] ?></p>
                     <p><strong>Email:</strong> <?= $listCar['EMAIL'] ?></p>

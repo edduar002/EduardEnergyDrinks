@@ -196,7 +196,7 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
         </div>
     </div>
     <?php endforeach; ?>
-    <?php if(sizeof($listProducts) == 6) : ?>
+    <?php if(sizeof($listAllProducts) > 6) : ?>
     <div class="text-center">
         <a href="<?=init?><?=product?><?=allProducts?>" class="btn btn-primary">Ver Todos Los Productos</a>
     </div>
