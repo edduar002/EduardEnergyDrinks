@@ -1,3 +1,29 @@
-<div class="m-5">
-    <h2 class="text-center">Referidos Activos vs. Inactivos</h2>
+<div class="container my-5">
+    <br>
+    <br>
+    <h2 class="text-center mb-4">Referidos Activos vs. Inactivos</h2>
+    <div class="table-responsive m-5">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Referido Por</th>
+                    <th scope="col">Referidos Activos</th>
+                    <th scope="col">Referidos Inactivos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($report as $referido): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($referido['REFERIDO_POR']); ?></td>
+                        <td><?php echo htmlspecialchars($referido['REFERIDOS_ACTIVOS']); ?></td>
+                        <td><?php echo htmlspecialchars($referido['REFERIDOS_INACTIVOS']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <br>
+        <div class="d-flex justify-content-center">
+            <a href="" class="btn btn-primary">Generar PDF</a>
+        </div>
+    </div>
 </div>

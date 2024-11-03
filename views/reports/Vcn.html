@@ -1,3 +1,27 @@
-<div class="m-5">
-    <h2 class="text-center">Ventas y Comisiones por Nivel</h2>
+<div class="container my-5">
+    <br>
+    <br>
+    <h2 class="text-center mb-4">Ventas y Comisiones por Nivel</h2>
+    <div class="table-responsive m-5">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nivel</th>
+                    <th scope="col">Total Ventas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($report as $registro): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($registro['NIVEL'] !== null ? $registro['NIVEL'] : 'Sin Nivel'); ?></td>
+                        <td><?php echo htmlspecialchars(number_format($registro['TOTAL_VENTAS'], 0, ',', '.')); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <br>
+        <div class="d-flex justify-content-center">
+            <a href="" class="btn btn-primary">Generar PDF</a>
+        </div>
+    </div>
 </div>
