@@ -3,7 +3,6 @@
     ob_start();
     /*Activar la sesión*/ 
     session_start();
-    //session_destroy();
     /*Incluir los archivo de autocarga de controladores*/
     require_once 'Autoload.php';
     /*Incluir archivo de ayudas*/

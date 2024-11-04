@@ -7,6 +7,9 @@
     /*Incluir el modelo*/
     require_once 'models/Model.php';
 
+    /*Iniciar el buffer de salida*/
+    ob_start();
+
     class TransactionController{
 
         /*Funcion para abrir la ventana de carrito*/
@@ -299,6 +302,8 @@
             $total = 0;
             /*Incluir la vista*/
             require_once "views/transaction/DetailShop.html";
+            /*Retornar el resultado*/
+            return $detail;
         }
 
         /*Funcion para ver el detalle de la venta*/
@@ -467,6 +472,15 @@
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errorcambio", "Ha ocurrido un error inesperado", "?controller=userController&action=mySales");
             }
+        }
+
+        /*Funcion para generar reporte de factura en formato PDF*/
+
+        public function generatePdf2(){
+            /*Llamar la funcion para obtener la compra*/
+            $detalle = $this -> detailShop();
+            /*Llamar la funcion de ayuda que genera el archivo PDF*/
+            Helps::pdf2($detalle);
         }
 
     }

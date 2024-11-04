@@ -62,7 +62,7 @@
                 }
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
-                Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "controller=userController&action=managementProducts");
+                Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=userController&action=managementProducts");
             }
         }
 

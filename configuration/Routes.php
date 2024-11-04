@@ -128,6 +128,7 @@
     define("confirm", "&action=windowConfirm");
     define("detailShop", "&action=detailShop");
     define("detailSale", "&action=detailSale");
+    define("generatePdf2", "&action=generatePdf2");
     define("deleteProductCar", "&action=deleteProductCar");
     define("deleteCar", "&action=deleteCar");
     define("increaseQuantity", "&action=increaseQuantity");
@@ -172,5 +173,6 @@
     define("urpu", "&action=urpu");
     define("vcn", "&action=vcn");
     define("vr", "&action=vr");
+    define("generatePdf", "&action=generatePdf");
 
 ?>

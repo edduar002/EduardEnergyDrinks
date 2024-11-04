@@ -7,6 +7,9 @@
     /*Incluir el modelo*/
     require_once 'models/Model.php';
 
+    /*Iniciar el buffer de salida*/
+    ob_start();
+
     class ReportController{
 
         /*Funcion para abrir el reporte de */
@@ -87,6 +90,30 @@
             $report = $model -> vr();
             /*Incluir la vista*/
             require_once "views/reports/Vr.html";
+            /*Retornar el resultado*/
+            return $report;
+        }
+
+        /*Funcion para generar reporte de factura en formato PDF*/
+        public function generatePdf(){
+            /*Comprobar si llega el id enviado por get*/
+            if(isset($_GET)){
+                /*Asignar el dato si llega*/  
+                $reporte = isset($_GET['report']) ? $_GET['report'] : false;
+                /*Asignar el dato si llega*/
+                if($reporte){
+                    /*Llamar la funcion para obtener la compra*/
+                    $report = $this -> $reporte();
+                    /*Llamar la funcion de ayuda que genera el archivo PDF*/
+                    Helps::pdf($reporte);
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowReports");
+                }
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowReports");
+            }
         }
 
     }

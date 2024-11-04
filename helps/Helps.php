@@ -4,6 +4,12 @@
     Clase de archivo de ayudas
     */
 
+    /*Incluir el autoload y tener acceso a los objetos*/
+    require 'vendor/autoload.php';
+
+    /*Utilzar la libreria para importar los archivos en formato PDF*/
+    use Spipu\Html2Pdf\Html2Pdf;
+
     class Helps{
 
         /*Funcion para crear sesiones y redigirir a paginas*/
@@ -132,6 +138,46 @@
                 $descuento = $total * 0.10;
             }
             return $descuento;
+        }
+
+        /*Funcion para generar archivo en formato PDF*/
+        public static function pdf($reporte){
+            /*Crear instancia del objeto*/
+            $html2pdf = new Html2Pdf();
+            /*Capturar la salida del buffer de salida*/
+            ob_start();
+            /*Descartar el contenido del buffer de salida*/
+            ob_end_clean();
+            /*Incluir la vista que contiene la informacion que se quiere pasar a formato PDF*/
+            require_once "views/reports/$reporte.html";
+            /*Conseguir todo el codigo html que hay dentro de un archivo de PHP*/
+            $html = ob_get_clean();
+            /*Escribir el HTML*/
+            $html2pdf->writeHTML($html);
+            /*Limpiar el contenido del buffer de salida*/
+            ob_clean();
+            /*Exportar el HTML a un PDF*/
+            $html2pdf->output('Reporte.pdf');
+        }
+
+        /*Funcion para generar archivo en formato PDF*/
+        public static function pdf2(){
+            /*Crear instancia del objeto*/
+            $html2pdf = new Html2Pdf();
+            /*Capturar la salida del buffer de salida*/
+            ob_start();
+            /*Descartar el contenido del buffer de salida*/
+            ob_end_clean();
+            /*Incluir la vista que contiene la informacion que se quiere pasar a formato PDF*/
+            require_once "views/transaction/DetailShop.html";
+            /*Conseguir todo el codigo html que hay dentro de un archivo de PHP*/
+            $html = ob_get_clean();
+            /*Escribir el HTML*/
+            $html2pdf->writeHTML($html);
+            /*Limpiar el contenido del buffer de salida*/
+            ob_clean();
+            /*Exportar el HTML a un PDF*/
+            $html2pdf->output('Compra.pdf');
         }
 
         /*Funcion para remover los caracteres especiales*/
