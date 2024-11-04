@@ -168,6 +168,7 @@
     define("changeStatusAdministrator", "&action=changeStatusAdministrator");
 
     define("reports", "/?controller=reportController");
+
     define("cgpu", "&action=cgpu");
     define("cpu", "&action=cpu");
     define("gpu", "&action=gpu");
@@ -176,6 +177,7 @@
     define("urpu", "&action=urpu");
     define("vcn", "&action=vcn");
     define("vr", "&action=vr");
+    define("dates", "&action=dates");
     define("generatePdf", "&action=generatePdf");
 
 ?>

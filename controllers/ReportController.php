@@ -33,6 +33,18 @@
         }
 
         /*Funcion para abrir el reporte de */
+        public function dates(){
+            /*Instancia modelo*/
+            $model = new Model();
+            /*Llamar la funcion que obtiene el reporte de Ventas Realizadas*/
+            $report = $model -> vr();
+            /*Incluir la vista*/
+            require_once "views/reports/Vr.html";
+            /*Retornar el resultado*/
+            return $report;
+        }
+
+        /*Funcion para abrir el reporte de */
         public function gpu(){
             /*Instancia modelo*/
             $model = new Model();
@@ -84,14 +96,8 @@
 
         /*Funcion para abrir el reporte de */
         public function vr(){
-            /*Instancia modelo*/
-            $model = new Model();
-            /*Llamar la funcion que obtiene el reporte de Ventas Realizadas*/
-            $report = $model -> vr();
             /*Incluir la vista*/
-            require_once "views/reports/Vr.html";
-            /*Retornar el resultado*/
-            return $report;
+            require_once "views/reports/Dates.html";
         }
 
         /*Funcion para generar reporte de factura en formato PDF*/
