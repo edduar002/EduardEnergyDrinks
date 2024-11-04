@@ -1078,6 +1078,32 @@
             return $products;
         } 
 
+        /*Funcion para obtener la lista de ventas realizadas*/
+        public function salesListAdministrator() {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := SALES_LIST_ADMINISTRATOR(); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el arreglo con todos los productos*/ 
+            return $products;
+        } 
+
         /*Funcion para obtener el detalle de la venta*/
         public function detailSale($t_transaction_id, $seller) {
             /*Preparar la consulta que llama a la función de Oracle*/
@@ -1090,6 +1116,34 @@
             /*Enlazar el parámetro user_id*/
             oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id);
             oci_bind_by_name($stid, ':p_seller', $seller);
+            /*Ejecutar la consulta*/ 
+            oci_execute($stid);
+            /*Ejecutar el cursor para obtener los datos*/ 
+            oci_execute($resultado);
+            /*Crear un array para almacenar todos los productos*/ 
+            $products = [];
+            /*Obtener todos los registros como un arreglo asociativo*/ 
+            while (($row = oci_fetch_assoc($resultado)) != false) {
+                $products[] = $row;
+            }
+            /*Liberar recursos*/ 
+            oci_free_statement($stid);
+            oci_free_statement($resultado);
+            /*Retornar el resultado*/ 
+            return $products;
+        }
+
+        /*Funcion para obtener el detalle de la venta*/
+        public function detailSaleAdministrator($t_transaction_id) {
+            /*Preparar la consulta que llama a la función de Oracle*/
+            $query = 'BEGIN :resultado := DETAIL_SALE_ADMINISTRATOR(:t_transaction_id); END;';
+            $stid = oci_parse($this->conn, $query);
+            /*Crear un cursor para obtener el resultado*/ 
+            $resultado = oci_new_cursor($this->conn);
+            /*Asignar el cursor como el valor de salida*/ 
+            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
+            /*Enlazar el parámetro user_id*/
+            oci_bind_by_name($stid, ':t_transaction_id', $t_transaction_id);
             /*Ejecutar la consulta*/ 
             oci_execute($stid);
             /*Ejecutar el cursor para obtener los datos*/ 

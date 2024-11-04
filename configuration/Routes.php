@@ -163,6 +163,9 @@
     define("deleteProductA", "&action=deleteProduct");
     define("deleteUserA", "&action=deleteUser");
     define("pyramid", "&action=pyramid");
+    define("sales", "&action=windowSalesAdministrator");
+    define("detailSaleAdministrator", "&action=detailSaleAdministrator");
+    define("changeStatusAdministrator", "&action=changeStatusAdministrator");
 
     define("reports", "/?controller=reportController");
     define("cgpu", "&action=cgpu");

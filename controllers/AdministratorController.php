@@ -76,6 +76,64 @@
         }
 
         /*Funcion para abrir la ventana de gestion de los usuarios*/
+        public function windowSalesAdministrator(){
+            /*Instanciar modelo*/  
+            $model = new Model();
+            /*Llamar la funcion del modelo que obtiene los pagos*/  
+            $list = $model->salesListAdministrator();
+            /*Incluir la vista*/
+            require_once "views/administrator/Sales.html";
+        }
+
+        /*Funcion para ver el detalle de la venta*/
+        public function detailSaleAdministrator(){
+            /*Instanciar modelo*/      
+            $model = new Model();
+            /*Obtener el detalle de la venta*/
+            $detail = $model -> detailSaleAdministrator($_GET['id']);
+            /*Total de la compra*/
+            $total = 0;
+            /*Obtener la lista de estados de pago*/
+            $listPurchasingStatus = $model -> getPurchasingStatues();
+            /*Incluir la vista*/
+            require_once "views/administrator/DetailSale.html";
+        }
+
+        /*Funcion para cambiar el estado de la compra*/
+        public function changeStatusAdministrator(){
+            /*Comprobar si llega el id enviado por get*/  
+            if(isset($_GET) && isset($_POST)){
+                /*Comprobar si los datos existen*/
+                $transaction_product = isset($_GET['id']) ? $_GET['id'] : false;
+                $purchasingStatus = isset($_POST['purchaseStatus']) ? $_POST['purchaseStatus'] : false;
+                /*Si el dato existe*/
+                if($transaction_product && $purchasingStatus){
+                    /*Instanciar modelo*/      
+                    $model = new Model();
+                    /*Llamar la funcion del modelo que actualiza el estado de la compra*/  
+                    $resultado = $model->changeStatus($transaction_product, $purchasingStatus);
+                    /*Comprobar si el estado de la compra se ha actualizado con exito*/
+                    if($resultado){
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('aciertocambio', "Se ha actualizado exitosamente el estado de la compra", "?controller=administratorController&action=windowSalesAdministrator");
+                    /*De lo contrario*/ 
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect('errorcambio', "Ha ocurrido un error al realizar la actualizacion de la compra", "?controller=administratorController&action=detailSaleAdministrator&id=$transaction_product");
+                    }
+                /*De lo contrario*/ 
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect('errorcambio', "Ha ocurrido un error inesperado", "?controller=administratorController&action=detailSaleAdministrator&id=$transaction_product");
+                }
+            /*De lo contrario*/    
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errorcambio", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowSalesAdministrator");
+            }
+        }
+
+        /*Funcion para abrir la ventana de gestion de los usuarios*/
         public function pyramid(){
             /*Instanciar modelo*/  
             $model = new Model();
