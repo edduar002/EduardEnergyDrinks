@@ -34,12 +34,31 @@
 
         /*Funcion para abrir el reporte de */
         public function dates(){
-            /*Instancia modelo*/
-            $model = new Model();
-            /*Llamar la funcion que obtiene el reporte de Ventas Realizadas*/
-            $report = $model -> vr();
-            /*Incluir la vista*/
-            require_once "views/reports/Vr.html";
+            /*Comprobar si llegan los datos del formulario enviados por post*/
+            if (isset($_POST)) {
+                /*Asignar los datos si llegan*/
+                $inicio = isset($_POST['init']) ? $_POST['init'] : false;
+                $fin = isset($_POST['end']) ? $_POST['end'] : false;
+                /*Comprobar si los datos llegan*/
+                if ($inicio && $fin){
+                    $inicio2 = (new DateTime($inicio))->format('d/m/y');
+                    $fin2 = (new DateTime($fin))->format('d/m/y');
+                    /*Instancia modelo*/
+                    $model = new Model();
+                    /*Llamar la funcion que obtiene el reporte de Ventas Realizadas*/
+                    $report = $model -> vr($inicio2, $fin2);
+                    /*Incluir la vista*/
+                    require_once "views/reports/Vr.html";
+                /*De lo contrario*/  
+                }else{
+                    /*Crear la sesion y redirigir a la ruta pertinente*/
+                    Helps::createSessionAndRedirect("errorreport", "Ha ocurrido un error inesperado", "?controller=reportController&action=vr");
+                }
+            /*De lo contrario*/  
+            }else{
+                /*Crear la sesion y redirigir a la ruta pertinente*/
+                Helps::createSessionAndRedirect("errorreport", "Ha ocurrido un error inesperado", "?controller=reportController&action=vr");
+            }
             /*Retornar el resultado*/
             return $report;
         }

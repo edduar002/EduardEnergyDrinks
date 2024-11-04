@@ -2633,10 +2633,13 @@
             return $productData;
         }
 
-        public function vr(){
+        public function vr($fechaInicio, $fechaFin){
             /* Preparar la consulta que llama a la función de Oracle */
-            $query = 'BEGIN :resultado := REPORT_VR; END;';
+            $query = 'BEGIN :resultado := REPORT_VR(TO_DATE(:fechaInicio, \'DD/MM/YY\'), TO_DATE(:fechaFin, \'DD/MM/YY\')); END;';
             $stid = oci_parse($this->conn, $query);
+            /*Asignar los valores de entrada*/ 
+            oci_bind_by_name($stid, ':fechaInicio', $fechaInicio);
+            oci_bind_by_name($stid, ':fechaFin', $fechaFin);
             /* Crear un cursor para obtener el resultado */
             $resultado = oci_new_cursor($this->conn);
             /* Asignar el valor de entrada y salida */
