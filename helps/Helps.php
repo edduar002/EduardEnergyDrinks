@@ -160,6 +160,12 @@
             $html2pdf->output('Reporte.pdf');
         }
 
+        /*Obtener la fecha de hoy*/
+        public static function today(){
+            /*Retornar el resultado*/
+            return $today = date("Y-m-d H:i:s");
+        }
+
         /*Funcion para generar archivo en formato PDF*/
         public static function pdf2(){
             /*Crear instancia del objeto*/

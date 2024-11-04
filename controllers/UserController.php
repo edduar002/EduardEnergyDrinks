@@ -304,8 +304,11 @@
                 if($user_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
+                    /*Obtener fecha de hoy*/
+                    $deleted_at = date('Y-m-d');
+                    $deleted_at2 = (new DateTime($deleted_at))->format('d/m/y');
                     /*Llamar la funcion del modelo que elimina el usuario*/  
-                    $resultado = $model->deleteUser($user_id);
+                    $resultado = $model->deleteUser($user_id, $deleted_at2);
                     /*Comprobar si el usuario ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

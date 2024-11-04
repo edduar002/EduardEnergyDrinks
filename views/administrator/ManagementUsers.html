@@ -78,7 +78,11 @@
                                 <h5>Usuario Superior:</h5>
                                 <h5><?=$listUsers['HIGHER_NAME']?> <?=$listUsers['HIGUER_SURNAME']?></h5>    
                             <?php endif; ?>
-                            <p class="">Fecha De Union: <?=$listUsers['CREATED_AT']?></p>
+                            <?php if($listUsers['ACTIVE'] == 1) : ?>
+                                <p class="">Fecha De Union: <?=$listUsers['CREATED_AT']?></p>
+                            <?php else : ?>
+                                <p class="">Fecha De Eliminacion: <?=$listUsers['DELETED_AT']?></p>
+                            <?php endif;?>
                         </div>
                         
                         <!-- Botón de eliminar -->

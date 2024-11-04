@@ -600,12 +600,13 @@
         }
 
         /*Funcion para eliminar un usuario*/
-        public function deleteUser($user_id) {
+        public function deleteUser($user_id, $deleted) {
             /*Preparar la consulta que llama a la función de Oracle*/ 
-            $sql = 'BEGIN :resultado := DELETE_USER(:user_id); END;'; 
+            $sql = 'BEGIN :resultado := DELETE_USER(:user_id, TO_DATE(:deleted, \'DD/MM/YY\')); END;'; 
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada*/ 
             oci_bind_by_name($stmt, ':user_id', $user_id);
+            oci_bind_by_name($stmt, ':deleted', $deleted);
             /*Variable para almacenar el resultado*/ 
             $resultado = '';
             /*Asignar el valor de salida si estás usando la función*/ 
