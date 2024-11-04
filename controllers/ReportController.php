@@ -43,12 +43,19 @@
                 if ($inicio && $fin){
                     $inicio2 = (new DateTime($inicio))->format('d/m/y');
                     $fin2 = (new DateTime($fin))->format('d/m/y');
-                    /*Instancia modelo*/
-                    $model = new Model();
-                    /*Llamar la funcion que obtiene el reporte de Ventas Realizadas*/
-                    $report = $model -> vr($inicio2, $fin2);
-                    /*Incluir la vista*/
-                    require_once "views/reports/Vr.html";
+                    /*Validar si la fecha inicial es menor a la fecha final*/
+                    if($inicio <= $fin){
+                        /*Instancia modelo*/
+                        $model = new Model();
+                        /*Llamar la funcion que obtiene el reporte de Ventas Realizadas*/
+                        $report = $model -> vr($inicio2, $fin2);
+                        /*Incluir la vista*/
+                        require_once "views/reports/Vr.html";
+                    /*De lo contrario*/
+                    }else{
+                        /*Crear la sesion y redirigir a la ruta pertinente*/
+                        Helps::createSessionAndRedirect("errorreport", "Fecha erronea", "?controller=reportController&action=vr");
+                    }
                 /*De lo contrario*/  
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
