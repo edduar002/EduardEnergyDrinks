@@ -13,7 +13,7 @@
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     No
                 </button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteUserA">
+                <button type="button" class="btn btn-danger" id="confirmDeleteUser">
                     Sí, eliminar
                 </button>
             </div>
@@ -35,7 +35,7 @@
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     No
                 </button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteUser">
+                <button type="button" class="btn btn-danger" id="confirmDeleteUserA">
                     Sí, eliminar
                 </button>
             </div>
@@ -265,7 +265,7 @@
         }
         if (confirmRecoveryUserButton) {
             confirmRecoveryUserButton.addEventListener('click', function () {
-                const url = `<?=init?><?=user?><?=recoveryUser?>&id=${userIdR}`;
+                const url = `<?=init?><?=administrator?><?=recoveryUser?>&id=${userIdR}`;
                 window.location.href = url;
             });
         }
@@ -281,7 +281,7 @@
         }
         if (confirmDeleteUserAButton) {
             confirmDeleteUserAButton.addEventListener('click', function () {
-                const url = `<?=init?><?=administrator?><?=deleteUser?>&id=${userIdA}`;
+                const url = `<?=init?><?=administrator?><?=deleteUserA?>&id=${userIdA}`;
                 window.location.href = url;
             });
         }
