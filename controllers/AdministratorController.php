@@ -15,7 +15,7 @@
             require_once "views/administrator/Login.html";
         }
 
-        /*Funcion para abrir ventana de editar*/
+        /*Funcion para abrir ventana de editar producto*/
         public function windowUpdate(){
             /*Comprobar si llega el id enviado por get*/
             if(isset($_GET)){
@@ -75,11 +75,11 @@
             require_once "views/administrator/ManagementUsers.html";
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de ventas hechas por la tienda*/
         public function windowSalesAdministrator(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Llamar la funcion del modelo que obtiene los pagos*/  
+            /*Llamar la funcion del modelo que obtiene las ventas realizadas*/  
             $list = $model->salesListAdministrator();
             /*Incluir la vista*/
             require_once "views/administrator/Sales.html";
@@ -106,7 +106,7 @@
                 /*Comprobar si los datos existen*/
                 $transaction_product = isset($_GET['id']) ? $_GET['id'] : false;
                 $purchasingStatus = isset($_POST['purchaseStatus']) ? $_POST['purchaseStatus'] : false;
-                /*Si el dato existe*/
+                /*Si los datos existen*/
                 if($transaction_product && $purchasingStatus){
                     /*Instanciar modelo*/      
                     $model = new Model();
@@ -133,11 +133,11 @@
             }
         }
 
-        /*Funcion para abrir la ventana de gestion de los usuarios*/
+        /*Funcion para abrir la ventana de la piramide*/
         public function pyramid(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Obtener lista de usuarios*/
+            /*Obtener los usuarios y piramide*/
             $pyramid = $model -> piramyd();
             /*Incluir la vista*/
             require_once "views/administrator/Pyramid.html";
@@ -147,7 +147,7 @@
         public function windowManagementGenres(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Obtener lista de usuarios*/
+            /*Obtener lista de generos*/
             $list = $model -> getGenres();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementGenres.html";
@@ -157,7 +157,7 @@
         public function windowManagementDepartments(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Obtener lista de usuarios*/
+            /*Obtener lista de departamentos*/
             $list = $model -> getDepartments();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementDepartments.html";
@@ -173,7 +173,7 @@
         public function windowManagementPurchasingStatues(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Obtener lista de usuarios*/
+            /*Obtener lista de estados de compra*/
             $list = $model -> getPurchasingStatues();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementPurchasingStatues.html";
@@ -183,7 +183,7 @@
         public function windowManagementNews(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Obtener lista de usuarios*/
+            /*Obtener lista de noticias*/
             $list = $model -> newsManagement();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementNews.html";
@@ -193,7 +193,7 @@
         public function windowManagementBankEntities(){
             /*Instanciar modelo*/  
             $model = new Model();
-            /*Obtener lista de usuarios*/
+            /*Obtener lista de entidades bancarias*/
             $list = $model -> getBankEntities();
             /*Incluir la vista*/
             require_once "views/administrator/ManagementBankEntities.html";
@@ -234,6 +234,7 @@
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
                 }
+            /*De lo contrario*/
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
@@ -250,9 +251,9 @@
                 if($user_id){
                     /*Instanciar modelo*/      
                     $model = new Model();
-                    /*Llamar la funcion del modelo que elimina el usuario*/  
+                    /*Llamar la funcion del modelo que recupera el usuario*/  
                     $resultado = $model->recoveryUser($user_id);
-                    /*Comprobar si el usuario ha sido eliminado con exito*/
+                    /*Comprobar si el usuario ha sido recuperado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect('recuperaracierto', "Se ha recuperado exitosamente el usuario", '?controller=administratorController&action=windowManagementUsers');
@@ -266,6 +267,7 @@
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("recuperarerror", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");
                 }
+            /*De lo contrario*/ 
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("recuperarerror", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowManagementUsers");

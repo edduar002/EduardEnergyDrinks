@@ -167,6 +167,8 @@
     define("detailSaleAdministrator", "&action=detailSaleAdministrator");
     define("changeStatusAdministrator", "&action=changeStatusAdministrator");
 
+    /*Rutas para los reportes*/
+
     define("reports", "/?controller=reportController");
 
     define("cgpu", "&action=cgpu");

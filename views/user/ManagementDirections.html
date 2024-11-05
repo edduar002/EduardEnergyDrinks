@@ -88,6 +88,12 @@
                 <thead class="table-dark">
                     <tr>
                         <th>
+                            <div class="text-center">Departamento</div>
+                        </th>
+                        <th>
+                            <div class="text-center">Ciudad</div>
+                        </th>
+                        <th>
                             <div class="text-center">Carrera</div>
                         </th>
                         <th>
@@ -106,6 +112,12 @@
                 <tbody>
                     <?php foreach($listDirections as $list) : ?>
                         <tr>
+                            <td>
+                                <div class="text-center"><?=$list['DEPARTMENT_NAME']?></div>
+                            </td>
+                            <td>
+                                <div class="text-center"><?=$list['CITY']?></div>
+                            </td>
                             <td>
                                 <div class="text-center"><?=$list['CARRER']?></div>
                             </td>

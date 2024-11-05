@@ -24,27 +24,27 @@
                 /*Asignar el dato si llega*/
                 $code = isset($_POST['code']) ? $_POST['code'] : false;
                 /*Comprobar si el dato llega*/
-                if ($code) {
+                if($code){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que agrega el usuario a la red*/  
                     $resultado = $model->addUser($userId, $code);
                     /*Comprobar si el registrado ha sido exitoso*/                  
-                    if ($resultado != false) {
+                    if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("aciertoasignacion", "El usuario ha sido asignado a tu red exitosamente", "?controller=networkController&action=windowAddUser");
                     /*De lo contrario*/  
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error al realizar la asignacion del usuario a tu red", "?controller=networkController&action=windowAddUser");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error inesperado", "?controller=networkController&action=windowAddUser");
                 }
             /*De lo contrario*/  
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errorasignacion", "Ha ocurrido un error inesperado", "?controller=networkController&action=windowAddUser");
             }

@@ -126,8 +126,8 @@
             if(isset($_GET)){
                 /*Comprobar si el dato existe*/
                 $direction_id = isset($_GET['id']) ? $_GET['id'] : false;
-                $department = isset($_POST['city']) ? $_POST['city'] : false;
-                $city = isset($_POST['department']) ? $_POST['department'] : false;
+                $department = isset($_POST['department']) ? $_POST['department'] : false;
+                $city = isset($_POST['city']) ? $_POST['city'] : false;
                 $carrer = isset($_POST['carrer']) ? $_POST['carrer'] : false;
                 $street = isset($_POST['street']) ? $_POST['street'] : false;
                 $postal_code = isset($_POST['postal_code']) ? $_POST['postal_code'] : false;
@@ -137,7 +137,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza la direccion*/  
-                    $resultado = $model -> updateDirection($direction_id, $carrer, $street, $postal_code, $direction);
+                    $resultado = $model -> updateDirection($direction_id, $department, $city, $carrer, $street, $postal_code, $direction);
                     /*Comprobar si el estado ha sido editado*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

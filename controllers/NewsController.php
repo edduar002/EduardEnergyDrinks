@@ -66,11 +66,11 @@
                 /*Establecer nombre del archivo de la foto*/
                 $image = $file['name'];
                 /*Comprobar si los datos llegan*/
-                if ($title && $content && $link) {
+                if($title && $content && $link){
                     /*Comprobar si la foto es valida*/
                     $fotoGuardada = Helps::saveImage($file, "imagesNews");
                     /*Comprobar si la foto ha sido guardada*/
-                    if ($fotoGuardada) {
+                    if($fotoGuardada){
                         /*Lamar funcion auxiliar que quita caracteres especiales*/
                         $title = Helps::removeSpecialCharacters($title);
                         $content = Helps::removeSpecialCharacters($content);

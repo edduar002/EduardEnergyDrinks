@@ -11,7 +11,7 @@
         /*Nombre del archivo del controlador*/
         $nombreArchivo = $ruta . $clase . '.php';
         /*Verificar si el archivo existe*/
-        if (file_exists($nombreArchivo)) {
+        if(file_exists($nombreArchivo)){
             /*Incluir el archivo del controlador si existe*/
             include_once($nombreArchivo);
         }

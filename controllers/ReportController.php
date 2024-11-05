@@ -12,7 +12,7 @@
 
     class ReportController{
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Comisiones Ganadas por Usuario*/
         public function cgpu(){
             /*Instancia modelo*/
             $model = new Model();
@@ -22,7 +22,7 @@
             require_once "views/reports/Cgpu.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Compras por Usuario*/
         public function cpu(){
             /*Instancia modelo*/
             $model = new Model();
@@ -32,7 +32,7 @@
             require_once "views/reports/Cpu.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de ventas realizadas*/
         public function dates(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
             if (isset($_POST)) {
@@ -70,7 +70,7 @@
             return $report;
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Ganancias por Usuario*/
         public function gpu(){
             /*Instancia modelo*/
             $model = new Model();
@@ -80,7 +80,7 @@
             require_once "views/reports/Gpu.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Referidos Activos vs. Inactivos*/
         public function rai(){
             /*Instancia modelo*/
             $model = new Model();
@@ -90,7 +90,7 @@
             require_once "views/reports/Rai.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Usuarios por Nivel*/
         public function upn(){
             /*Instancia modelo*/
             $model = new Model();
@@ -100,7 +100,7 @@
             require_once "views/reports/Upn.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Usuarios Referidos por Usuario*/
         public function urpu(){
             /*Instancia modelo*/
             $model = new Model();
@@ -110,7 +110,7 @@
             require_once "views/reports/Urpu.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir el reporte de Ventas y Comisiones por Nivel*/
         public function vcn(){
             /*Instancia modelo*/
             $model = new Model();
@@ -120,7 +120,7 @@
             require_once "views/reports/Vcn.html";
         }
 
-        /*Funcion para abrir el reporte de */
+        /*Funcion para abrir la ventana de fechas para el reporte de ventas realizadas*/
         public function vr(){
             /*Incluir la vista*/
             require_once "views/reports/Dates.html";
@@ -138,10 +138,12 @@
                     $report = $this -> $reporte();
                     /*Llamar la funcion de ayuda que genera el archivo PDF*/
                     Helps::pdf($reporte);
+                /*De lo contrario*/ 
                 }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowReports");
                 }
+            /*De lo contrario*/ 
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=administratorController&action=windowReports");

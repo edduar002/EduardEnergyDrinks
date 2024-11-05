@@ -764,13 +764,15 @@
         }
 
         /*Funcion para actualizar una direccion*/
-        function updateDirection($id, $carrer, $street, $postal_code, $direction) {
+        function updateDirection($id, $department, $city, $carrer, $street, $postal_code, $direction) {
             // Preparar la consulta que llama a la función de Oracle
-            $sql = 'BEGIN :resultado := UPDATE_DIRECTION(:id, :carrer, :street, :postal_code, :direction); END;';
+            $sql = 'BEGIN :resultado := UPDATE_DIRECTION(:id, :department, :city, :carrer, :street, :postal_code, :direction); END;';
             // Parsear la consulta
             $stmt = oci_parse($this->conn, $sql);
             // Asignar los valores de entrada y salida
             oci_bind_by_name($stmt, ':id', $id);
+            oci_bind_by_name($stmt, ':department', $department);
+            oci_bind_by_name($stmt, ':city', $city);
             oci_bind_by_name($stmt, ':carrer', $carrer);
             oci_bind_by_name($stmt, ':street', $street);
             oci_bind_by_name($stmt, ':postal_code', $postal_code);

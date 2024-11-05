@@ -60,6 +60,7 @@
                     /*Incluir la vista*/
                     require_once "views/product/Search.html";
                 }
+            /*De lo contrario*/    
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errorventana", "Ha ocurrido un error inesperado", "?controller=userController&action=managementProducts");
@@ -68,9 +69,11 @@
 
         /*Funcion para abrir ventana de catalogo*/
         public function windowProducts(){
+            /*Comprobar si el administrador esta logueado*/ 
             if(isset($_SESSION['loginsuccesa'])){
                 /*Incluir la vista*/
                 require_once "views/administrator/Home.html";
+            /*De lo contrario*/ 
             }else{
                 /*Instanciar modelo*/
                 $model = new Model();

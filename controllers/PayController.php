@@ -13,7 +13,7 @@
         public function windowRegister(){
             /*Instancia modelo*/
             $model = new Model();
-            /*Llamar la funcion que obtiene los generos guardados*/
+            /*Llamar la funcion que obtiene las entidade bancarias guardadas*/
             $listBankEntities = $model -> getBankEntities();
             /*Incluir la vista*/
             require_once "views/pay/Create.html";

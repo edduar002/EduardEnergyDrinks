@@ -79,7 +79,7 @@
         public function myShops(){
             /*Instanciar el modelo*/            
             $model = new Model();
-            /*Llamar la funcion del modelo que obtiene los pagos*/  
+            /*Llamar la funcion del modelo que obtiene las compras*/  
             $list = $model->shoppingList($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/MyShops.html";
@@ -89,7 +89,7 @@
         public function mySales(){
             /*Instanciar el modelo*/            
             $model = new Model();
-            /*Llamar la funcion del modelo que obtiene los pagos*/  
+            /*Llamar la funcion del modelo que obtiene las ventas*/  
             $list = $model->salesList($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/MySales.html";
@@ -143,7 +143,7 @@
         /*Funcion para cambiar la contraseña*/
         public function changePassword(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Obtener usuario logueado*/
                 $user = $_SESSION['loginsucces'];
                 /*Comprobar si el dato existe*/
@@ -190,7 +190,7 @@
         /*Funcion para que un usuario se registre*/
         public function register(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_POST)) {
+            if(isset($_POST)){
                 /*Llamar la funcion que genera codigo aleatorio*/
                 $code = helps::generateRandomCode();
                 /*Asignar los datos si llegan*/
@@ -210,7 +210,7 @@
                 /*Establecer nombre del archivo de la foto*/
                 $image = $file['name'];
                 /*Comprobar si los datos llegan*/
-                if ($code && $name && $surname && $birthdate && $genre_id && $email && $password && $file) {
+                if($code && $name && $surname && $birthdate && $genre_id && $email && $password && $file){
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Validar si la clave cumple con la seguridad necesaria*/
@@ -220,7 +220,7 @@
                             /*Comprobar si la foto es valida*/
                             $fotoGuardada = Helps::saveImage($file, "imagesUsers");
                             /*Comprobar si la foto ha sido guardada*/
-                            if ($fotoGuardada){
+                            if($fotoGuardada){
                                 /*Llamar la funcion del modelo que registra el usuario*/  
                                 $resultado = $model->registerUser($genre_id, 1, 0, $code, $name, $surname, $birthdate2, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
@@ -264,31 +264,31 @@
         /*Funcion para desvincularse de la red*/
         public function disasociate(){
             /*Comprobar si llega el dato del formulario enviado por post*/
-            if (isset($_GET)) {
+            if(isset($_GET)){
                 /*Obtener id del usuario logueado*/
                 $userId = $_GET['id'];
                 /*Comprobar si el dato llega*/
-                if ($userId) {
+                if($userId){
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que agrega el usuario a la red*/  
                     $resultado = $model->disasociate($userId);
                     /*Comprobar si el registrado ha sido exitoso*/                  
-                    if ($resultado != false) {
+                    if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("aciertodesvinculacion", "Te has desvinculado exitosamente", "?controller=productController&action=windowProducts");
                     /*De lo contrario*/  
-                    } else {
+                    }else{
                         /*Crear la sesion y redirigir a la ruta pertinente*/
                         Helps::createSessionAndRedirect("errordesvinculacion", "Ha ocurrido un error al realizar la desvinculacion", "?controller=userController&action=windowDisasociate");
                     }
                 /*De lo contrario*/  
-                } else {
+                }else{
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("errordesvinculacion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowDisasociate");
                 }
             /*De lo contrario*/  
-            } else {
+            }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("errordesvinculacion", "Ha ocurrido un error inesperado", "?controller=userController&action=windowDisasociate");
             }
@@ -297,7 +297,7 @@
         /*Funcion para eliminar*/
         public function delete(){
             /*Comprobar si llegan los datos del formulario enviados por post*/
-            if (isset($_GET)) {
+            if(isset($_GET)){
                 /*Asignar los datos si llegan*/
                 $user_id = isset($_GET['id']) ? $_GET['id'] : false;
                 /*Si el dato existe*/
@@ -324,6 +324,7 @@
                     /*Crear la sesion y redirigir a la ruta pertinente*/
                     Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");
                 }
+            /*De lo contrario*/ 
             }else{
                 /*Crear la sesion y redirigir a la ruta pertinente*/
                 Helps::createSessionAndRedirect("erroreliminar", "Ha ocurrido un error inesperado", "?controller=userController&action=myProfile");

@@ -269,9 +269,10 @@
             if(isset($_GET)){
                 /*Asignar los datos si llegan*/
                 $total = isset($_GET['total']) ? $_GET['total'] : false;
-                $descuento = 0;
                 /*Comprobar si el dato ha llegado*/
                 if($total){
+                    /*Establecer bandera de descuento*/
+                    $descuento = 0;
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Obtener lista de direcciones propias*/
@@ -328,9 +329,10 @@
                 $idPay = isset($_POST['id_pay']) ? $_POST['id_pay'] : false;
                 $idDirection = isset($_POST['id_direction']) ? $_POST['id_direction'] : false;
                 $total = isset($_POST['total']) ? $_POST['total'] : false;
-                $descuento = 0;
                 /*Comprobar si todos los datos llegaron*/
                 if($idPay && $idDirection && $total){
+                    /*Bandera de descuento*/
+                    $descuento = 0;
                     /*Instanciar modelo*/  
                     $model = new Model();
                     /*Obtener el pago*/
@@ -420,7 +422,7 @@
                         if($id_seller != null){
                             /*Llamar la funcion que aumenta las ganancias del vendedor*/
                             $model -> increaseProfits($id_seller, $total);
-                            /*Incrementar ganancias al usuario superior*/
+                            /*Incrementar comisiones y porcentajes*/
                             $model -> distribuiteEarnings($_SESSION['loginsucces']['USER_ID'], $id_seller, $total);
                         }
                     /*De lo contrario*/  
@@ -475,7 +477,6 @@
         }
 
         /*Funcion para generar reporte de factura en formato PDF*/
-
         public function generatePdf2(){
             /*Llamar la funcion para obtener la compra*/
             $detalle = $this -> detailShop();

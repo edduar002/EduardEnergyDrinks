@@ -140,7 +140,7 @@
             return $descuento;
         }
 
-        /*Funcion para generar archivo en formato PDF*/
+        /*Funcion para generar archivo en formato PDF para los reportes*/
         public static function pdf($reporte){
             /*Crear instancia del objeto*/
             $html2pdf = new Html2Pdf();
@@ -166,7 +166,7 @@
             return $today = date("Y-m-d H:i:s");
         }
 
-        /*Funcion para generar archivo en formato PDF*/
+        /*Funcion para generar archivo en formato PDF para el detalle de la compra*/
         public static function pdf2(){
             /*Crear instancia del objeto*/
             $html2pdf = new Html2Pdf();
