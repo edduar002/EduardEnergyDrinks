@@ -73,7 +73,7 @@
         }        
 
         /*Funcion para registrar el usuario en la base de datos*/
-        function registerUser($genre_id, $active, $founder, $code, $name, $surname, $birthdate, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at){
+        public function registerUser($genre_id, $active, $founder, $code, $name, $surname, $birthdate, $phone, $email, $password1, $image, $earnings, $higher_id, $created_at){
             /*Encriptar la clave*/
             $password = password_hash($password1, PASSWORD_BCRYPT, ['cost'=>4]);
             /*Preparar la consulta que llama a la función de Oracle*/
@@ -118,7 +118,7 @@
         } 
         
         /*Funcion para registrar la noticia en la base de datos*/
-        function registerNews($active, $title, $content, $link, $image, $created_at){
+        public function registerNews($active, $title, $content, $link, $image, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_NEWS(:active, :title, :content, :link, :image, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -152,7 +152,7 @@
         }  
 
         /*Funcion para registrar el producto en la base de datos*/
-        function registerProduct($user_id, $active, $name, $price, $units, $content, $stock, $description, $image, $created_at){
+        public function registerProduct($user_id, $active, $name, $price, $units, $content, $stock, $description, $image, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_PRODUCT(:user_id, :active, :name, :price, :units, :content, :stock, :description, :image, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -273,7 +273,7 @@
         } 
 
         /*Funcion para registrar el pago*/
-        function registerPay($user_id, $entity, $active, $number_election, $created_at){
+        public function registerPay($user_id, $entity, $active, $number_election, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_PAY(:user_id, :entity, :active, :number_election, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -306,7 +306,7 @@
         }   
 
         /*Funcion para registrar la direccion*/
-        function registerDirection($user_id, $department, $active, $city, $carrer, $street, $postal_code, $direction, $created_at){
+        public function registerDirection($user_id, $department, $active, $city, $carrer, $street, $postal_code, $direction, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_DIRECTION(:user_id, :department, :active, :city, :carrer, :street, :postal_code, :direction, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -669,7 +669,7 @@
         }
 
         /*Función para comprobar si el email ya existe*/
-        function validateUniqueEmail($email){
+        public function validateUniqueEmail($email){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := VALIDATE_UNIQUE_EMAIL(:email); END;';
             $stid = oci_parse($this->conn, $query);
@@ -687,7 +687,7 @@
         }
 
         /*Funcion para actualizar un usuario*/
-        function updateUser($id, $name, $surname, $phone, $email, $image = null){
+        public function updateUser($id, $name, $surname, $phone, $email, $image = null){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_USER(:id, :name, :surname, :phone, :email, :image); END;';
             /*Parsear la consulta*/
@@ -722,7 +722,7 @@
         }        
         
         /*Funcion para actualizar un pago*/
-        function updatePay($id, $election, $number_election){
+        public function updatePay($id, $election, $number_election){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_PAY(:id, :election, :number_election); END;';
             /*Parsear la consulta*/
@@ -754,7 +754,7 @@
         }
 
         /*Funcion para cambiar la clave de un usuario*/
-        function changePassword($idUser, $newPassword){
+        public function changePassword($idUser, $newPassword){
             /*Encriptar la clave*/
             $password = password_hash($newPassword, PASSWORD_BCRYPT, ['cost'=>4]);
             /*Preparar la consulta que llama a la función de Oracle*/
@@ -787,7 +787,7 @@
         }
 
         /*Funcion para actualizar una direccion*/
-        function updateDirection($id, $department, $city, $carrer, $street, $postal_code, $direction){
+        public function updateDirection($id, $department, $city, $carrer, $street, $postal_code, $direction){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_DIRECTION(:id, :department, :city, :carrer, :street, :postal_code, :direction); END;';
             /*Parsear la consulta*/
@@ -823,7 +823,7 @@
         }
 
         /*Funcion para actualizar un producto*/
-        function updateProduct($id, $name, $price, $units, $content, $stock, $description, $image = null){
+        public function updateProduct($id, $name, $price, $units, $content, $stock, $description, $image = null){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_PRODUCT(:id, :name, :price, :units, :content, :stock, :description, :image); END;';
             /*Parsear la consulta*/
@@ -860,7 +860,7 @@
         }
 
         /*Funcion para actualizar una noticia*/
-        function updateNews($id, $title, $content, $link, $image = null){
+        public function updateNews($id, $title, $content, $link, $image = null){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_NEW(:id, :title, :content, :link, :image); END;';
             /*Parsear la consulta*/
@@ -894,7 +894,7 @@
         }
 
         /*Funcion para buscar productos en base a su nombre*/
-        function searchProducts($user_id, $founder, $higuer_user, $name){
+        public function searchProducts($user_id, $founder, $higuer_user, $name){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := SEARCH_PRODUCTS(:user_id, :founder, :higuer_user, :name); END;';
             $stid = oci_parse($this->conn, $query);
@@ -926,7 +926,7 @@
         }
 
         /*Funcion para obtener un usuario en concreto*/
-        function getUser($id){
+        public function getUser($id){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_USER(:id); END;';
             $stid = oci_parse($this->conn, $query);
@@ -949,7 +949,7 @@
         }
 
         /*Funcion para registrar la transaccion en la base de datos*/
-        function registerTransaction($number_bill, $id_buyer, $id_direction, $id_pay, $total, $descuento, $date_time, $created_at){
+        public function registerTransaction($number_bill, $id_buyer, $id_direction, $id_pay, $total, $descuento, $date_time, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_TRANSACTION(:number_bill, :id_buyer, :id_direction, :id_pay, :total, :descuento, TO_DATE(:date_time, \'DD/MM/YY\'), TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -985,7 +985,7 @@
         } 
 
         /*Funcion para registrar la transaccion del producto en la base de datos*/
-        function registerTransactionProduct($id_transaction, $id_product, $id_seller, $id_purchasing_status, $units, $created_at){
+        public function registerTransactionProduct($id_transaction, $id_product, $id_seller, $id_purchasing_status, $units, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_TP(:id_transaction, :id_product, :id_seller, :id_purchasing_status, :units, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -1331,7 +1331,7 @@
         }
 
         /*Funcion para registrar el carrito*/
-        function registerCar($user_id, $active, $created_at){
+        public function registerCar($user_id, $active, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_CAR(:user_id, :active, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -1362,7 +1362,7 @@
         } 
 
         /*Funcion para registrar el carrito del producto*/
-        function registerCarProduct($car_id, $product_id, $active, $units, $price, $created_at){
+        public function registerCarProduct($car_id, $product_id, $active, $units, $price, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_CP(:car_id, :product_id, :active, :units, :price, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -1447,7 +1447,7 @@
         }
 
         /*Funcion para comprobar si el producto ya ha sido previamente agregado al carrito*/
-        function uniqueCp($idUsuario, $idProducto){
+        public function uniqueCp($idUsuario, $idProducto){
             $sql = "BEGIN :result := UNIQUE_CP(:c_id_user, :cp_id_product); END;";
             /*Preparar la consulta SQL*/
             $stmt = oci_parse($this->conn, $sql);
@@ -1790,7 +1790,7 @@
         }
 
         /*Funcion para actualizar un departamento*/
-        function updateDepartment($id, $name){
+        public function updateDepartment($id, $name){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_DEPARTMENT(:id, :name); END;';
             /*Parsear la consulta*/
@@ -1821,7 +1821,7 @@
         }
 
         /*Funcion para registrar el departamento*/
-        function registerDepartment($active, $name, $created_at){
+        public function registerDepartment($active, $name, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_DEPARTMENT(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -1913,7 +1913,7 @@
         }
 
         /*Funcion para actualizar un genero*/
-        function updateGenre($id, $name){
+        public function updateGenre($id, $name){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_GENRE(:id, :name); END;';
             /*Parsear la consulta*/
@@ -1944,7 +1944,7 @@
         }
 
         /*Funcion para registrar el genero*/
-        function registerGenre($active, $name, $created_at){
+        public function registerGenre($active, $name, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_GENRE(:g_active, :g_name, TO_DATE(:g_created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -2074,7 +2074,7 @@
         }
 
         /*Funcion para actualizar una entidad bancaria*/
-        function updateBankEntity($id, $name){
+        public function updateBankEntity($id, $name){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_BANK_ENTITY(:id, :name); END;';
             /*Parsear la consulta*/
@@ -2105,7 +2105,7 @@
         }
 
         /*Funcion para registrar la entidad bancaria*/
-        function registerBankEntity($active, $name, $created_at){
+        public function registerBankEntity($active, $name, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_BANK_ENTITY(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
@@ -2189,7 +2189,7 @@
         }
 
         /*Funcion para actualizar un estado de la compra*/
-        function updatePurchasingStatus($id, $name){
+        public function updatePurchasingStatus($id, $name){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := UPDATE_PURCHASING_STATUS(:id, :name); END;';
             /*Parsear la consulta*/
@@ -2220,7 +2220,7 @@
         }
 
         /*Funcion para registrar el estado de la compra*/
-        function registerPurchasingStatus($active, $name, $created_at){
+        public function registerPurchasingStatus($active, $name, $created_at){
             /*Preparar la consulta que llama a la función de Oracle*/
             $sql = 'BEGIN :resultado := REGISTER_PURCHASING_STATUS(:active, :name, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
             $stmt = oci_parse($this->conn, $sql);
