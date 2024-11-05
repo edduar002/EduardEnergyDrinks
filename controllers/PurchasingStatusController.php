@@ -54,7 +54,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el estado de la compra*/  
-                    $resultado = $model->registerPurchasingStatus(1, $name, $created_at2);
+                    $resultado = $model -> registerPurchasingStatus(1, $name, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -87,7 +87,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina el estado de la compra*/  
-                    $resultado = $model->deletePurchasingStatus($purchasing_status_id);
+                    $resultado = $model -> deletePurchasingStatus($purchasing_status_id);
                     /*Comprobar si el estado de la compra ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

@@ -12,11 +12,9 @@
     <!--Incluir JQUERY-->
     <title>EDUARD E.D.</title>
 </head>
-
 <?php if(isset($_SESSION['loginsucces'])) : ?>
-    <?php $information = Helps::showUserInformation();?>
-<?php endif; ?>    
-
+<?php $information = Helps::showUserInformation();?>
+<?php endif; ?>
 <body>
     <!--Contenedor principal-->
     <div class="container-fluid">
@@ -26,8 +24,10 @@
                 <div class="container-fluid">
                     <div class="mb-3 mt-1">
                         <?php if(!isset($_SESSION['loginsuccesa'])) : ?>
-                        <form action="<?=init?><?=product?><?=searchProduct?>" method="post" class="d-flex" role="search">
-                            <input name="namebu" class="form-control ms-5 mt-2 w-150" type="search" placeholder="Buscar Un Producto" aria-label="Search" required>
+                        <form action="<?=init?><?=product?><?=searchProduct?>" method="post" class="d-flex"
+                            role="search">
+                            <input name="namebu" class="form-control ms-5 mt-2 w-150" type="search"
+                                placeholder="Buscar Un Producto" aria-label="Search" required>
                             <input type="image" class="lupa" src="assets/images/logos/lupa.png">
                         </form>
                         <?php endif; ?>
@@ -37,7 +37,8 @@
                             <?php if(!isset($_SESSION['loginsucces']) && !isset($_SESSION['loginsuccesa'])) : ?>
                             <li class="nav-item mx-3">
                                 <a class="nav-link active" aria-current="page"
-                                    href="<?=init?><?=administrator?><?=windowLoginAdministrator?>">¿Eres Administrador?</a>
+                                    href="<?=init?><?=administrator?><?=windowLoginAdministrator?>">¿Eres
+                                    Administrador?</a>
                             </li>
                             <li class="nav-item mx-3">
                                 <a class="nav-link active" aria-current="page"
@@ -50,31 +51,42 @@
                             <?php endif; ?>
                             <?php if(isset($_SESSION['loginsucces'])) : ?>
                             <li>
-                                <a href="<?=init?><?=transaction?><?=windowCar?>"><img class="car" src="assets/images/logos/verificar.png" alt=""></a>
+                                <a href="<?=init?><?=transaction?><?=windowCar?>"><img class="car"
+                                        src="assets/images/logos/verificar.png" alt=""></a>
                             </li>
                             <li class="nav-item dropdown mx-5">
                                 <a id="enlace" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Hola, <?=$information['NAME']?>
+                                    Hola,
+                                    <?=$information['NAME']?>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=myProfile?>">Mi Perfil</a></li>
+                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=myProfile?>">Mi Perfil</a>
+                                    </li>
                                     <li><a class="dropdown-item"
-                                            href="<?=init?><?=user?><?=managementProducts?>">Gestion de productos</a></li>
+                                            href="<?=init?><?=user?><?=managementProducts?>">Gestion de productos</a>
+                                    </li>
                                     <li><a class="dropdown-item"
-                                            href="<?=init?><?=user?><?=managementDirections?>">Gestion de direcciones</a></li>
-                                    <li><a class="dropdown-item"
-                                            href="<?=init?><?=user?><?=managementPays?>">Gestion de pagos</a></li>
-                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=myShops?>">Mis compras</a></li>
-                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=mySales?>">Mis ventas</a></li>
-            
+                                            href="<?=init?><?=user?><?=managementDirections?>">Gestion de
+                                            direcciones</a></li>
+                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=managementPays?>">Gestion de
+                                            pagos</a></li>
+                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=myShops?>">Mis compras</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="<?=init?><?=user?><?=mySales?>">Mis ventas</a>
+                                    </li>
+
                                     <?php if($information['FOUNDER'] == 1 || $information['HIGHER_USER_ID'] != NULL) : ?>
-                                        <li><a class="dropdown-item" href="<?=init?><?=network?><?=windowAddUser?>">Agregar Usuario</a></li>
+                                    <li><a class="dropdown-item" href="<?=init?><?=network?><?=windowAddUser?>">Agregar
+                                            Usuario</a></li>
                                     <?php endif;?>
                                     <?php if($information['HIGHER_USER_ID'] != NULL && $information['FOUNDER'] != 1) : ?>
-                                        <li><a class="dropdown-item" href="<?=init?><?=user?><?=windowDisasociate?>">Desvincularse</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="<?=init?><?=user?><?=windowDisasociate?>">Desvincularse</a></li>
                                     <?php endif; ?>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal">Cerrar sesion</a></li>
                                 </ul>
@@ -82,13 +94,13 @@
                             <?php elseif(isset($_SESSION['loginsuccesa'])) : ?>
                             <div class="mt-3 mb-3 me-4">
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">Cerrar sesion</a></li>
+                                        data-bs-target="#exampleModal">Cerrar sesion</a></li>
                             </div>
                             <?php endif; ?>
                         </ul>
                     </div>
                 </div>
-            </nav>            
+            </nav>
             <!--HEADER-->
             <header id="header" class="col-12 p-5 ps-5">
                 <a id="home" href="<?=init?><?=product?><?=windowProducts?>">

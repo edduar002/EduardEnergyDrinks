@@ -104,7 +104,7 @@
                 /*Liberar recursos*/
                 oci_close($this->conn);
             }
-            /*Retornar el resultado*/
+            /*Establecer resultado como falso*/
             $respuesta = false;
             /*Comprobar si el resultado ha sido exitoso*/
             if($resultado = 1){
@@ -367,7 +367,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $directions;
         }   
 
@@ -396,7 +396,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $pays;
         }   
 
@@ -460,7 +460,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el resultado*/ 
+            /*Retornar el resultado*/
             return $payData;
         }
 
@@ -513,7 +513,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -543,7 +543,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -573,7 +573,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -603,7 +603,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -634,11 +634,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
-        /*Funcion para eliminar un usuario*/
+        /*Funcion para recuperar un usuario*/
         public function recoveryUser($user_id){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := RECOVERY_USER(:user_id); END;'; 
@@ -664,7 +664,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -921,7 +921,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -1059,7 +1059,7 @@
             /*Cerrar cursor y statement*/
             oci_free_statement($stmt);
             oci_free_statement($cursor);
-            /*Retornar el ID de la última transacción*/
+            /*Retornar el resultado*/
             return $row['ID'];
         }
 
@@ -1088,7 +1088,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }  
 
@@ -1117,11 +1117,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         } 
 
-        /*Funcion para obtener la lista de ventas realizadas*/
+        /*Funcion para obtener la lista de ventas realizadas por parte de la tienda*/
         public function salesListAdministrator(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := SALES_LIST_ADMINISTRATOR(); END;';
@@ -1144,7 +1144,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         } 
 
@@ -1178,7 +1178,7 @@
             return $products;
         }
 
-        /*Funcion para obtener el detalle de la venta*/
+        /*Funcion para obtener el detalle de la venta en el administrador*/
         public function detailSaleAdministrator($t_transaction_id){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := DETAIL_SALE_ADMINISTRATOR(:t_transaction_id); END;';
@@ -1205,35 +1205,6 @@
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
             return $products;
-        }
-
-        /*Funcion para obtener el resumen de la transaccion*/
-        public function summaryTransaction($pr_product_id, $u_user_id, $pa_pay_id, $d_direction_id){
-            /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := SUMMARY_TRANSACTION(:pr_product_id, :u_user_id, :pa_pay_id, :d_direction_id); END;';
-            $stid = oci_parse($this->conn, $query);
-            /*Crear un cursor para obtener el resultado*/
-            $resultado = oci_new_cursor($this->conn);
-            /*Asignar los valores de entrada y salida*/
-            oci_bind_by_name($stid, ':pr_product_id', $pr_product_id, -1, SQLT_INT);
-            oci_bind_by_name($stid, ':u_user_id', $u_user_id, -1, SQLT_INT);
-            oci_bind_by_name($stid, ':pa_pay_id', $pa_pay_id, -1, SQLT_INT);
-            oci_bind_by_name($stid, ':d_direction_id', $d_direction_id, -1, SQLT_INT);
-            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
-            /*Ejecutar la consulta*/
-            oci_execute($stid);
-            /*Ejecutar el cursor para obtener los datos*/
-            oci_execute($resultado);
-            /*Obtener los resultados como un arreglo asociativo*/
-            $transactions = [];
-            while (($row = oci_fetch_assoc($resultado)) != false){
-                $transactions[] = $row;
-            }
-            /*Liberar recursos*/
-            oci_free_statement($stid);
-            oci_free_statement($resultado);
-            /*Retornar los datos obtenidos*/
-            return $transactions;
         }
 
         /*Funcion para obtener el detalle de la compra*/
@@ -1292,7 +1263,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1323,11 +1294,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
-        /*Funcion para aumentar las ganancias del usuario superior*/
+        /*Funcion para distribuir las ganancias por la compra*/
         public function distribuiteEarnings($higuer, $seller, $total){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DISTRIBUTE_EARNINGS(:higuer, :seller, :t_total); END;'; 
@@ -1355,7 +1326,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1442,7 +1413,7 @@
             /*Cerrar cursor y statement*/
             oci_free_statement($stmt);
             oci_free_statement($cursor);
-            /*Retornar el ID de la última transacción*/
+            /*Retornar el resultado*/
             return $row['ID'];
         }
 
@@ -1521,7 +1492,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1551,7 +1522,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1582,7 +1553,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1613,7 +1584,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1673,11 +1644,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
-        /*Funcion para agregar usuario a la red*/
+        /*Funcion para quitar un usuario de la red*/
         public function disasociate($userId){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := DISASOCIATE(:userId); END;'; 
@@ -1703,12 +1674,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
-
-        /*Funcion para agregar usuario a la red*/
+        /*Funcion para asingar usuarios fundadores*/
         public function assignFounder($userCode){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := ASSIGN_FOUNDER(:userCode); END;'; 
@@ -1734,7 +1704,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -1761,7 +1731,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -1788,11 +1758,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
-        /*Funcion para listar todos los usuarios registrados por el administrador*/
+        /*Funcion para listar todos los productos registrados por el administrador*/
         public function getProductsAdmin(){
             /*Preparar la consulta que llama a la función de Oracle*/
             $query = 'BEGIN :resultado := GET_PRODUCTS_ADMIN; END;';
@@ -1815,7 +1785,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -1907,11 +1877,11 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
-        /*Funcion para eliminar un departamento*/
+        /*Funcion para cambiar el estado de una compra*/
         public function changeStatus($transactionProductId, $purchasingStatus){
             /*Preparar la consulta que llama a la función de Oracle*/ 
             $sql = 'BEGIN :resultado := CHANGE_STATUS(:transactionProductId, :purchasingStatus); END;'; 
@@ -1938,31 +1908,8 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
-        }
-
-        /*Funcion para obtener un departamento en concreto*/
-        public function getDeparment($id){
-            /*Preparar la consulta que llama a la función de Oracle*/ 
-            $query = 'BEGIN :resultado := GET_DEPARTMENT(:id); END;';
-            $stid = oci_parse($this->conn, $query);
-            /*Crear un cursor para obtener el resultado*/ 
-            $resultado = oci_new_cursor($this->conn);
-            /*Asignar el valor de entrada y salida*/ 
-            oci_bind_by_name($stid, ':id', $id, -1, SQLT_INT);
-            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
-            /*Ejecutar la consulta*/ 
-            oci_execute($stid);
-            /*Ejecutar el cursor para obtener los datos*/ 
-            oci_execute($resultado);
-            /*Obtener el resultado como un arreglo asociativo*/ 
-            $departmentData = oci_fetch_assoc($resultado);
-            /*Liberar recursos*/ 
-            oci_free_statement($stid);
-            oci_free_statement($resultado);
-            /*Retornar el resultado*/ 
-            return $departmentData;
         }
 
         /*Funcion para actualizar un genero*/
@@ -2053,7 +2000,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -2214,7 +2161,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -2329,7 +2276,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stmt);
             oci_close($this->conn);
-            /*Retornar el resultado si es una función*/ 
+            /*Retornar el resultado*/
             return $resultado;
         }
 
@@ -2379,7 +2326,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -2406,7 +2353,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -2433,7 +2380,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/ 
             return $products;
         }
 
@@ -2460,7 +2407,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -2487,7 +2434,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -2514,7 +2461,7 @@
             /*Liberar recursos*/ 
             oci_free_statement($stid);
             oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
+            /*Retornar el resultado*/
             return $products;
         }
 
@@ -2546,33 +2493,6 @@
             oci_free_statement($stid);
             oci_free_statement($resultado);
             /*Retornar el resultado*/ 
-            return $products;
-        }
-
-        /*Funcion para obtener la lista de todas las noticias registradas en el apartado de ver todas*/
-        public function getAllNews(){
-            /*Preparar la consulta que llama a la función de Oracle*/
-            $query = 'BEGIN :resultado := ALL_NEWS; END;';
-            $stid = oci_parse($this->conn, $query);
-            /*Crear un cursor para obtener el resultado*/ 
-            $resultado = oci_new_cursor($this->conn);
-            /*Asignar el cursor como el valor de salida*/ 
-            oci_bind_by_name($stid, ':resultado', $resultado, -1, OCI_B_CURSOR);
-            /*Ejecutar la consulta*/ 
-            oci_execute($stid);
-            /*Ejecutar el cursor para obtener los datos*/ 
-            oci_execute($resultado);
-            /*Crear un array para almacenar todos los productos*/ 
-            $products = [];
-            /*Obtener todos los registros como un arreglo asociativo*/ 
-            while(($row = oci_fetch_assoc($resultado)) != false){
-                /*Agregar elementos al array*/
-                $products[] = $row;
-            }
-            /*Liberar recursos*/ 
-            oci_free_statement($stid);
-            oci_free_statement($resultado);
-            /*Retornar el arreglo con todos los productos*/ 
             return $products;
         }
 

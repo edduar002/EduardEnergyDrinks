@@ -61,7 +61,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el pago*/  
-                    $resultado = $model->registerPay($user_id, $entity, 1, $electionNumber, $created_at2);
+                    $resultado = $model -> registerPay($user_id, $entity, 1, $electionNumber, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -94,7 +94,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina el pago*/  
-                    $resultado = $model->deletePay($pay_id);
+                    $resultado = $model -> deletePay($pay_id);
                     /*Comprobar si el pago ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

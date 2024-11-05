@@ -20,7 +20,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="exampleModal13" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -42,7 +41,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="exampleModal12" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -64,7 +62,6 @@
         </div>
     </div>
 </div>
-
 <footer id="footer" class="col-lg-12 h-25 text-white">
     <p>Eduardo Cortes Pineda, Ingeniería De Sistemas Y Computación 2024 - 2 &copy;</p>
 </footer>
@@ -75,16 +72,14 @@
 <script type="text/javascript" src="./bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Inicializar los tooltips
+        /*Inicializar los tooltips*/
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
-
     $(document).ready(function () {
         $(".carousel").carousel({
             interval: 3500
         })
     })
-
     document.addEventListener('DOMContentLoaded', function () {
         const confirmLogoutButton = document.getElementById('confirmLogout');
         if (confirmLogoutButton) {
@@ -93,7 +88,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteDirectionButton = document.getElementById('confirmDeleteDirection');
         const exampleModal5 = document.getElementById('exampleModal5');
         let directionId;
@@ -109,7 +103,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeletePayButton = document.getElementById('confirmDeletePay');
         const exampleModal4 = document.getElementById('exampleModal4');
         let payId;
@@ -125,7 +118,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteProductButton = document.getElementById('confirmDeleteProduct');
         const exampleModal2 = document.getElementById('exampleModal2');
         let productId;
@@ -141,7 +133,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteUserButton = document.getElementById('confirmDeleteUser');
         const exampleModal3 = document.getElementById('exampleModal3');
         let userId;
@@ -157,7 +148,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteDepartmentButton = document.getElementById('confirmDeleteDepartment');
         const exampleModal6 = document.getElementById('exampleModal6');
         let departmentId;
@@ -173,7 +163,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteBankingEntityButton = document.getElementById('confirmDeleteBankEntity');
         const exampleModal7 = document.getElementById('exampleModal7');
         let bankingEntityId;
@@ -189,7 +178,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteGenreButton = document.getElementById('confirmDeleteGenre');
         const exampleModal8 = document.getElementById('exampleModal8');
         let genreId;
@@ -205,7 +193,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteNewsButton = document.getElementById('confirmDeleteNews');
         const exampleModal9 = document.getElementById('exampleModal9');
         let newsId;
@@ -221,7 +208,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeletePurchasingStatusButton = document.getElementById('confirmDeletePurchasingStatue');
         const exampleModal10 = document.getElementById('exampleModal10');
         let purchasingStatusId;
@@ -237,7 +223,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteProductAButton = document.getElementById('confirmDeleteProductA');
         const exampleModal11 = document.getElementById('exampleModal11');
         let productIdA;
@@ -253,7 +238,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmRecoveryUserButton = document.getElementById('confirmRecoveryUser');
         const exampleModal12 = document.getElementById('exampleModal12');
         let userIdR;
@@ -269,7 +253,6 @@
                 window.location.href = url;
             });
         }
-
         const confirmDeleteUserAButton = document.getElementById('confirmDeleteUserA');
         const exampleModal13 = document.getElementById('exampleModal13');
         let userIdA;
@@ -285,22 +268,17 @@
                 window.location.href = url;
             });
         }
-        
-        // Mostrar el modal al hacer clic en el botón
-        document.getElementById('openModalBtn').addEventListener('click', function() {
+        /*Mostrar el modal al hacer clic en el botón*/
+        document.getElementById('openModalBtn').addEventListener('click', function () {
             var myModal = new bootstrap.Modal(document.getElementById('infoModal'));
             myModal.show();
         });
-
-        // Enviar el formulario cuando se confirme la compra
-        document.getElementById('confirmPurchase').addEventListener('click', function() {
+        /*Enviar el formulario cuando se confirme la compra*/
+        document.getElementById('confirmPurchase').addEventListener('click', function () {
             document.getElementById('purchaseForm').submit();
         });
-
         $(".btn-tool").tooltip()
     });
-
 </script>
 </body>
-
 </html>

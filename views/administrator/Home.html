@@ -1,16 +1,15 @@
 <?php if(isset($_SESSION['aciertoiniciarsesion'])) : ?>
-    <div id="alerta2" class="position-absolute col-6">
-        <div>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Informacion: </strong>
-                <?=$_SESSION['aciertoiniciarsesion']?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div id="alerta2" class="position-absolute col-6">
+    <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Informacion: </strong>
+            <?=$_SESSION['aciertoiniciarsesion']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertoiniciarsesion'); ?>
-
 <div class="container my-5 p-4 bg-light rounded shadow">
     <div class="text-center">
         <h1>Gestiones</h1>
@@ -29,17 +28,20 @@
             </a>
         </li>
         <li class="list-group-item mb-3 fs-5 text-center">
-            <a href="<?=init?><?=administrator?><?=windowManagementDepartments?>" class="text-decoration-none text-dark">
+            <a href="<?=init?><?=administrator?><?=windowManagementDepartments?>"
+                class="text-decoration-none text-dark">
                 <i class="bi bi-building me-2 text-info"></i> Gestión de departamentos
             </a>
         </li>
         <li class="list-group-item mb-3 fs-5 text-center">
-            <a href="<?=init?><?=administrator?><?=windowManagementPurchasingStatus?>" class="text-decoration-none text-dark">
+            <a href="<?=init?><?=administrator?><?=windowManagementPurchasingStatus?>"
+                class="text-decoration-none text-dark">
                 <i class="bi bi-cart-check me-2 text-warning"></i> Gestión de estados de compra
             </a>
         </li>
         <li class="list-group-item mb-3 fs-5 text-center">
-            <a href="<?=init?><?=administrator?><?=windowManagementBankEntities?>" class="text-decoration-none text-dark">
+            <a href="<?=init?><?=administrator?><?=windowManagementBankEntities?>"
+                class="text-decoration-none text-dark">
                 <i class="bi bi-bank me-2 text-danger"></i> Gestión de entidades bancarias
             </a>
         </li>

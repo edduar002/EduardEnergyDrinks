@@ -54,7 +54,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el genero*/  
-                    $resultado = $model->registerGenre(1, $name, $created_at2);
+                    $resultado = $model -> registerGenre(1, $name, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -87,7 +87,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina el genero*/  
-                    $resultado = $model->deleteGenre($genre_id);
+                    $resultado = $model -> deleteGenre($genre_id);
                     /*Comprobar si el genero ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

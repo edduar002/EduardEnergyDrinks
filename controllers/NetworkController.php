@@ -28,7 +28,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que agrega el usuario a la red*/  
-                    $resultado = $model->addUser($userId, $code);
+                    $resultado = $model -> addUser($userId, $code);
                     /*Comprobar si el registrado ha sido exitoso*/                  
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

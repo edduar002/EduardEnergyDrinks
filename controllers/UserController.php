@@ -44,7 +44,7 @@
             /*Instanciar el modelo*/
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los productos*/  
-            $listProducts = $model->productsListManagement($_SESSION['loginsucces']['USER_ID']);
+            $listProducts = $model -> productsListManagement($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementProducts.html";
         }
@@ -54,7 +54,7 @@
             /*Instanciar el modelo*/
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene las direcciones*/            
-            $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
+            $listDirections = $model -> directionListManagement($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementDirections.html";
         }
@@ -64,7 +64,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene los pagos*/  
-            $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
+            $listPays = $model -> payListManagement($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/ManagementPays.html";
         }
@@ -80,7 +80,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene las compras*/  
-            $list = $model->shoppingList($_SESSION['loginsucces']['USER_ID']);
+            $list = $model -> shoppingList($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/MyShops.html";
         }
@@ -90,7 +90,7 @@
             /*Instanciar el modelo*/            
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene las ventas*/  
-            $list = $model->salesList($_SESSION['loginsucces']['USER_ID']);
+            $list = $model -> salesList($_SESSION['loginsucces']['USER_ID']);
             /*Incluir la vista*/
             require_once "views/user/MySales.html";
         }
@@ -116,7 +116,7 @@
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Llamar la funcion del modelo que valida las credenciales de acceso*/  
-                    $resultado = $model->login($email, $password);
+                    $resultado = $model -> login($email, $password);
                     /*Comprobar si el usuario existe*/
                     if($resultado != NULL){
                         /*Crear sesion de inicio de sesion exitoso*/
@@ -222,7 +222,7 @@
                             /*Comprobar si la foto ha sido guardada*/
                             if($fotoGuardada){
                                 /*Llamar la funcion del modelo que registra el usuario*/  
-                                $resultado = $model->registerUser($genre_id, 1, 0, $code, $name, $surname, $birthdate2, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
+                                $resultado = $model -> registerUser($genre_id, 1, 0, $code, $name, $surname, $birthdate2, $phone, $email, $password, $image, $earnings, NULL, $created_at2);
                                 /*Comprobar si el registro se ha hecho de manera exitosa*/
                                 if($resultado != false){
                                     /*Crear sesion de inicio de sesion exitoso*/
@@ -272,7 +272,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que agrega el usuario a la red*/  
-                    $resultado = $model->disasociate($userId);
+                    $resultado = $model -> disasociate($userId);
                     /*Comprobar si el registrado ha sido exitoso*/                  
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -308,7 +308,7 @@
                     $deleted_at = date('Y-m-d');
                     $deleted_at2 = (new DateTime($deleted_at))->format('d/m/y');
                     /*Llamar la funcion del modelo que elimina el usuario*/  
-                    $resultado = $model->deleteUser($user_id, $deleted_at2);
+                    $resultado = $model -> deleteUser($user_id, $deleted_at2);
                     /*Comprobar si el usuario ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

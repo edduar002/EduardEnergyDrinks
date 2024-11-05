@@ -54,7 +54,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra el departamento*/  
-                    $resultado = $model->registerDepartment(1, $name, $created_at2);
+                    $resultado = $model -> registerDepartment(1, $name, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -87,7 +87,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina el departamento*/  
-                    $resultado = $model->deleteDepartment($department_id);
+                    $resultado = $model -> deleteDepartment($department_id);
                     /*Comprobar si el departamento ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

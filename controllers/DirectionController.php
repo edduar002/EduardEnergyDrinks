@@ -65,7 +65,7 @@
                     /*Instanciar modelo*/                    
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra la direccion*/  
-                    $resultado = $model->registerDirection($user_id, $department, 1, $city, $carrer, $street, $postal_code, $direction, $created_at2);
+                    $resultado = $model -> registerDirection($user_id, $department, 1, $city, $carrer, $street, $postal_code, $direction, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -98,7 +98,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina la direccion*/  
-                    $resultado = $model->deleteDirection($direction_id);
+                    $resultado = $model -> deleteDirection($direction_id);
                     /*Comprobar si la direccion ha sido eliminada con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

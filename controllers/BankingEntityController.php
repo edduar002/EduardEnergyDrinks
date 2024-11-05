@@ -54,7 +54,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que registra la entidad bancaria*/  
-                    $resultado = $model->registerBankEntity(1, $name, $created_at2);
+                    $resultado = $model -> registerBankEntity(1, $name, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -87,7 +87,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina la entidad bancaria*/  
-                    $resultado = $model->deleteBankEntity($bank_entity_controller);
+                    $resultado = $model -> deleteBankEntity($bank_entity_controller);
                     /*Comprobar si la entidad bancaria ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

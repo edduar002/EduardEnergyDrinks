@@ -29,7 +29,7 @@
                 $user_id = $_SESSION['loginsucces']['USER_ID'];
             }
             /*Obtener la lista de productos*/        
-            $listProducts = $model->getAllProducts($user_id, $founder, $higuer_user);
+            $listProducts = $model -> getAllProducts($user_id, $founder, $higuer_user);
             /*Incluir la vista*/
             require_once "views/product/All.html";
         }
@@ -89,11 +89,11 @@
                     $higuer_user = $_SESSION['loginsucces']['HIGHER_USER_ID'];
                 }
                 /*Obtener la lista de productos*/        
-                $listProducts = $model->productsList($user_id, $founder, $higuer_user);
+                $listProducts = $model -> productsList($user_id, $founder, $higuer_user);
                 /*Obtener la lista de todos productos*/        
-                $listAllProducts = $model->getAllProducts($user_id, $founder, $higuer_user);
+                $listAllProducts = $model -> getAllProducts($user_id, $founder, $higuer_user);
                 /*Obtener la lista de noticias*/        
-                $listNews = $model->getsNews();
+                $listNews = $model -> getsNews();
                 /*Incluir la vista*/
                 require_once "views/layout/Products.html";
             }
@@ -152,7 +152,7 @@
                         /*Instanciar modelo*/
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
-                        $resultado = $model->registerProduct($user_id, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
+                        $resultado = $model -> registerProduct($user_id, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
                         /*Comprobar si el registrado ha sido exitoso*/
                         if($resultado != -1){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -190,7 +190,7 @@
                     /*Instanciar el modelo*/
                     $model = new Model();
                     /*Llamar funcion que trae un producto en especifico*/
-                    $resultado = $model->detailProduct($id);
+                    $resultado = $model -> detailProduct($id);
                     /*Comprobar si el producto ha llegado*/
                     if($resultado){
                         /*Incluir la vista*/
@@ -223,7 +223,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina el producto*/  
-                    $resultado = $model->deleteProduct($product_id);
+                    $resultado = $model -> deleteProduct($product_id);
                     /*Comprobar si el producto ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

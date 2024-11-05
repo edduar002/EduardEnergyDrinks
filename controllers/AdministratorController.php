@@ -80,7 +80,7 @@
             /*Instanciar modelo*/  
             $model = new Model();
             /*Llamar la funcion del modelo que obtiene las ventas realizadas*/  
-            $list = $model->salesListAdministrator();
+            $list = $model -> salesListAdministrator();
             /*Incluir la vista*/
             require_once "views/administrator/Sales.html";
         }
@@ -111,7 +111,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza el estado de la compra*/  
-                    $resultado = $model->changeStatus($transaction_product, $purchasingStatus);
+                    $resultado = $model -> changeStatus($transaction_product, $purchasingStatus);
                     /*Comprobar si el estado de la compra se ha actualizado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -139,6 +139,12 @@
             $model = new Model();
             /*Obtener los usuarios y piramide*/
             $pyramid = $model -> piramyd();
+            /*Crear un arreglo para organizar los usuarios por nivel*/
+            $niveles = [];
+            foreach ($pyramid as $usuario) {
+                $nivel = $usuario['HIERARCHY_LEVEL'];
+                $niveles[$nivel][] = $usuario;
+            }
             /*Incluir la vista*/
             require_once "views/administrator/Pyramid.html";
         }
@@ -219,7 +225,7 @@
                     $deleted_at = date('Y-m-d');
                     $deleted_at2 = (new DateTime($deleted_at))->format('d/m/y');
                     /*Llamar la funcion del modelo que elimina el usuario*/  
-                    $resultado = $model->deleteUser($user_id, $deleted_at2);
+                    $resultado = $model -> deleteUser($user_id, $deleted_at2);
                     /*Comprobar si el usuario ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -252,7 +258,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que recupera el usuario*/  
-                    $resultado = $model->recoveryUser($user_id);
+                    $resultado = $model -> recoveryUser($user_id);
                     /*Comprobar si el usuario ha sido recuperado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -285,7 +291,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que asigna los usuarios fundadores*/  
-                    $resultado = $model->assignFounder($code);
+                    $resultado = $model -> assignFounder($code);
                     /*Comprobar si la asignacion ha sido exitosa*/                  
                     if($resultado != false){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -318,7 +324,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina el producto*/  
-                    $resultado = $model->deleteProduct($product_id);
+                    $resultado = $model -> deleteProduct($product_id);
                     /*Comprobar si el producto ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -366,7 +372,7 @@
                         /*Instanciar modelo*/
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
-                        $resultado = $model->registerProduct(NULL, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
+                        $resultado = $model -> registerProduct(NULL, 1, $name, $price, $units, $content, $stock, $description, $image, $created_at2);
                         /*Comprobar si el registrado ha sido exitoso*/
                         if($resultado != -1){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -405,7 +411,7 @@
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Llamar la funcion del modelo que valida las credenciales de acceso*/  
-                    $resultado = $model->logina($email, $password);
+                    $resultado = $model -> logina($email, $password);
                     /*Comprobar si el usuario existe*/
                     if($resultado != NULL){
                         /*Crear sesion de inicio de sesion exitoso*/

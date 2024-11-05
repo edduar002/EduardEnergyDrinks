@@ -77,7 +77,7 @@
                         /*Instanciar modelo*/
                         $model = new Model();
                         /*Llamar la funcion del modelo*/ 
-                        $resultado = $model->registerNews(1, $title, $content, $link, $image, $created_at2);
+                        $resultado = $model -> registerNews(1, $title, $content, $link, $image, $created_at2);
                         /*Comprobar si el registrado ha sido exitoso*/
                         if($resultado != -1){
                             /*Crear la sesion y redirigir a la ruta pertinente*/
@@ -115,7 +115,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que elimina la noticia*/  
-                    $resultado = $model->deleteNews($news_id);
+                    $resultado = $model -> deleteNews($news_id);
                     /*Comprobar si la noticia ha sido eliminado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

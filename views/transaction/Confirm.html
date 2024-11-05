@@ -7,30 +7,40 @@
     <h3 class="mb-3">Datos del Envío</h3>
     <div class="row mb-4">
         <div class="col-md-4">
-            <p><strong>Carrera:</strong> <?= $direction['CARRER'] ?></p>
+            <p><strong>Carrera:</strong>
+                <?= $direction['CARRER'] ?>
+            </p>
         </div>
         <div class="col-md-4">
-            <p><strong>Calle:</strong> <?= $direction['STREET'] ?></p>
+            <p><strong>Calle:</strong>
+                <?= $direction['STREET'] ?>
+            </p>
         </div>
         <div class="col-md-4">
-            <p><strong>Código Postal:</strong> <?= $direction['POSTAL_CODE'] ?></p>
+            <p><strong>Código Postal:</strong>
+                <?= $direction['POSTAL_CODE'] ?>
+            </p>
         </div>
         <div class="col-md-12">
-            <p><strong>Dirección:</strong> <?= $direction['DIRECTION'] ?></p>
+            <p><strong>Dirección:</strong>
+                <?= $direction['DIRECTION'] ?>
+            </p>
         </div>
     </div>
-
     <!-- Datos del pago -->
     <h3 class="mb-3">Datos del Pago</h3>
     <div class="row mb-4">
         <div class="col-md-6">
-            <p><strong>Entidad Bancaria:</strong> <?= $pay['BANKING_ENTITY_NAME'] ?></p>
+            <p><strong>Entidad Bancaria:</strong>
+                <?= $pay['BANKING_ENTITY_NAME'] ?>
+            </p>
         </div>
         <div class="col-md-6">
-            <p><strong>Número:</strong> <?= $pay['NUMBER_ELECTION'] ?></p>
+            <p><strong>Número:</strong>
+                <?= $pay['NUMBER_ELECTION'] ?>
+            </p>
         </div>
     </div>
-
     <!-- Datos del producto -->
     <h3 class="mb-3">Datos del Producto</h3>
     <table class="table table-striped">
@@ -45,27 +55,38 @@
         </thead>
         <tbody>
             <?php foreach($list as $listCar) : ?>
-                <tr>
-                    <td><?= $listCar['NAME_SELLER'] ?> <?= $listCar['SURNAME'] ?></td>
-                    <td><?= $listCar['NAME_PRODUCT'] ?></td>
-                    <td><?='$'.number_format($listCar['PRICE'], 0, ','); ?></td>
-                    <td><?= $listCar['CONTENT'] ?></td>
-                    <td><?= $listCar['AMOUNT'] ?></td>
-                </tr>
+            <tr>
+                <td>
+                    <?= $listCar['NAME_SELLER'] ?>
+                    <?= $listCar['SURNAME'] ?>
+                </td>
+                <td>
+                    <?= $listCar['NAME_PRODUCT'] ?>
+                </td>
+                <td>
+                    <?='$'.number_format($listCar['PRICE'], 0, ','); ?>
+                </td>
+                <td>
+                    <?= $listCar['CONTENT'] ?>
+                </td>
+                <td>
+                    <?= $listCar['AMOUNT'] ?>
+                </td>
+            </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
     <!-- Total -->
     <br>
-    <h3 class="text-end mt-4">Subtotal: <?='$'.number_format($total, 0, ','); ?></h3>
-    <?php
-    // Asegurarte de que $today se inicialice antes de su uso
-    $today = new DateTime();
-    
-    ?>
-    <h3 class="text-end mt-4 text-danger">Descuento: <?='$'.number_format($descuento, 0, ','); ?></h3>    
-    <h3 class="text-end mt-4 text-success">Total: <?='$'.number_format(($total - $descuento), 0, ','); ?></h3>    
+    <h3 class="text-end mt-4">Subtotal:
+        <?='$'.number_format($total, 0, ','); ?>
+    </h3>
+    <h3 class="text-end mt-4 text-danger">Descuento:
+        <?='$'.number_format($descuento, 0, ','); ?>
+    </h3>
+    <h3 class="text-end mt-4 text-success">Total:
+        <?='$'.number_format(($total - $descuento), 0, ','); ?>
+    </h3>
     </h3>
     <br>
     <div class="text-center">
@@ -80,7 +101,6 @@
         <br>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
     <div class="modal-dialog">

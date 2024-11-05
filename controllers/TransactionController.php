@@ -35,7 +35,7 @@
                     /*Instanciar el modelo*/
                     $model = new Model();
                     /*Llamar funcion que trae un producto en especifico*/
-                    $resultado = $model->detailProduct($id);
+                    $resultado = $model -> detailProduct($id);
                     /*Obtener fecha actual*/
                     $created_at = date('Y-m-d');
                     $created_at2 = (new DateTime($created_at))->format('d/m/y');
@@ -276,9 +276,9 @@
                     /*Instanciar modelo*/
                     $model = new Model();
                     /*Obtener lista de direcciones propias*/
-                    $listDirections = $model->directionListManagement($_SESSION['loginsucces']['USER_ID']);
+                    $listDirections = $model -> directionListManagement($_SESSION['loginsucces']['USER_ID']);
                     /*Obtener lista de pagos propias*/
-                    $listPays = $model->payListManagement($_SESSION['loginsucces']['USER_ID']);
+                    $listPays = $model -> payListManagement($_SESSION['loginsucces']['USER_ID']);
                     /*Incluir la vista*/
                     require_once "views/transaction/Purchase.html";
                 /*De lo contrario*/    
@@ -343,6 +343,8 @@
                     $list = $model -> productsListCarP($_SESSION['loginsucces']['USER_ID']);
                     /*Llamar la funcion que verifica el descuento del cumpleaños*/
                     $descuento = Helps::birthday($total);
+                    /*Asegurarte de que today se inicialice antes de su uso*/
+                    $today = new DateTime();
                     /*Incluir la vista*/
                     require_once "views/transaction/Confirm.html";
                 /*De lo contrario*/    
@@ -380,7 +382,7 @@
                     $created_at = date('Y-m-d');
                     $created_at2 = (new DateTime($created_at))->format('d/m/y');
                     /*Llamar la funcion del modelo que registra la transaccion*/  
-                    $resultado = $model->registerTransaction($number_bill, $idBuyer, $idDirection, $idPay, $total, $descuento, $date_time2, $created_at2);
+                    $resultado = $model -> registerTransaction($number_bill, $idBuyer, $idDirection, $idPay, $total, $descuento, $date_time2, $created_at2);
                     /*Comprobar si el registrado ha sido exitoso*/                    
                     if($resultado != false){
                         /*Obtener la ultima transaccion registrada*/
@@ -394,7 +396,7 @@
                             /*Comprobar si los datos llegan*/
                             if($id_transaction && $created_at2){
                                 /*Llamar la funcion del modelo que registra la transaccion del producto*/  
-                                $resultado2 = $model->registerTransactionProduct($id_transaction, $listCar['PRODUCT_ID'], $id_seller, 1, $listCar['AMOUNT'], $created_at2);
+                                $resultado2 = $model -> registerTransactionProduct($id_transaction, $listCar['PRODUCT_ID'], $id_seller, 1, $listCar['AMOUNT'], $created_at2);
                                 /*Comprobar si el registrado ha sido exitoso*/   
                                 if($resultado2 != false){
                                     /*Obtener producto en concreto*/
@@ -454,7 +456,7 @@
                     /*Instanciar modelo*/      
                     $model = new Model();
                     /*Llamar la funcion del modelo que actualiza el estado de la compra*/  
-                    $resultado = $model->changeStatus($transaction_product, $purchasingStatus);
+                    $resultado = $model -> changeStatus($transaction_product, $purchasingStatus);
                     /*Comprobar si el estado de la compra se ha actualizado con exito*/
                     if($resultado){
                         /*Crear la sesion y redirigir a la ruta pertinente*/

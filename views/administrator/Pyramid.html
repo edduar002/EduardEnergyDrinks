@@ -3,14 +3,7 @@
         <h2 class="text-center mt-4">Jerarquía de Usuarios</h2>
         <br>
         <?php
-        // Crear un arreglo para organizar los usuarios por nivel
-        $niveles = [];
-        foreach ($pyramid as $usuario) {
-            $nivel = $usuario['HIERARCHY_LEVEL'];
-            $niveles[$nivel][] = $usuario;
-        }
-
-        // Generar el HTML dinámicamente para cada nivel
+        /*Generar el HTML dinámicamente para cada nivel*/
         foreach ($niveles as $nivel => $usuarios) {
             echo "<div class='pyramid-level pyramid-level-{$nivel}'>";
             foreach ($usuarios as $usuario) {

@@ -1,11 +1,10 @@
 <?php
 if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE'])) {
-    // Convertir la fecha de cumpleaños de la sesión a un objeto DateTime
+    /*Convertir la fecha de cumpleaños de la sesión a un objeto DateTime*/
     $birthdate = new DateTime($_SESSION['loginsucces']['BIRTHDATE']);
-    // Obtener la fecha de hoy
+    /*Obtener la fecha de hoy*/
     $today = new DateTime();
-
-    // Comparar si el mes y el día son iguales (ignorar el año)
+    /*Comparar si el mes y el día son iguales (ignorar el año)*/
     if ($birthdate->format('m-d') === $today->format('m-d')) :
 ?>
 <div class="container my-5 d-flex justify-content-center">
@@ -26,7 +25,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
     endif;
 }
 ?>
-
 <!--SLIDER-->
 <div id="slider" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner p-5 border mt-5 mb-5">
@@ -44,7 +42,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
         </div>
     </div>
 </div>
-
 <div class="container mt-5">
     <div class="row g-4">
         <?php if(sizeof($listNews) == 0) : ?>
@@ -85,7 +82,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
     <br>
     <br>
 </div>
-
 <?php if(isset($_SESSION['aciertodesvinculacion'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -98,7 +94,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
 </div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertodesvinculacion'); ?>
-
 <?php if(isset($_SESSION['errorcarrito'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -111,7 +106,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
 </div>
 <?php endif; ?>
 <?php helps::deleteSession('errorcarrito'); ?>
-
 <?php if(isset($_SESSION['aciertoeliminar'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -124,8 +118,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
 </div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertoeliminar'); ?>
-
-
 <?php if(isset($_SESSION['errordetalle'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -138,7 +130,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
 </div>
 <?php endif; ?>
 <?php helps::deleteSession('errordetalle'); ?>
-
 <?php if(isset($_SESSION['eliminaracierto'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -151,7 +142,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
 </div>
 <?php endif; ?>
 <?php helps::deleteSession('eliminaracierto'); ?>
-
 <?php if(isset($_SESSION['aciertoiniciosesion'])) : ?>
 <div id="alerta2" class="position-absolute col-6">
     <div>
@@ -164,7 +154,6 @@ if (isset($_SESSION['loginsucces']) && isset($_SESSION['loginsucces']['BIRTHDATE
 </div>
 <?php endif; ?>
 <?php helps::deleteSession('aciertoiniciosesion'); ?>
-
 <!--PRODUCTOS-->
 <section id="content" class="row col-12 ms-5 mb-5">
     <?php if(sizeof($listProducts) == 0) : ?>
