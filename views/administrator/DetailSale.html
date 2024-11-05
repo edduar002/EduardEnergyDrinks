@@ -18,12 +18,32 @@
         <p class="text-muted">Fecha: <?= date('d-m-Y') ?></p>
     </div>
     
+    <!-- Datos del comprador -->
+    <h4 class="mb-3">Datos del Comprador</h4>
+    <div class="row mb-4">
+        <?php if($detail[0]['USER_NAME'] == NULL) : ?>
+            <div class="col-md-4">
+                <p><strong>Nombre: Tienda</p>
+            </div>
+        <?php else : ?>
+            <div class="col-md-4">
+                <p><strong>Nombre:</strong> <?= $detail[0]['USER_NAME'] ?></p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Apellidos:</strong> <?= $detail[0]['SURNAME'] ?></p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Email:</strong> <?= $detail[0]['EMAIL'] ?></p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Telefono:</strong> <?= $detail[0]['PHONE'] ?></p>
+            </div>
+        <?php endif; ?>
+    </div>
+
     <!-- Datos del envío -->
     <h4 class="mb-3">Datos del Envío</h4>
     <div class="row mb-4">
-        <div class="col-md-4">
-            <p><strong>De:</strong> <?= $detail[0]['CITY'] ?></p>
-        </div>
         <div class="col-md-4">
             <p><strong>Ciudad:</strong> <?= $detail[0]['CITY'] ?></p>
         </div>
@@ -73,7 +93,6 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Comprador</th>
                 <th>Producto</th>
                 <th>Precio</th>
                 <th>Contenido</th>
@@ -83,13 +102,6 @@
         <tbody>
             <?php foreach($detail as $listCar) : ?>
             <tr>
-                <td>
-                    <?php if($listCar['USER_NAME'] == NULL) : ?>
-                    Tienda
-                    <?php else : ?>
-                    <?= $listCar['USER_NAME'] . ' ' . $listCar['SURNAME'] ?>
-                    <?php endif; ?>
-                </td>
                 <td><?= $listCar['PRODUCT_NAME'] ?></td>
                 <td><?='$'.number_format($listCar['PRICE'], 0, ','); ?></td>
                 <td><?= $listCar['CONTENT'] ?></td>

@@ -13,11 +13,31 @@
     <br>
     <h2 style="text-align: center; margin-bottom: 20px; font-weight: bold;">Detalle Compra</h2>
     <br>
+    <!-- Datos del vendedor -->
+    <h4 style="margin-bottom: 20px;">Datos del Vendedor</h4>
+    <div style="width: 80%; margin: 0 auto; margin-bottom: 20px;">
+        <?php if($detail[0]['USER_NAME'] == NULL) : ?>
+            <div style="display: flex; justify-content: space-between;">
+                <div style="width: 30%;"><strong>Nombre:</strong>Tienda</div>
+            </div>
+        <?php else : ?>
+            <div style="display: flex; justify-content: space-between;">
+                <div style="width: 30%;"><strong>Nombre:</strong> <?= $detail[0]['USER_NAME'] ?></div>
+                <div style="width: 30%;"><strong>Apellidos:</strong> <?= $detail[0]['SURNAME'] ?></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                <div style="width: 30%;"><strong>Correo:</strong> <?= $detail[0]['EMAIL'] ?></div>
+                <div style="width: 30%;"><strong>Telefono:</strong> <?= $detail[0]['PHONE'] ?></div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <br>
+    <br>
+
     <!-- Datos del envío -->
     <h4 style="margin-bottom: 20px;">Datos del Envío</h4>
     <div style="width: 80%; margin: 0 auto; margin-bottom: 20px;">
         <div style="display: flex; justify-content: space-between;">
-            <div style="width: 30%;"><strong>De:</strong> <?= $detail[0]['CITY'] ?></div>
             <div style="width: 30%;"><strong>Ciudad:</strong> <?= $detail[0]['CITY'] ?></div>
             <div style="width: 30%;"><strong>Carrera:</strong> <?= $detail[0]['CARRER'] ?></div>
         </div>
@@ -29,7 +49,7 @@
     <br>
     <br>
     <!-- Datos del estado del envio -->
-    <h4 style="margin-bottom: 20px;">Estado del Envío</h4>
+    <h4 style="margin-bottom: 20px;">Estado del Estado</h4>
     <div style="margin-left: 125px;"><strong><?= $detail[0]['NAME_PURCHASING_STATUS'] ?></strong></div>
     <br>
     <br>
@@ -49,7 +69,6 @@
         <table style="width: 90%; border-collapse: collapse; margin: 0 auto; text-align: left;">
             <thead style="color: black; background-color: rgb(235, 241, 241); font-size: 19px;">
                 <tr>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Vendedor</th>
                     <th style="padding: 8px; border: 1px solid #ddd;">Producto</th>
                     <th style="padding: 8px; border: 1px solid #ddd;">Precio</th>
                     <th style="padding: 8px; border: 1px solid #ddd;">Contenido</th>
@@ -59,13 +78,6 @@
             <tbody>
                 <?php foreach($detail as $listCar) : ?>
                 <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;">
-                        <?php if($listCar['USER_NAME'] == NULL) : ?>
-                        Tienda
-                        <?php else : ?>
-                        <?= $listCar['USER_NAME'] . ' ' . $listCar['SURNAME'] ?>
-                        <?php endif; ?>
-                    </td>
                     <td style="padding: 8px; border: 1px solid #ddd;"><?= $listCar['PRODUCT_NAME'] ?></td>
                     <td style="padding: 8px; border: 1px solid #ddd;"><?='$'.number_format($listCar['PRICE'], 0, ','); ?></td>
                     <td style="padding: 8px; border: 1px solid #ddd;"><?= $listCar['CONTENT'] ?></td>
