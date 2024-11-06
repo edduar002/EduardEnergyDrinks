@@ -77,7 +77,7 @@
             /*Encriptar la clave*/
             $password = password_hash($password1, PASSWORD_BCRYPT, ['cost'=>4]);
             /*Preparar la consulta que llama a la función de Oracle*/
-            $sql = 'BEGIN :resultado := REGISTER_USER(:u_genre_id, :active, :founder, :code, :name, :surname, :birthdate, :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'DD/MM/YY\')); END;';
+            $sql = 'BEGIN :resultado := REGISTER_USER(:u_genre_id, :active, :founder, :code, :name, :surname, TO_DATE(:birthdate, \'YYYY-MM-DD\'), :phone, :email, :user_password, :image, :earnings, :higher_user_id, TO_DATE(:created_at, \'YYYY-MM-DD\')); END;';
             $stmt = oci_parse($this->conn, $sql);
             /*Asignar los valores de entrada y salida*/
             oci_bind_by_name($stmt, ':u_genre_id', $genre_id);

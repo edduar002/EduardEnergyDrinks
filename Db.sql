@@ -529,16 +529,14 @@ BEGIN
     END IF;
 END;
 
-create or replace TRIGGER CHECK_AGE
+CREATE OR REPLACE TRIGGER CHECK_AGE
 BEFORE INSERT ON USERS
 FOR EACH ROW
 DECLARE
     v_age NUMBER;
 BEGIN
-    -- Convertir la fecha de nacimiento desde una cadena a tipo DATE
-    :NEW.BIRTHDATE := TO_DATE(:NEW.BIRTHDATE, 'DD/MM/YYYY');
-    -- Calcular la edad del usuario
-    v_age := TRUNC(MONTHS_BETWEEN(SYSDATE, :NEW.BIRTHDATE) / 12);
+    -- Usar :NEW.BIRTHDATE directamente si la fecha ya está en el formato correcto
+    v_age := FLOOR(MONTHS_BETWEEN(SYSDATE, :NEW.BIRTHDATE) / 12);
     -- Comprobar si es menor de 18 años
     IF v_age < 18 THEN
         RAISE_APPLICATION_ERROR(-20001, 'El usuario debe ser mayor de edad.');
