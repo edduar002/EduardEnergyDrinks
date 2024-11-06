@@ -202,7 +202,7 @@
                 $email = isset($_POST['email']) ? $_POST['email'] : false;
                 $password = isset($_POST['password']) ? $_POST['password'] : false;
                 $created_at = date('Y-m-d');
-                $birthdate2 = (new DateTime($birthdate))->format('d/m/y');
+                $birthdate2 = (new DateTime($birthdate))->format('d/m/Y');
                 $earnings = 0;
                 $created_at2 = (new DateTime($created_at))->format('d/m/y');
                 /*Establecer archivo de foto*/
