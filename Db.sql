@@ -596,6 +596,8 @@ BEGIN
     WHERE code = userCode;
     -- Confirmar la transacción
     COMMIT;
+    -- Llamar funcion de ascenso
+    upward;
     -- Retornar un mensaje de éxito
     RETURN 1;
 EXCEPTION
@@ -2058,6 +2060,8 @@ BEGIN
         VALUES (t_number_bill, t_id_buyer, t_id_direction, t_id_pay, v_discounted_total, t_discont, t_date_time, t_created_at);
         COMMIT;
         v_resultado := 'Transacción registrada exitosamente.';
+        -- Llamar funcion de ascenso
+        upward;
     EXCEPTION
         WHEN OTHERS THEN
             v_resultado := 'Error al registrar transacción: ' || SQLERRM;
@@ -2664,6 +2668,69 @@ BEGIN
     END IF;
 END VALIDATE_UNIQUE_EMAIL;
 
+/*Procedimientos*/
+
+CREATE OR REPLACE PROCEDURE UPWARD AS
+BEGIN
+    -- Ejecutamos ambos SELECT en un solo bucle
+    FOR rec IN (
+        SELECT 
+            u.user_id, 
+            CASE 
+                WHEN u.higher_user_id IS NULL AND u.founder = 1 THEN 'Tienda'
+                WHEN u.higher_user_id IS NULL AND u.founder != 1 THEN 'Usuario Externo'
+                ELSE TO_CHAR(u.higher_user_id)
+            END AS higher_user_id,
+            u.name, 
+            CASE 
+                WHEN COUNT(r.user_id) = 0 AND u.higher_user_id IS NULL AND u.founder != 1 THEN 'No Puede Tener Referidos' 
+                WHEN COUNT(r.user_id) = 0 AND u.higher_user_id IS NULL AND u.founder = 1 THEN 'No Tiene Referidos'
+                ELSE TO_CHAR(COUNT(r.user_id)) 
+            END AS num_referidos,
+            NVL2(NULLIF(SUM(u2.earnings), 0), SUM(u2.earnings), -1) AS total_ganancias
+        FROM 
+            users u
+        LEFT JOIN 
+            users r ON r.higher_user_id = u.user_id
+        LEFT JOIN 
+            users u2 ON u2.user_id = u.user_id
+        GROUP BY 
+            u.user_id, 
+            u.name, 
+            u.higher_user_id,
+            u.founder
+        HAVING 
+            COUNT(r.user_id) > 2 
+            AND NVL2(NULLIF(SUM(u2.earnings), 0), SUM(u2.earnings), -1) > 20000 
+            AND u.higher_user_id IS NOT NULL  -- Filtramos en HAVING correctamente
+        ORDER BY 
+            num_referidos DESC
+    ) LOOP
+        -- Ejecutamos el UPDATE si las condiciones se cumplen
+        UPDATE users u
+        SET u.higher_user_id = (
+            SELECT u2.higher_user_id
+            FROM users u2
+            WHERE u2.user_id = u.higher_user_id
+            AND u2.founder != 1 -- Aseguramos que el higher_user_id no sea de un fundador
+        )
+        WHERE u.user_id = rec.user_id;
+        -- Imprimimos los resultados
+        DBMS_OUTPUT.PUT_LINE('User ID: ' || rec.user_id || 
+                             ', Name: ' || rec.name || 
+                             ', Num Referidos: ' || rec.num_referidos || 
+                             ', Total Ganancias: ' || rec.total_ganancias);
+    END LOOP;
+    -- Confirmar los cambios
+    COMMIT;
+END UPWARD;
+
 /*Agregar administrador*/
 
 INSERT INTO administrators values (1, 'admin@gmail.com', '123', SYSDATE);
+COMMIT;
+
+/*Agregar estado de la compra*/
+
+INSERT INTO purchasing_status values (1, 1, 'Pendiente', SYSDATE);
+COMMIT;
