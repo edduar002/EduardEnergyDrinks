@@ -2153,6 +2153,7 @@ BEGIN
     OPEN v_cursor FOR
             SELECT user_id, name, NVL2(NULLIF(SUM(earnings), 0), SUM(earnings), -1) AS total_ganancias
             FROM users
+            where (higher_user_id is not null OR FOUNDER = 1)
             GROUP BY user_id, name
             ORDER BY total_ganancias DESC;
     RETURN v_cursor; -- Retornar el cursor con los registros
@@ -2181,6 +2182,7 @@ BEGIN
             END AS referidos_inactivos
         FROM 
             USERS u
+        where (higher_user_id is not null OR FOUNDER = 1)
         GROUP BY 
             u.HIGHER_USER_ID;
     RETURN v_cursor; -- Retornar el cursor con los registros
@@ -2226,8 +2228,8 @@ BEGIN
             END AS higher_user_id,
             u.name, 
             CASE 
-                WHEN COUNT(r.user_id) = 0 AND u.higher_user_id IS NULL THEN 'No Puede Tener Referidos' 
-                WHEN COUNT(r.user_id) = 0 AND u.higher_user_id IS NOT NULL THEN 'No Tiene Referidos' 
+                WHEN COUNT(r.user_id) = 0 AND u.higher_user_id IS NULL AND u.founder != 1 THEN 'No Puede Tener Referidos' 
+                WHEN COUNT(r.user_id) = 0 AND u.higher_user_id IS NULL AND u.founder = 1 THEN 'No Tiene Referidos'
                 ELSE TO_CHAR(COUNT(r.user_id)) 
             END AS num_referidos
         FROM 
@@ -2248,31 +2250,28 @@ EXCEPTION
         RAISE;
 END REPORT_URPU;
 
-create or replace FUNCTION REPORT_VCN RETURN SYS_REFCURSOR
+CREATE OR REPLACE FUNCTION REPORT_VCN RETURN SYS_REFCURSOR
 IS
     v_cursor SYS_REFCURSOR;
 BEGIN
-    -- Abrir un cursor para seleccionar todos los pagos donde ACTIVE sea igual a 1
-    -- y el USER_ID sea el dueño del pago
     OPEN v_cursor FOR
         SELECT 
-            u.HIGHER_USER_ID AS nivel, 
-            SUM(t.TOTAL) AS total_ventas
+            LEVEL AS nivel, 
+            NVL(SUM(t.TOTAL), 0) AS total_ventas
         FROM 
             USERS u
         LEFT JOIN 
             TRANSACTIONS t ON t.BUYER_ID = u.USER_ID
-        WHERE 
-            u.HIGHER_USER_ID is not null
+        where higher_user_id is not null
+        START WITH 
+            u.HIGHER_USER_ID IS not NULL
+        CONNECT BY 
+            PRIOR u.USER_ID = u.HIGHER_USER_ID
         GROUP BY 
-            u.HIGHER_USER_ID, u.founder  -- Añadir u.founder aquí
+            LEVEL
         ORDER BY 
             nivel ASC;
-    RETURN v_cursor; -- Retornar el cursor con los registros
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Manejo de otras excepciones
-        RAISE;
+    RETURN v_cursor;
 END REPORT_VCN;
 
 create or replace FUNCTION REPORT_VR(

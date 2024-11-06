@@ -13,15 +13,15 @@
 <div class="container m-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                aria-selected="true">Metodo De Pago</a>
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">Inicio</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+            <a class="nav-link" id="direction-tab" data-bs-toggle="tab" href="#direction" role="tab" aria-controls="direction"
                 aria-selected="false">Direccion De Envio</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+            <a class="nav-link" id="pay-tab" data-bs-toggle="tab" href="#pay" role="tab" aria-controls="pay"
                 aria-selected="false">Metodo De Pago</a>
         </li>
     </ul>
@@ -32,10 +32,10 @@
             <div class="tab-content mt-3" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="text-center">
-                        <img src="assets/images/logos/bag.png" alt="">
+                        <img src="assets/images/logos/bag.png" id="bolsa" alt="">
                     </div>
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="tab-pane fade" id="direction" role="tabpanel" aria-labelledby="direction-tab">
                     <?php if(count($listDirections) > 0) : ?>
                     <h4>Selecciona tu direccion</h4>
                     <br>
@@ -64,7 +64,7 @@
                     </div>
                     <?php endif; ?>
                 </div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="tab-pane fade" id="pay" role="tabpanel" aria-labelledby="pay-tab">
                     <?php if(count($listPays) > 0) : ?>
                     <h4>Selecciona tu metodo de pago de preferencia</h4>
                     <br>
@@ -88,7 +88,9 @@
                 </div>
             </div>
             <?php if(count($listDirections) > 0 && count($listPays) > 0) : ?>
-            <input class="btn btn-primary mt-5" type="submit" value="Realizar Compra">
+            <div class="text-center">
+                <input class="btn btn-primary mt-5" type="submit" value="Realizar Compra">
+            </div>
             <?php endif; ?>
         </form>
     </div>

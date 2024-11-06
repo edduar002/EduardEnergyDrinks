@@ -3,6 +3,38 @@
     <div class="text-center mb-5">
         <h2>Resumen</h2>
     </div>
+    <!-- Datos del vendedor -->
+    <h3 class="mb-3">Datos del Vendedor</h3>
+    <div class="row mb-4">
+        <?php if($list[0]['NAME_SELLER'] == NULL) : ?>
+            <div class="col-md-4">
+                <p><strong>Nombre:</strong>
+                    Tienda
+                </p>
+            </div>
+        <?php else : ?>
+            <div class="col-md-4">
+                <p><strong>Nombre:</strong>
+                    <?= $list[0]['NAME_SELLER'] ?>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Apellidos:</strong>
+                    <?= $list[0]['SURNAME'] ?>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Correo:</strong>
+                    <?= $list[0]['EMAIL'] ?>
+                </p>
+            </div>
+            <div class="col-md-12">
+                <p><strong>Telefono:</strong>
+                    <?= $list[0]['PHONE'] ?>
+                </p>
+            </div>
+        <?php endif; ?>
+    </div>
     <!-- Datos del envío -->
     <h3 class="mb-3">Datos del Envío</h3>
     <div class="row mb-4">
@@ -46,7 +78,6 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Vendedor</th>
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Contenido</th>
@@ -56,10 +87,6 @@
         <tbody>
             <?php foreach($list as $listCar) : ?>
             <tr>
-                <td>
-                    <?= $listCar['NAME_SELLER'] ?>
-                    <?= $listCar['SURNAME'] ?>
-                </td>
                 <td>
                     <?= $listCar['NAME_PRODUCT'] ?>
                 </td>

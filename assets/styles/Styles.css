@@ -48,6 +48,11 @@
     height: 25px;
 }
 
+#bolsa{
+    width: 150px;
+    height: 150px;
+}
+
 #alerta2{
     margin-top: 280px; 
     margin-left: 40px;
@@ -96,6 +101,9 @@
 .pyramid-level-2 .pyramid-item { width: 180px; }
 .pyramid-level-3 .pyramid-item { width: 160px; }
 .pyramid-level-4 .pyramid-item { width: 140px; }
+.pyramid-level-5 .pyramid-item { width: 120px; }
+.pyramid-level-6 .pyramid-item { width: 100px; }
+.pyramid-level-7 .pyramid-item { width: 80px; }
 
 #tituloPrincipal{
     color: #33ffe9;
